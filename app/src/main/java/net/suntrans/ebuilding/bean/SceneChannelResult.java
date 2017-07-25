@@ -12,6 +12,7 @@ public class SceneChannelResult {
     public String msg;
     public static class Data {
         public int total;
+        public String img_banner;
         public List<SceneChannel> lists;
     }
 

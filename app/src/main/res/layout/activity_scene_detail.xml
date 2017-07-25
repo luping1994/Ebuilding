@@ -2,26 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/toobar"
         android:layout_width="match_parent"
-        android:layout_height="193dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="224dp">
 
+        <ImageView
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/banner_xiawucha" />
 
         <RelativeLayout
             android:id="@+id/fanhui"
             android:layout_width="60dp"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:fitsSystemWindows="true">
 
             <ImageView
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/ic_back" />
         </RelativeLayout>
 
@@ -32,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="9dp"
+            android:fitsSystemWindows="true"
             android:gravity="center"
             android:text="wucan"
             android:textColor="@color/white"

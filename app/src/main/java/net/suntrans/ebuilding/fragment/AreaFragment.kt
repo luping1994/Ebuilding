@@ -7,22 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
-
 import com.trello.rxlifecycle.android.FragmentEvent
 import com.trello.rxlifecycle.components.support.RxFragment
-
 import net.suntrans.ebuilding.R
 import net.suntrans.ebuilding.activity.AreaDetailActivity
 import net.suntrans.ebuilding.adapter.AreaAdapter
 import net.suntrans.ebuilding.api.RetrofitHelper
 import net.suntrans.ebuilding.bean.AreaEntity
 import net.suntrans.ebuilding.utils.LogUtil
-
-import java.util.ArrayList
-
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.util.*
 
 /**
  * Created by Looney on 2017/7/20.
@@ -52,6 +48,10 @@ class AreaFragment : RxFragment() {
             activity.overridePendingTransition(android.support.v7.appcompat.R.anim.abc_popup_enter, android.support.v7.appcompat.R.anim.abc_popup_exit)
             true
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     private fun getAreaData() {

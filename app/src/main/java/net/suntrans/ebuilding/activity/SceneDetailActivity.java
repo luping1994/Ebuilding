@@ -1,7 +1,6 @@
 package net.suntrans.ebuilding.activity;
 
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -47,6 +47,7 @@ public class SceneDetailActivity extends BasedActivity {
     private MyAdapter adapter1;
     private Observable<ControlEntity> conOb;
     private TextView tips;
+    private ImageView banner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class SceneDetailActivity extends BasedActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter1 = new MyAdapter(R.layout.item_scene_detail, datas);
         recyclerView.setAdapter(adapter1);
+        banner = (ImageView) findViewById(R.id.banner);
         findViewById(R.id.fanhui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +117,11 @@ public class SceneDetailActivity extends BasedActivity {
                         datas.clear();
                         datas.addAll(result.data.lists);
                         adapter1.notifyDataSetChanged();
+                        Glide.with(SceneDetailActivity.this)
+                                .load(result.data.img_banner)
+                                .placeholder(R.drawable.banner_xiawucha)
+                                .centerCrop()
+                                .into(banner);
                         LogUtil.i("场景动作的数量：" + datas.size());
                         if (datas.size()!=0){
                             recyclerView.setVisibility(View.VISIBLE);
