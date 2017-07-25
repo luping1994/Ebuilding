@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:id="@+id/fanhui"
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/ic_back" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="设备管理"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout
+        android:id="@+id/refreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f2f2f2">
+
+            <LinearLayout
+                android:id="@+id/rootLL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center|left"
+                        android:text="时间"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center|right"
+                        android:text="2017年7月18日 14:27"
+                        android:textSize="17sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:text="室内环境"
+                    android:textSize="15sp" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:text="空气质量"
+                    android:textSize="15sp" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <include layout="@layout/item_sensor" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:text="姿态信息"
+                    android:textSize="15sp" />
+
+                <include layout="@layout/item_sensor" />
+
+                <!--<include layout="@layout/item_sensor" />-->
+<!---->
+                <!--<include layout="@layout/item_sensor" />-->
+<!---->
+                <!--<include layout="@layout/item_sensor" />-->
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout>
+</LinearLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:gravity="center_horizontal"
+        android:text="TIT餐厅智能配电"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/titleHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/icon_dining_hentiao">
+
+        <android.support.design.widget.TabLayout
+
+            app:tabIndicatorColor="@color/white"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="#78b3e4"
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="14dp"
+            android:gravity="center"
+            android:text="TIT餐厅"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:background="@android:color/transparent"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>

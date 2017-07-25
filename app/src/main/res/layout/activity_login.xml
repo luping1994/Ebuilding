@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/loginForm"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="96dp"
+        android:background="@drawable/content"
+        android:orientation="vertical">
+
+        <net.suntrans.ebuilding.views.EditView
+            android:maxLines="1"
+            android:id="@+id/account"
+            android:paddingLeft="16dp"
+            android:textSize="@dimen/textNormalSize"
+            android:hint="请输入账号"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+        <net.suntrans.ebuilding.views.EditView
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:id="@+id/password"
+            android:paddingLeft="16dp"
+            android:textSize="@dimen/textNormalSize"
+            android:hint="请输入密码"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/loginForm"
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_user_zhuxiao"
+        android:text="注   销"
+        android:textColor="@color/white"
+        android:textSize="17sp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:clickable="false"
+            android:text="登  录"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginBottom="4dp"
+        android:id="@+id/guangwang"
+        android:autoLink="all"
+        android:layout_above="@+id/name1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/company_name_CH"
+        android:textSize="14sp" />
+    <TextView
+        android:paddingBottom="8dp"
+        android:id="@+id/name1"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/company_name_EN"
+        android:textSize="12sp" />
+</RelativeLayout>

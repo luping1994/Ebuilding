@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:foreground="?attr/selectableItemBackground">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/eleitem_textmargin"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:gravity="center_vertical"
+                        android:text="设备名称: 201407002403"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:text="更多"
+                        android:textColor="@color/colorPrimary" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/IA"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="A相电流：220 V" />
+
+                    <TextView
+                        android:id="@+id/VA"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="A相电压：100 A" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/IB"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="B相电流：220w" />
+
+                    <TextView
+                        android:id="@+id/VB"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="B相电压：1.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/IC"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="C相电流：220w" />
+
+                    <TextView
+                        android:id="@+id/VC"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="C相电压：1.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/AAP"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="A相有功功率：220w" />
+
+                    <TextView
+                        android:id="@+id/ARP"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="A相无功功率：1.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/BAP"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="B相有功功率：220w" />
+
+                    <TextView
+                        android:id="@+id/BRP"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="B相无功功率：1.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/CAP"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="C相有功功率：220w" />
+
+                    <TextView
+                        android:id="@+id/CRP"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="C相无功功率：1.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/pf"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/eleitem_textmargin"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="功率因数：220w" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

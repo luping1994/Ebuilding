@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+   <android.support.v4.widget.SwipeRefreshLayout
+       android:paddingBottom="32dp"
+       android:id="@+id/refreshlayout"
+       android:layout_marginLeft="12dp"
+       android:layout_marginRight="10dp"
+       android:minHeight="312dp"
+       android:layout_marginTop="14dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <android.support.v7.widget.RecyclerView
+           android:visibility="invisible"
+           android:id="@+id/recyclerView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:minHeight="312dp"
+           android:background="@drawable/content"
+           android:paddingBottom="25dp"
+           android:paddingTop="20dp">
+
+       </android.support.v7.widget.RecyclerView>
+   </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:visibility="visible"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:id="@id/tips"
+        android:text="暂无数据"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

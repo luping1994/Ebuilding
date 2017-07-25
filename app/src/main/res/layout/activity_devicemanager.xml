@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:fitsSystemWindows="true"-->
+            <!--app:title="@string/title_devices_manager"-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/actionbarheight"-->
+            <!--android:background="?attr/colorPrimaryDark"-->
+            <!--app:theme="@style/Toolbar"-->
+            <!--app:titleTextAppearance="@style/Toolbar.TitleText"-->
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+
+        <!--</android.support.v7.widget.Toolbar>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+</FrameLayout>

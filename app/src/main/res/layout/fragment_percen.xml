@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:gravity="center_horizontal"
+        android:text="我的"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/titleHeader"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/bg_card">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="17dp"
+            android:src="@drawable/user_white" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/img"
+            android:gravity="center"
+            android:text="TIT餐厅"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="124dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/bg_user_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/RLQues"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+
+            <ImageView
+
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/icon_user_qusetion" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="53dp"
+                android:text="@string/qusAndSug"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+
+        <RelativeLayout
+            android:id="@+id/RLModify"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/icon_user_modify" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="53dp"
+                android:text="@string/modifyPassword"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+
+        <RelativeLayout
+            android:id="@+id/RLDevice"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/icon_user_device" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="53dp"
+                android:text="@string/deviceManager"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+
+        <RelativeLayout
+            android:id="@+id/RLHelp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/icon_user_help" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="53dp"
+                android:text="@string/help"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+
+        <RelativeLayout
+            android:id="@+id/RLAbout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/icon_user_about" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="53dp"
+                android:text="@string/about"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loginOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="436dp"
+        android:background="@drawable/bg_user_zhuxiao"
+        android:text="注   销"
+        android:textColor="@color/white"
+        android:textSize="17sp">
+
+        <Button
+            android:clickable="false"
+            android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:background="@null"
+            android:text="注  销"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+    </RelativeLayout>
+</RelativeLayout>

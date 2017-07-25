@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_tab_height">55dp</dimen>
+    <dimen name="textNormalSize">16sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="eleitem_textmargin">40dp</dimen>
+</resources>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_marginLeft="13.83333333333dp"
+    android:layout_marginRight="13.83333333333dp"
+    android:layout_marginTop="26.16666dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="14.5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1楼餐厅"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/isOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:text="在线"
+                android:textColor="#9d9e9e" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="52dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_width="7dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="19dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_wendu" />
+
+            <TextView
+                android:id="@+id/wendu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:text="27.35℃"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textNormalSize" />
+
+            <ImageView
+                android:layout_centerVertical="true"
+
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="105dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_shidu" />
+            <TextView
+                android:id="@+id/shidu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="123dp"
+                android:text="52%RH"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textNormalSize" />
+            <ImageView
+                android:layout_centerVertical="true"
+
+                android:layout_width="17dp"
+                android:layout_height="9dp"
+                android:layout_marginLeft="196dp"
+                android:scaleType="center"
+                android:src="@drawable/icon_pm" />
+
+            <TextView
+                android:id="@+id/pm25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="222dp"
+                android:text="52.6"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textNormalSize" />
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="265dp"
+                android:scaleType="center"
+                android:src="@drawable/icon_guangzhao" />
+
+            <TextView
+                android:id="@+id/guanzhao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="291dp"
+                android:text="强"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textNormalSize" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

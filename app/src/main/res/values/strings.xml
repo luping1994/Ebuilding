@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">智能配电</string>
+    <string name="nav_tit">餐厅</string>
+    <string name="nav_area">区域</string>
+    <string name="nav_power">能耗</string>
+    <string name="nav_user">我的</string>
+    <string name="qusAndSug">问题与建议</string>
+    <string name="modifyPassword">修改密码</string>
+    <string name="deviceManager">设备管理</string>
+    <string name="help">使用帮助</string>
+    <string name="about">关于</string>
+    <string name="company_name_EN">Copyright © 1993-2017 Suntrans. All rights reserved.</string>
+    <string name="company_name_CH">广州三川智控工程装备有限公司</string>
+    <string name="company_reserved">Copyright © 2017 广州三川智控工程装备有限公司版权所有</string>
+
+</resources>

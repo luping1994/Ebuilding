@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="52dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@color/white"
+        android:fillViewport="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:id="@+id/name"
+            android:layout_width="0dip"
+            android:layout_height="50dip"
+            android:layout_weight="2"
+            android:gravity="center|left"
+            android:text="空气质量"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:id="@+id/layout_all"
+            android:layout_width="0dip"
+            android:layout_height="50dip"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/value"
+                android:layout_width="match_parent"
+                android:layout_height="18dip"
+                android:layout_marginTop="4dip"
+                android:ellipsize="end"
+                android:gravity="center|right"
+                android:singleLine="true"
+                android:text="null"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/layout_arrow"
+                android:layout_width="fill_parent"
+                android:layout_height="11dip"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="11dip"
+                    android:layout_height="11dip"
+                    android:layout_gravity="center|left"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/arrow1" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/standard"
+                android:layout_width="fill_parent"
+                android:layout_height="13dip"
+                android:layout_marginBottom="4dip"
+                android:layout_marginLeft="2dip"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <TextView
+            android:paddingRight="10dp"
+
+            android:id="@+id/evaluate"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:ellipsize="end"
+            android:gravity="center|right"
+            android:singleLine="true"
+            android:text="null"
+            android:textColor="@color/blue"
+            android:textSize="17sp" />
+        <!--  <TextView
+             android:layout_width="0dip"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="null"
+             android:id="@+id/value"
+             android:textColor="@color/grey"
+             android:singleLine="true"
+             android:ellipsize="end"
+             android:textSize="17sp"
+             android:gravity="center"/>
+          <TextView
+             android:layout_width="0dip"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:text="null"
+             android:id="@+id/evaluate"
+             android:layout_marginRight="15dip"
+             android:textColor="@color/blue"
+             android:textSize="17sp"
+              android:singleLine="true"
+             android:ellipsize="end"
+             android:gravity="center|right"/> -->
+
+    </LinearLayout>
+    <TextView
+        android:background="#f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+</LinearLayout>

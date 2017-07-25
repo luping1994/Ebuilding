@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.suntrans.ebuilding">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value=" a173a0ab75faa5162d9991df3ed25aee"></meta-data>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="net.suntrans.ebuilding.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".activity.WelcomeActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SceneDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AreaDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.Ammeter3Activity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.DeviceManagerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EnvDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ChangePassActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.QuestionActivity" />
+    </application>
+
+</manifest>

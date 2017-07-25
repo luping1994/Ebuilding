@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:background="@color/colorPrimary" />
+
+
+        <RelativeLayout
+            android:id="@+id/fanhui"
+            android:layout_width="60dp"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:layout_marginTop="15dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/ic_back" />
+        </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp"
+        android:gravity="center"
+        android:text="修改密码"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/titleHeader"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/bg_card">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="17dp"
+            android:src="@drawable/user_white" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/img"
+            android:gravity="center"
+            android:text="TIT餐厅"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/loginForm"
+        android:layout_width="match_parent"
+        android:layout_height="189dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginTop="127dp"
+        android:background="@drawable/bg_changed_pass"
+        android:orientation="vertical">
+
+        <net.suntrans.ebuilding.views.EditView
+            android:id="@+id/oldPass"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            android:hint="请输入旧密码"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:textSize="@dimen/textNormalSize" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+
+        <net.suntrans.ebuilding.views.EditView
+            android:id="@+id/newPass"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:hint="请输入新密码"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:textSize="@dimen/textNormalSize" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/devisionColor" />
+
+        <net.suntrans.ebuilding.views.EditView
+            android:id="@+id/repassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:hint="确认新密码"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:textSize="@dimen/textNormalSize" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="325dp"
+        android:background="@drawable/bg_user_zhuxiao"
+        android:onClick="changePass"
+        android:textColor="@color/white"
+        android:textSize="17sp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:clickable="false"
+            android:text="确  定"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

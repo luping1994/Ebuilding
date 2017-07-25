@@ -1,0 +1,89 @@
+package net.suntrans.ebuilding.api;
+
+import net.suntrans.ebuilding.bean.Ammeter3Eneity;
+import net.suntrans.ebuilding.bean.AreaDetailEntity;
+import net.suntrans.ebuilding.bean.AreaEntity;
+import net.suntrans.ebuilding.bean.ControlEntity;
+import net.suntrans.ebuilding.bean.DeviceEntity;
+import net.suntrans.ebuilding.bean.DeviceInfoResult;
+import net.suntrans.ebuilding.bean.EnergyEntity;
+import net.suntrans.ebuilding.bean.LinkageResult;
+import net.suntrans.ebuilding.bean.LoginResult;
+import net.suntrans.ebuilding.bean.SceneChannelResult;
+import net.suntrans.ebuilding.bean.SceneEntity;
+import net.suntrans.ebuilding.bean.SensusEntity;
+
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+import rx.Observable;
+
+/**
+ * Created by Looney on 2017/1/4.
+ */
+
+public interface Api {
+
+    /**
+     * 登录api
+     *
+     * @param grant_type    默认填password
+     * @param client_id     默认填6
+     * @param client_secret 默认填test
+     * @param username      账号
+     * @param password      密码
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("oauth/token")
+    Observable<LoginResult> login(@Field("grant_type") String grant_type,
+                                  @Field("client_id") String client_id,
+                                  @Field("client_secret") String client_secret,
+                                  @Field("username") String username,
+                                  @Field("password") String password);
+
+    @POST("home/scene")
+    Observable<SceneEntity> getHomeScene();
+
+    @FormUrlEncoded
+    @POST("scene/show")
+    Observable<SceneChannelResult> getSceneChannel(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("switch/channel")
+    Observable<ControlEntity> switchChannel(@Field("id") String id,
+                                            @Field("datapoint") String datapoint,
+                                            @Field("din") String din,
+                                            @Field("cmd") String cmd);
+
+
+    @POST("home/light")
+    Observable<DeviceEntity> getAllDevice();
+
+    @FormUrlEncoded
+    @POST("switch/scene")
+    Observable<ControlEntity> switchScene(@Field("id") String id);
+
+
+    @POST("house/index")
+    Observable<AreaEntity> getHomeHouse();
+
+    @FormUrlEncoded
+    @POST("house/area")
+    Observable<AreaDetailEntity> getRoomChannel(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("energy/ammeter3")
+    Observable<Ammeter3Eneity> getAmmeter3Detail(@Field("sno") String sno);
+
+    @POST("energy/index")
+    Observable<EnergyEntity> getEnergyIndex();
+
+    @POST("home/sensus")
+    Observable<SensusEntity> getHomeSceneNew();
+
+
+    @POST("device/index")
+    Observable<DeviceInfoResult> getDevicesInfo();
+
+}
