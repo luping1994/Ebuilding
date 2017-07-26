@@ -1,53 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/toobar"
-        android:layout_width="match_parent"
-        android:layout_height="224dp">
 
-        <ImageView
-            android:id="@+id/banner"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="224dp"
+        app:elevation="0dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <!--要扩展到状态栏的空间，必须为AppBarLayout的直接子控件，记得设置app:layout_scrollFlag属性-->
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/banner_xiawucha" />
-
-        <RelativeLayout
-            android:id="@+id/fanhui"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
             android:fitsSystemWindows="true">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_back" />
-        </RelativeLayout>
+                android:fitsSystemWindows="true"
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/banner_xiawucha"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed" />
 
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="9dp"
-            android:fitsSystemWindows="true"
-            android:gravity="center"
-            android:text="wucan"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            <RelativeLayout
+                android:id="@+id/toobar"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
 
-    </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/fanhui"
+                    android:layout_width="60dp"
+                    android:layout_height="45dp"
+                    android:fitsSystemWindows="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/ic_back" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:fitsSystemWindows="true"
+                    android:gravity="center"
+                    android:text="wucan"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+        <!--当然在此处还可以添加其他控件，例如CollapsingToolbarLayout-->
+    </android.support.design.widget.AppBarLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="312dp">
+        android:layout_height="312dp"
+        app:elevation="4dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -199,6 +199,5 @@ public class SceneDetailActivity extends BasedActivity {
         canExcute =false;
 
 
-
     }
 }

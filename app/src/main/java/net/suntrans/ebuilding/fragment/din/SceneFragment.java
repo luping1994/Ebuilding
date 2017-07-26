@@ -83,7 +83,7 @@ public class SceneFragment extends RxFragment {
             Glide.with(getActivity())
                     .load(item.img_url)
                     .centerCrop()
-                    .placeholder(R.drawable.bg_item_scene)
+                    .placeholder(R.drawable.bg_scene)
                     .into(imageView);
         }
     }

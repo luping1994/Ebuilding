@@ -1,7 +1,6 @@
 package net.suntrans.ebuilding.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +112,6 @@ public class AreaAdapter extends BaseExpandableListAdapter {
         public GroupHolder(View view) {
             mName = (TextView) view.findViewById(R.id.name);
             mImage = (ImageView) view.findViewById(R.id.imageView);
-            count = (TextView) view.findViewById(R.id.count);
 
 
         }
@@ -121,7 +119,7 @@ public class AreaAdapter extends BaseExpandableListAdapter {
         public void setData(final int groupPosition) {
             mName.setText(datas.get(groupPosition).name);
 //            mImage.setBackgroundColor(Color.parseColor(colors[groupPosition % 3]));
-            count.setText(datas.get(groupPosition).sub.size() + "");
+//            count.setText(datas.get(groupPosition).sub.size() + "");
         }
     }
 
