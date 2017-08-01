@@ -10,9 +10,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.trello.rxlifecycle.android.ActivityEvent;
+
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.api.RetrofitHelper;
+import net.suntrans.ebuilding.bean.DeviceInfoResult;
+import net.suntrans.ebuilding.bean.EnvDetailEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.utils.LogUtil;
+import net.suntrans.ebuilding.utils.UiUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.R.attr.data;
 
@@ -20,12 +33,13 @@ import static android.R.attr.data;
  * Created by Looney on 2017/7/22.
  */
 
-public class EnvDetailActivity extends BasedActivity{
+public class EnvDetailActivity extends BasedActivity {
     LinearLayout rootLL;
     TextView time;
     private DisplayMetrics displayMetrics = new DisplayMetrics();
     private int Pwidth;
     private SwipeRefreshLayout refreshLayout;
+    private String din;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +47,24 @@ public class EnvDetailActivity extends BasedActivity{
         setContentView(R.layout.activity_env_detail);
         rootLL = (LinearLayout) findViewById(R.id.rootLL);
         time = (TextView) findViewById(R.id.time);
+        din = getIntent().getStringExtra("din");
+
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);//获取屏幕大小的信息
-        Pwidth =displayMetrics.widthPixels;   //屏幕宽度,先锋的宽度是800px，小米2a的宽度是720px
-        initView((SensusEntity.SixDetailData) getIntent().getParcelableExtra("info"));
+        Pwidth = displayMetrics.widthPixels;   //屏幕宽度,先锋的宽度是800px，小米2a的宽度是720px
+        SensusEntity.SixDetailData info = getIntent().getParcelableExtra("info");
+        info.setEva();
+//        initView(info);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshlayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                getData(din);
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         refreshLayout.setRefreshing(false);
                     }
-                },2000);
+                }, 2000);
             }
         });
         TextView title = (TextView) findViewById(R.id.title);
@@ -53,20 +72,21 @@ public class EnvDetailActivity extends BasedActivity{
         findViewById(R.id.fanhui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              finish();
+                finish();
             }
         });
     }
 
 
     private void initView(SensusEntity.SixDetailData data) {
-        if (data!=null){
-//           time.setText();
+        if (data != null) {
+
+            time.setText(data.updated_at);
         }
-        for (int i=0;i<rootLL.getChildCount();i++){
-            if (i==0||i==1||i==7||i==13)
+        for (int i = 0; i < rootLL.getChildCount(); i++) {
+            if (i == 0 || i == 1 || i == 7 || i == 13)
                 continue;
-            initView(i,data);
+            initView(i, data);
         }
 
     }
@@ -93,91 +113,90 @@ public class EnvDetailActivity extends BasedActivity{
             case 2:
                 nameTx.setText("温度");
                 standard.setImageResource(R.drawable.standard_tem);
-                if (data!=null){
-                    valueTx.setText(data.getWendu()+"℃");
+                if (data != null) {
+                    valueTx.setText(data.getWendu() + "℃");
                     evaluateTx.setText(data.wenduEva);
-                    LogUtil.i("SensusDetaiActivity",data.wenduPro+","+ Pwidth * data.wenduPro / 200);
-                    setPading(data.wenduPro,layout_arrow,valueTx);
+                    setPading(data.wenduPro, layout_arrow, valueTx);
                 }
                 break;
             case 3:
                 standard.setImageResource(R.drawable.standard_humidity);
                 nameTx.setText("湿度");
-                if (data!=null){
-                    valueTx.setText(data.getShidu()+"%RH");
+                if (data != null) {
+                    valueTx.setText(data.getShidu() + "%RH");
                     evaluateTx.setText(data.shiduEva);
-                    setPading(data.shiduPro,layout_arrow,valueTx);
+                    setPading(data.shiduPro, layout_arrow, valueTx);
                 }
                 break;
             case 4:
                 nameTx.setText("大气压");
                 standard.setImageResource(R.drawable.standard_humidity);
-                if (data!=null){
-                    valueTx.setText(data.getDaqiya()+"kPa");
+                if (data != null) {
+                    valueTx.setText(data.getDaqiya() + "kPa");
                     evaluateTx.setText(data.daqiYaEva);
-                    setPading(data.daqiyaPro,layout_arrow,valueTx);
+                    setPading(data.daqiyaPro, layout_arrow, valueTx);
                 }
                 break;
             case 5:
                 nameTx.setText("人员信息");
                 valueTx.setVisibility(View.GONE);
                 layout_arrow.setVisibility(View.INVISIBLE);
-                if (data!=null){
-                    evaluateTx.setText(data.getRenyuan().equals("1")?"有人":"没人");
+                if (data != null) {
+                    evaluateTx.setText(data.getRenyuan().equals("1") ? "有人" : "没人");
                 }
                 break;
             case 6:
                 nameTx.setText("光照强度");
                 standard.setImageResource(R.drawable.standard_light);
-                if (data!=null){
-                    valueTx.setText(data.getLight()+"");
+                if (data != null) {
+                    valueTx.setText(data.getLight() + "");
                     evaluateTx.setText(data.guanzhaoEva);
-                    setPading(data.guanzhaoPro,layout_arrow,valueTx);
+                    setPading(data.guanzhaoPro, layout_arrow, valueTx);
                 }
                 break;
             case 8:
                 nameTx.setText("烟雾");
                 standard.setImageResource(R.drawable.standard_smoke);
-                if (data!=null){
-                    valueTx.setText(data.getYanwu()+"ppm");
+                if (data != null) {
+                    valueTx.setText(data.getYanwu() + "ppm");
                     evaluateTx.setText(data.yanwuEva);
-                    setPading(data.yanwuPro,layout_arrow,valueTx);
+                    setPading(data.yanwuPro, layout_arrow, valueTx);
                 }
                 break;
             case 9:
                 nameTx.setText("甲醛");
                 standard.setImageResource(R.drawable.standard_smoke);
-                if (data!=null){
-                    valueTx.setText(data.getJiaquan()+"ppm");
+                if (data != null) {
+                    valueTx.setText(data.getJiaquan() + "ppm");
                     evaluateTx.setText(data.jiaquanEva);
-                    setPading(data.jiaquanPro,layout_arrow,valueTx);
+                    setPading(data.jiaquanPro, layout_arrow, valueTx);
                 }
                 break;
             case 10:
                 nameTx.setText("PM1");
                 standard.setImageResource(R.drawable.bg_standard);
-                if (data!=null){
-                    valueTx.setText(data.getPM1()+"ppm");
+                if (data != null) {
+                    valueTx.setText(data.getPM1() + "ppm");
                     evaluateTx.setText(data.pm1Eva);
-                    setPading(data.pm1Pro,layout_arrow,valueTx);
+                    setPading(data.pm1Pro, layout_arrow, valueTx);
                 }
                 break;
             case 11:
                 nameTx.setText("PM2.5");
                 standard.setImageResource(R.drawable.bg_standard);
-                if (data!=null){
-                    valueTx.setText(data.getPm25()+"ppm");
+                if (data != null) {
+                    valueTx.setText(data.getPm25() + "ppm");
                     evaluateTx.setText(data.pm25Eva);
-                    setPading(data.pm25Pro,layout_arrow,valueTx);
+                    setPading(data.pm25Pro, layout_arrow, valueTx);
                 }
                 break;
             case 12:
                 nameTx.setText("PM10");
                 standard.setImageResource(R.drawable.bg_standard);
-                if (data!=null){
-                    valueTx.setText(data.getPm10()+"ppm");
+                if (data != null) {
+                    valueTx.setText(data.getPm10() + "ppm");
                     evaluateTx.setText(data.pm10Eva);
-                    setPading(data.pm10Pro,layout_arrow,valueTx);
+                    setPading(data.pm10Pro, layout_arrow, valueTx);
                 }
                 break;
 //            case 14:
@@ -198,9 +217,11 @@ public class EnvDetailActivity extends BasedActivity{
 //                break;
             case 14:
                 valueTx.setVisibility(View.GONE);
-                layout_arrow.setVisibility(View.INVISIBLE);
+                layout_arrow.setVisibility(View.GONE);
+                standard.setVisibility(View.GONE);
                 nameTx.setText("水平夹角");
-                if (data!=null){
+                if (data != null) {
+                    valueTx.setText(data.getOffset()+"°");
                     evaluateTx.setText(data.zEva);
                 }
                 break;
@@ -216,20 +237,56 @@ public class EnvDetailActivity extends BasedActivity{
         }
     }
 
-    private void setPading(int progress,LinearLayout layout_arrow,TextView value){
+    private void setPading(int progress, LinearLayout layout_arrow, TextView value) {
         value.setVisibility(View.VISIBLE);
         layout_arrow.setVisibility(View.VISIBLE);
         layout_arrow.setPadding(Pwidth * progress / 200, 0, 0, 0);
-        if(progress<50)
-        {
+        if (progress < 50) {
             value.setGravity(Gravity.LEFT);
             value.setPadding(Pwidth * progress / 200, 0, 0, 0);   //设置左边距
-        }
-        else
-        {
+        } else {
             value.setGravity(Gravity.RIGHT);
 //            System.out.println(Pwidth);
             value.setPadding(0, 0, Pwidth * (90 - progress) / 200, 0);  //设置右边距
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData(din);
+    }
+
+    private void getData(String din) {
+        RetrofitHelper.getApi().getEnvDetail(din)
+                .compose(this.<EnvDetailEntity>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<EnvDetailEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        if (e!=null){
+                            UiUtils.showToast(e.getMessage());
+                        }else {
+                            UiUtils.showToast("服务器错误");
+                        }
+                        if (refreshLayout!=null)
+                            refreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onNext(EnvDetailEntity info) {
+                        info.data.setEva();
+                        initView(info.data);
+                        if (refreshLayout!=null)
+                            refreshLayout.setRefreshing(false);
+                    }
+                });
     }
 }

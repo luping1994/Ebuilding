@@ -38,6 +38,9 @@ public class UiUtils {
         if (mToast == null) {
             mToast = Toast.makeText(App.getApplication(), str, Toast.LENGTH_SHORT);
         }
+        if (TextUtils.isEmpty(str)){
+            str = "";
+        }
         mToast.setText(str);
         mToast.show();
     }

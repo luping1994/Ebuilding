@@ -113,7 +113,7 @@ public class SceneDetailActivity extends BasedActivity {
 
                     @Override
                     public void onNext(SceneChannelResult result) {
-                        System.out.println(result.data.total);
+//                        System.out.println(result.data.total);
                         datas.clear();
                         datas.addAll(result.data.lists);
                         adapter1.notifyDataSetChanged();

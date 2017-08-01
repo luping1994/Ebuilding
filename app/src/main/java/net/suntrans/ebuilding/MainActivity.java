@@ -1,16 +1,20 @@
 package net.suntrans.ebuilding;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pgyersdk.update.PgyUpdateManager;
 
 import net.suntrans.ebuilding.activity.BasedActivity;
+import net.suntrans.ebuilding.activity.ChangePassActivity;
 import net.suntrans.ebuilding.adapter.MainPagerAdapter;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
@@ -26,12 +30,12 @@ public class MainActivity extends BasedActivity {
     private TabLayout tabLayout;
     private IViewPager vp;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//       LogUtil.i("mainActivity:", UiUtils.px2dip(400)+"");
-       LogUtil.i("mainActivity:", UiUtils.px2dip(448)+"");
+        if (!DEBUG)
             PgyUpdateManager.register(this, "net.suntrans.ebuilding.fileProvider");
         init();
     }
@@ -49,7 +53,7 @@ public class MainActivity extends BasedActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                vp.setCurrentItem(tab.getPosition(),false);
+                vp.setCurrentItem(tab.getPosition(), false);
             }
 
             @Override
@@ -86,7 +90,28 @@ public class MainActivity extends BasedActivity {
 
     @Override
     protected void onDestroy() {
-        PgyUpdateManager.unregister();
+        if (!DEBUG)
+            PgyUpdateManager.unregister();
         super.onDestroy();
+    }
+
+
+    private long[] mHits = new long[2];
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+            mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+            if (mHits[0] >= (SystemClock.uptimeMillis() - 2000)) {
+                finish();
+//                android.os.Process.killProcess(android.os.Process.myPid());
+            } else {
+                Toast.makeText(this.getApplicationContext(),"再按一次返回键退出",Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

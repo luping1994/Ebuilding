@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -21,8 +20,6 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.EnvDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
-import net.suntrans.ebuilding.bean.LinkageResult;
-import net.suntrans.ebuilding.bean.SceneEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.utils.UiUtils;
 
@@ -77,7 +74,9 @@ public class EnvFragment extends RxFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), EnvDetailActivity.class);
-//                intent.putExtra("info",datas.get(position).sub);
+                intent.putExtra("din",datas.get(position).din);
+                intent.putExtra("info",datas.get(position).sub);
+                intent.putExtra("name",datas.get(position).name);
                 startActivity(intent);
             }
         });

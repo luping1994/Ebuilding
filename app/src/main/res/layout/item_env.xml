@@ -65,7 +65,6 @@
 
             <ImageView
                 android:layout_centerVertical="true"
-
                 android:layout_width="9dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="105dp"

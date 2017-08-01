@@ -9,6 +9,16 @@
 
     </style>
 
+    <style name="AppTheme.translate" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+
+
     <style name="loading_dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -20,18 +30,15 @@
     <style name="SwitchButtonStyleMD" >
         <!--<item name="android:paddingLeft">10dp</item>-->
         <!--<item name="android:paddingRight">10dp</item>-->
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
-
-        <item name="kswThumbDrawable">@drawable/ksw_md_thumb</item>
-        <item name="kswBackColor">@color/ksw_md_back_color</item>
-        <item name="kswBackMeasureRatio">2</item>
-        <item name="kswThumbMarginLeft">0dp</item>
-        <item name="kswThumbMarginTop">-1dp</item>
-        <item name="kswThumbMarginRight">0dp</item>
-        <item name="kswThumbMarginBottom">-1dp</item>
-        <item name="kswThumbWidth">25dp</item>
-        <item name="kswThumbHeight">25dp</item>
+        <item name="android:paddingTop">-1.5dp</item>
+        <item name="android:paddingBottom">-1.5dp</item>
+        <item name="kswBackMeasureRatio">1</item>
+        <item name="kswThumbMarginTop">-4.5dp</item>
+        <item name="kswThumbMarginLeft">-8dp</item>
+        <item name="kswThumbMarginRight">-8dp</item>
+        <item name="kswThumbMarginBottom">-13.833333dp</item>
+        <item name="kswThumbWidth">38.833dp</item>
+        <item name="kswThumbHeight">39.833dp</item>
     </style>
 
     <style name="line_below_navigation_bar">

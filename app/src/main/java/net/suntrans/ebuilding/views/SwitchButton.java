@@ -115,7 +115,8 @@ public class SwitchButton extends CompoundButton {
         mRectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRectPaint.setStyle(Paint.Style.STROKE);
         mRectPaint.setStrokeWidth(getResources().getDisplayMetrics().density);
-
+        mShaderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mShaderPaint.setColor(Color.parseColor("#f2f2f2"));
         mTextPaint = getPaint();
 
         mThumbRectF = new RectF();
@@ -404,6 +405,8 @@ public class SwitchButton extends CompoundButton {
         }
     }
 
+
+    private Paint mShaderPaint;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -475,6 +478,10 @@ public class SwitchButton extends CompoundButton {
         mPresentThumbRectF.set(mThumbRectF);
         mPresentThumbRectF.offset(mProcess * mSafeRectF.width(), 0);
         if (mIsThumbUseDrawable) {
+            //绘制阴影，param1：模糊半径；param2：x轴大小：param3：y轴大小；param4：阴影颜色
+//            mShaderPaint.setShadowLayer(10F, 15F, 15F, Color.GRAY);
+//            RectF rect = new RectF((int) mPresentThumbRectF.left , (int) mPresentThumbRectF.top+2, ceil(mPresentThumbRectF.right), ceil(mPresentThumbRectF.bottom)-1);
+//            canvas.drawRoundRect(rect, (float)25, (float)25, mPaint);
             mThumbDrawable.setBounds((int) mPresentThumbRectF.left, (int) mPresentThumbRectF.top, ceil(mPresentThumbRectF.right), ceil(mPresentThumbRectF.bottom));
             mThumbDrawable.draw(canvas);
         } else {
@@ -552,7 +559,7 @@ public class SwitchButton extends CompoundButton {
 
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
-                setProcess(getProcess() + (x - mLastX) / mSafeRectF.width());
+//                setProcess(getProcess() + (x - mLastX) / mSafeRectF.width());
                 mLastX = x;
                 break;
 

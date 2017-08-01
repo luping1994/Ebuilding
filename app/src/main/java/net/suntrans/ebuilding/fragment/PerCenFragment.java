@@ -8,7 +8,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.trello.rxlifecycle.android.ActivityEvent;
+import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import net.suntrans.ebuilding.App;
@@ -19,13 +22,20 @@ import net.suntrans.ebuilding.activity.ChangePassActivity;
 import net.suntrans.ebuilding.activity.DeviceManagerActivity;
 import net.suntrans.ebuilding.activity.LoginActivity;
 import net.suntrans.ebuilding.activity.QuestionActivity;
+import net.suntrans.ebuilding.api.RetrofitHelper;
+import net.suntrans.ebuilding.bean.UserInfo;
 import net.suntrans.ebuilding.utils.UiUtils;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Looney on 2017/7/20.
  */
 
 public class PerCenFragment extends RxFragment implements View.OnClickListener {
+    TextView name;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,10 +51,12 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
     private void setListener(View view) {
         view.findViewById(R.id.RLAbout).setOnClickListener(this);
         view.findViewById(R.id.RLDevice).setOnClickListener(this);
-        view.findViewById(R.id.RLHelp).setOnClickListener(this);
+//        view.findViewById(R.id.RLHelp).setOnClickListener(this);
         view.findViewById(R.id.RLModify).setOnClickListener(this);
         view.findViewById(R.id.RLQues).setOnClickListener(this);
         view.findViewById(R.id.loginOut).setOnClickListener(this);
+
+        name = (TextView) view.findViewById(R.id.name);
     }
 
     @Override
@@ -61,8 +73,8 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
             case R.id.RLDevice:
                 startActivity(new Intent(getActivity(), DeviceManagerActivity.class));
                 break;
-            case R.id.RLHelp:
-                break;
+//            case R.id.RLHelp:
+//                break;
             case R.id.RLAbout:
                 startActivity(new Intent(getActivity(), AboutActivity.class));
 
@@ -82,5 +94,45 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
                         }).setNegativeButton("取消",null).create().show();
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getInfo();
+    }
+
+    private void getInfo() {
+        RetrofitHelper.getApi()
+                .getUserInfo()
+                .compose(this.<UserInfo>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UserInfo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(UserInfo info) {
+
+                        if (info != null) {
+                            if (info.code==200) {
+                                name.setText(info.data.getNickname());
+                                App.getSharedPreferences().edit().putString("user_id", info.data.getId()).commit();
+
+                            } else {
+
+                            }
+                        } else {
+                        }
+                    }
+                });
     }
 }

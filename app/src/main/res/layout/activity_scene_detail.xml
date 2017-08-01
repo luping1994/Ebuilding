@@ -71,13 +71,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="312dp"
-        app:elevation="4dp">
+        android:layout_height="400dp"
+        >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="312dp"
+            android:layout_height="wrap_content"
+            android:minHeight="312dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="131dp"

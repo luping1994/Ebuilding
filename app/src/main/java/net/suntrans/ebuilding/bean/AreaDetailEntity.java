@@ -17,4 +17,6 @@ public class AreaDetailEntity {
         public AreaEntity.FloorRoom area;
         public List<DeviceEntity.ChannelInfo> lists;
     }
+
+
 }

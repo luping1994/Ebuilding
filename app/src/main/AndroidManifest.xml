@@ -63,8 +63,11 @@
         <activity
             android:name=".activity.ChangePassActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.QuestionActivity" />
+        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.QuestionActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.Ammeter3Activity2" android:screenOrientation="portrait" />
+        <activity android:name=".activity.AmmeterParameterActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.HistroyDataActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

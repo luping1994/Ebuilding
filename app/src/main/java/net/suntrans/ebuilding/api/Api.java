@@ -3,15 +3,18 @@ package net.suntrans.ebuilding.api;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
 import net.suntrans.ebuilding.bean.AreaEntity;
+import net.suntrans.ebuilding.bean.ChangedPasswordEntity;
 import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.DeviceEntity;
 import net.suntrans.ebuilding.bean.DeviceInfoResult;
 import net.suntrans.ebuilding.bean.EnergyEntity;
-import net.suntrans.ebuilding.bean.LinkageResult;
+import net.suntrans.ebuilding.bean.EnergyUsedEntity;
+import net.suntrans.ebuilding.bean.EnvDetailEntity;
 import net.suntrans.ebuilding.bean.LoginResult;
 import net.suntrans.ebuilding.bean.SceneChannelResult;
 import net.suntrans.ebuilding.bean.SceneEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
+import net.suntrans.ebuilding.bean.UserInfo;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -86,4 +89,22 @@ public interface Api {
     @POST("device/index")
     Observable<DeviceInfoResult> getDevicesInfo();
 
+    @FormUrlEncoded
+    @POST("sensus/show")
+    Observable<EnvDetailEntity> getEnvDetail(@Field("din") String din);
+
+
+    @POST("user/info")
+    Observable<UserInfo> getUserInfo();
+
+
+    @FormUrlEncoded
+    @POST("user/info")
+    Observable<ChangedPasswordEntity> changedPassword(@Field("oldPassword") String oldPassword,
+                                                      @Field("newPassword") String newPassword);
+
+
+    @FormUrlEncoded
+    @POST("user/info")
+    Observable<EnergyUsedEntity> getEnergyUsed(@Field("time") String date,@Field("type") String type);
 }

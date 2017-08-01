@@ -50,7 +50,7 @@ public class Ammeter3Activity extends BasedActivity implements OnChartValueSelec
         setContentView(R.layout.activity_ammeter3);
         initToolBar();
         mChart = (LineChart) findViewById(R.id.chart1);
-        initChart();
+        initChart(1,12);
         today = (TextView) findViewById(R.id.today);
         yesterday = (TextView) findViewById(R.id.yesterday);
     }
@@ -99,7 +99,7 @@ public class Ammeter3Activity extends BasedActivity implements OnChartValueSelec
 
     }
 
-    private void initChart() {
+    private void initChart(int xMax,int xMin) {
 //        mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
@@ -138,8 +138,8 @@ public class Ammeter3Activity extends BasedActivity implements OnChartValueSelec
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.enableGridDashedLine(10f, 10f, 0f);
-        xAxis.setAxisMaximum(24);
-        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(xMax);
+        xAxis.setAxisMinimum(xMin);
         xAxis.setDrawGridLines(true);
         xAxis.setGridLineWidth(1f);
         xAxis.setGranularity(1f);

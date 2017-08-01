@@ -19,6 +19,7 @@ public class SceneEntity {
         public String id;
         public String user_id;
         public String name;
+        public String name_en;
         public String show_sort;
         public String img_url;
 

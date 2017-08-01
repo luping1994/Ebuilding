@@ -25,6 +25,7 @@
 
 
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -84,7 +85,6 @@
             android:layout_marginTop="16dp"
             android:background="@null"
             android:hint="请输入您的问题及建议"
-            android:maxLines="1"
             android:paddingLeft="16dp"
             android:textSize="@dimen/textNormalSize" />
 

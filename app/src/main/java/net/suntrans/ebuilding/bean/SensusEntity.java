@@ -51,6 +51,9 @@ public class SensusEntity {
         private String d_100004273;
 
 
+        public String updated_at;
+
+
         public String pm25Eva;
         public String pm1Eva;
         public String pm10Eva;
@@ -285,19 +288,19 @@ public class SensusEntity {
                 }
             }
 
-//            if (z_zhou != null) {
-//                float qingxie = 0;
-//                try {
-//                    qingxie = Float.valueOf(z_zhou);
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
-//                if (qingxie > 10) {
-//                    zEva = "倾斜";
-//                } else {
-//                    zEva = "正常";
-//                }
-//            }
+            if (getOffset() != null) {
+                float qingxie = 0;
+                try {
+                    qingxie = Float.valueOf(getOffset());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (qingxie > 10) {
+                    zEva = "倾斜";
+                } else {
+                    zEva = "正常";
+                }
+            }
 //            if (x_zhou != null) {
 //                float qingxie = 0;
 //                try {

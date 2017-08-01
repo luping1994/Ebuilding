@@ -8,8 +8,8 @@ android {
         applicationId "net.suntrans.ebuilding"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 7
-        versionName "1.0"
+        versionCode 10
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -88,7 +88,7 @@ dependencies {
     compile 'com.alibaba:fastjson:1.1.56.android'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.contrarywind:Android-PickerView:3.2.5'
-    compile 'com.pgyersdk:sdk:2.5.6'
+    compile 'com.pgyersdk:sdk:2.6.9'
     compile 'me.weyye.hipermission:library:1.0.3'
 //    compile files('libs/Msc.jar')
 //    compile files('libs/Sunflower.jar')

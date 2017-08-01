@@ -77,8 +77,9 @@ public class SceneFragment extends RxFragment {
 
         @Override
         protected void convert(BaseViewHolder helper, SceneEntity.Scene item) {
-            System.out.println(item.name);
-            helper.setText(R.id.sceneName,item.name);
+//            System.out.println(item.name);
+            helper.setText(R.id.sceneName,item.name)
+                    .setText(R.id.sceneNameEn,item.name_en);
             ImageView imageView = helper.getView(R.id.sceneBg);
             Glide.with(getActivity())
                     .load(item.img_url)
@@ -115,6 +116,9 @@ public class SceneFragment extends RxFragment {
             public void onNext(SceneEntity result) {
                 datas.clear();
                 datas.addAll(result.data.lists);
+//                SceneEntity.Scene scene = new SceneEntity.Scene();
+//                scene.name = "sdsdsad";
+//                datas.add(scene);
                 adapter.notifyDataSetChanged();
             }
         });

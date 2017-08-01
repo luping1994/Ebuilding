@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import net.suntrans.ebuilding.bean.DeviceEntity;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
+import net.suntrans.ebuilding.views.OffsetDecoration;
 import net.suntrans.ebuilding.views.SwitchButton;
 
 import java.util.ArrayList;
@@ -66,7 +68,7 @@ public class LightFragment extends RxFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LightAdapter();
         recyclerView.setAdapter(adapter);
-
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshlayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -172,7 +174,6 @@ public class LightFragment extends RxFragment {
                     }
                 } else {
                     UiUtils.showToast("服务器错误");
-
                 }
 
                 adapter.notifyDataSetChanged();

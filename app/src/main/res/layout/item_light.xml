@@ -2,18 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="56dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:gravity="center_vertical"
-        android:text="大厅灯"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp" />
+ <LinearLayout
+     android:orientation="vertical"
+     android:layout_width="wrap_content"
+     android:layout_height="match_parent">
+     <TextView
+         android:gravity="bottom"
+         android:layout_weight="1"
+         android:id="@+id/name"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="20dp"
+         android:text="大厅灯"
+         android:textColor="@color/colorPrimary"
+         android:textSize="16sp" />
+
+     <TextView
+         android:layout_weight="1"
+         android:id="@+id/area"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="20dp"
+         android:text="1楼"
+         android:textSize="14sp" />
+ </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,17 +36,18 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="21dp"
+        android:paddingRight="8dp"
         android:gravity="center|right">
 
         <net.suntrans.ebuilding.views.SwitchButton
-            android:textSize="11sp"
+            android:paddingTop="8dp"
             android:id="@+id/checkbox"
             style="@style/SwitchButtonStyleMD"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             app:kswBackDrawable="@drawable/switch_bottom_white"
             app:kswTextOff="OFF"
             app:kswTextOn="ON"
