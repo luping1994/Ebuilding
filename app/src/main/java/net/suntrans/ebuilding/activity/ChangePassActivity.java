@@ -1,7 +1,9 @@
 package net.suntrans.ebuilding.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -50,8 +52,6 @@ public class ChangePassActivity extends BasedActivity {
                 finish();
             }
         });
-
-
     }
 
 
@@ -68,6 +68,10 @@ public class ChangePassActivity extends BasedActivity {
             UiUtils.showToast("请输入新密码");
             return;
         }
+        if (newpass.length()<6){
+            UiUtils.showToast("新密码长度必须为6位以上");
+            return;
+        }
         if (TextUtils.isEmpty(repass)) {
             UiUtils.showToast("请确认新密码");
             return;
@@ -78,7 +82,6 @@ public class ChangePassActivity extends BasedActivity {
             return;
         }
         if (dialog == null) {
-
             dialog = new LoadingDialog(this);
             dialog.setWaitText("请稍后...");
         }
@@ -105,19 +108,27 @@ public class ChangePassActivity extends BasedActivity {
                     @Override
                     public void onNext(ChangedPasswordEntity result) {
                         dialog.dismiss();
-                        if (result==null){
+                        if (result!=null){
 
                             if (result.code==200){
-                                UiUtils.showToast("修改密码成功!");
-                                App.getSharedPreferences().edit().clear().commit();
-                                killAll();
-                                startActivity(new Intent(ChangePassActivity.this, LoginActivity.class));
+                                new AlertDialog.Builder(ChangePassActivity.this)
+                                        .setMessage("修改密码成功,您必须重新登录")
+                                        .setCancelable(false)
+                                        .setPositiveButton("去登录", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                App.getSharedPreferences().edit().clear().commit();
+                                                killAll();
+                                                startActivity(new Intent(ChangePassActivity.this, LoginActivity.class));
+                                            }
+                                        }).create().show();
+
                             }else {
-                                UiUtils.showToast("修改成功");
+                                UiUtils.showToast(result.msg);
                             }
                         }else
                         {
-                            UiUtils.showToast("修改失败");
+                            UiUtils.showToast(result.msg);
                         }
                     }
                 });

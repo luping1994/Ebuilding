@@ -9,16 +9,4 @@ import java.util.List;
 public class ChangedPasswordEntity {
     public int code;
     public String msg;
-//    public Data data;
-//
-//    public class Data {
-//        public int total;
-//        public List<EnergyUsedData> lists;
-//    }
-//
-//    public static class EnergyUsedData {
-//        public String x;
-//        public String y;
-//
-//    }
 }

@@ -24,5 +24,6 @@ public class SceneChannelResult {
         public String cmd;
         public String name;
         public String status;
+        public String area_name;
     }
 }

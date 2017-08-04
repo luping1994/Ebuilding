@@ -1,6 +1,7 @@
 package net.suntrans.ebuilding.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +16,12 @@ import net.suntrans.ebuilding.R;
 
 public class AboutActivity extends BasedActivity {
     private TextView guangwang;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         guangwang = (TextView) findViewById(R.id.guangwang);
+        guangwang. getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         guangwang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

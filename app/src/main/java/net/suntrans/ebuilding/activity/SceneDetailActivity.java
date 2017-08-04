@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -32,6 +33,8 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static net.suntrans.ebuilding.utils.UiUtils.getContext;
 
 /**
  * Created by Looney on 2017/7/21.
@@ -63,8 +66,10 @@ public class SceneDetailActivity extends BasedActivity {
         imgurl = getIntent().getStringExtra("imgurl");
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         adapter1 = new MyAdapter(R.layout.item_scene_detail, datas);
         recyclerView.setAdapter(adapter1);
+
         banner = (ImageView) findViewById(R.id.banner);
         findViewById(R.id.fanhui).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -45,9 +45,9 @@
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:theme="@style/AppTheme.translate"
             android:name=".activity.SceneDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.translate" />
         <activity
             android:name=".activity.AreaDetailActivity"
             android:screenOrientation="portrait" />
@@ -63,11 +63,21 @@
         <activity
             android:name=".activity.ChangePassActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.QuestionActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.Ammeter3Activity2" android:screenOrientation="portrait" />
-        <activity android:name=".activity.AmmeterParameterActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.HistroyDataActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.QuestionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.Ammeter3Activity2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AmmeterParameterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HistroyDataActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

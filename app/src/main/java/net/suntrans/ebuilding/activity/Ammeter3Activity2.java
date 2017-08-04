@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.StringDef;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -103,7 +104,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         });
         mChartDes = (TextView) findViewById(R.id.chartDes);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        errorTx= (TextView) findViewById(R.id.error);
+        errorTx = (TextView) findViewById(R.id.error);
 
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
@@ -120,18 +121,18 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio0) {
                     currentRaidoId = R.id.radio0;
-                    initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图");
+                    initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图",40);
                     mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
                 }
                 if (checkedId == R.id.radio1) {
                     currentRaidoId = R.id.radio1;
-                    initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图");
+                    initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图",600);
                     mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
 
                 }
                 if (checkedId == R.id.radio2) {
                     currentRaidoId = R.id.radio2;
-                    initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图");
+                    initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图",20000);
                     mChartDes.setText(mYear + "年各月份用电量柱形图");
 
 
@@ -258,15 +259,15 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 //        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
 //        mv.setChartView(mChart); // For bounds control
 //        mChart.setMarker(mv); // Set the marker to the chart
-        setData(chartName, 500000, DayAxisValueFormatter.DAYS);
+        setData(chartName, 40, DayAxisValueFormatter.DAYS);
 
     }
 
-    private void initChartBype(int type, String chartName) {
+    private void initChartBype(int type, String chartName, int range) {
 //        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart, type);
 //        XAxis xAxis = mChart.getXAxis();
 //        xAxis.setValueFormatter(xAxisFormatter);
-        setData(chartName, 500000, type);
+        setData(chartName, range, type);
 
     }
 
@@ -369,15 +370,17 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 //                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
                 } else if (currentRaidoId == R.id.radio1) {
                     pickerDialog.setTitle("选择月份");
-
+                    pickerDialog.hideDay();
 //                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(0).setVisibility(View.GONE);
-                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+//                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
 
                 } else if (currentRaidoId == R.id.radio2) {
                     pickerDialog.setTitle("选择年份");
+                    pickerDialog.hideMonth();
+                    pickerDialog.hideDay();
 
-                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
-                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+//                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
+//                    ((ViewGroup) ((ViewGroup) (datePicker.getChildAt(0))).getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
 
                 }
                 pickerDialog.show();
@@ -427,16 +430,16 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
     private void checkChartType() {
         if (currentRaidoId == R.id.radio0) {
-            initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图");
+            initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图",40);
             mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
         }
         if (currentRaidoId == R.id.radio1) {
-            initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图");
+            initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图",600);
             mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
 
         }
         if (currentRaidoId == R.id.radio2) {
-            initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图");
+            initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图",20000);
             mChartDes.setText(mYear + "年各月份用电量柱形图");
 
 
@@ -449,23 +452,23 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
 
     protected void getData(int currentRaidoId) {
-        String type="";
-        String date="";
+        String type = "";
+        String date = "";
         switch (currentRaidoId) {
             case R.id.radio0:
                 type = "1";
-                date = mYear+"-"+mMonth+"-"+mDay;
+                date = mYear + "-" + mMonth + "-" + mDay;
                 break;
             case R.id.radio1:
-                date = mYear+"-"+mMonth;
+                date = mYear + "-" + mMonth;
                 type = "2";
                 break;
             case R.id.radio2:
-                date = mYear+"";
+                date = mYear + "";
                 type = "3";
                 break;
         }
-        RetrofitHelper.getApi().getEnergyUsed(date,type)
+        RetrofitHelper.getApi().getEnergyUsed(date, type)
                 .compose(this.<EnergyUsedEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

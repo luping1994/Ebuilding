@@ -27,6 +27,7 @@ public class DeviceEntity {
         public String show_sort;
         public String din;
         public String channel_type;
+        public String area_name;
 
     }
 }

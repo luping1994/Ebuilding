@@ -64,16 +64,18 @@ public class EnergyFragAdapter2 extends RecyclerView.Adapter<EnergyFragAdapter2.
 //        private TextView cap;
 //        private TextView arp;
 //        private TextView brp;
-//        private TextView crp;
-//        private TextView pf;
-//        private TextView name;
         private CardView root;
+        private TextView allPower;
+        private TextView yesterday;
+        private TextView today;
+        private TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
-//            ia = (TextView) itemView.findViewById(R.id.IA);
-//            ib = (TextView) itemView.findViewById(R.id.IB);
-//            ic = (TextView) itemView.findViewById(R.id.IC);
+            allPower = (TextView) itemView.findViewById(R.id.allPower);
+            yesterday = (TextView) itemView.findViewById(R.id.yesterday);
+            today = (TextView) itemView.findViewById(R.id.today);
+            name = (TextView) itemView.findViewById(R.id.name);
 //            va = (TextView) itemView.findViewById(R.id.VA);
 //            vb = (TextView) itemView.findViewById(R.id.VB);
 //            vc = (TextView) itemView.findViewById(R.id.VC);
@@ -99,6 +101,11 @@ public class EnergyFragAdapter2 extends RecyclerView.Adapter<EnergyFragAdapter2.
         }
 
         public void setData(int position) {
+
+            today.setText(datas.get(position).today+"度");
+            yesterday.setText(datas.get(position).yesterday+"度");
+            allPower.setText(datas.get(position).ammeter3.EletricityValue+"度");
+            name.setText(datas.get(position).name);
 
         }
     }

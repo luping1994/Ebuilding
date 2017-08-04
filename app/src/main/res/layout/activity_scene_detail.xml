@@ -69,56 +69,61 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        >
+   <LinearLayout
+       android:layout_marginTop="131dp"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <RelativeLayout
+           android:layout_weight="1"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="312dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="131dp"
-            android:background="@drawable/content"
-            android:paddingBottom="25dp"
-            android:paddingTop="20dp">
+           <android.support.v7.widget.RecyclerView
 
-        </android.support.v7.widget.RecyclerView>
+               android:visibility="invisible"
+               android:id="@+id/recyclerView"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_marginLeft="12dp"
+               android:layout_marginRight="10dp"
+               android:background="@drawable/content"
+               android:paddingBottom="25dp"
+               android:paddingTop="20dp">
 
-        <TextView
-            android:id="@+id/tips"
-            android:layout_width="match_parent"
-            android:layout_height="312dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="131dp"
-            android:background="@drawable/content"
-            android:gravity="center"
-            android:text="没有数据哦" />
-    </RelativeLayout>
+           </android.support.v7.widget.RecyclerView>
 
-    <RelativeLayout
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="452dp"
-        android:background="@drawable/bg_user_zhuxiao"
-        android:onClick="excute"
-        android:text="注   销"
-        android:textColor="@color/white"
-        android:textSize="17sp">
+           <TextView
+               android:id="@+id/tips"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_marginLeft="12dp"
+               android:layout_marginRight="10dp"
+               android:background="@drawable/content"
+               android:gravity="center"
+               android:text="没有数据哦" />
+       </RelativeLayout>
+       <RelativeLayout
+           android:id="@+id/login"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/bg_user_zhuxiao"
+           android:onClick="excute"
+           android:text="注   销"
+           android:textColor="@color/white"
+           android:textSize="17sp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="51dp"
-            android:layout_marginTop="6dp"
-            android:background="@null"
-            android:clickable="false"
-            android:text="执    行"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
-    </RelativeLayout>
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="51dp"
+               android:layout_marginTop="6dp"
+               android:background="@null"
+               android:clickable="false"
+               android:text="执    行"
+               android:textColor="@color/white"
+               android:textSize="17sp" />
+       </RelativeLayout>
+   </LinearLayout>
+
 </RelativeLayout>

@@ -77,6 +77,8 @@
         android:orientation="vertical">
 
         <net.suntrans.ebuilding.views.EditView
+            android:inputType="textPassword"
+            android:maxLength="18"
             android:id="@+id/oldPass"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -88,11 +90,13 @@
             android:textSize="@dimen/textNormalSize" />
 
         <View
+            android:layout_marginRight="7dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
 
         <net.suntrans.ebuilding.views.EditView
+            android:maxLength="18"
             android:id="@+id/newPass"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -104,11 +108,14 @@
             android:textSize="@dimen/textNormalSize" />
 
         <View
+            android:layout_marginRight="7dp"
+
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
 
         <net.suntrans.ebuilding.views.EditView
+            android:maxLength="18"
             android:id="@+id/repassword"
             android:layout_width="match_parent"
             android:layout_height="48dp"

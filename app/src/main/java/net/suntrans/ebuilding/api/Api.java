@@ -99,9 +99,13 @@ public interface Api {
 
 
     @FormUrlEncoded
-    @POST("user/info")
-    Observable<ChangedPasswordEntity> changedPassword(@Field("oldPassword") String oldPassword,
-                                                      @Field("newPassword") String newPassword);
+    @POST("user/password")
+    Observable<ChangedPasswordEntity> changedPassword(@Field("oldpassword") String oldPassword,
+                                                      @Field("newpassword") String newPassword);
+
+    @FormUrlEncoded
+    @POST("user/guestbook")
+    Observable<ChangedPasswordEntity> commitGusetBook(@Field("contents") String oldPassword);
 
 
     @FormUrlEncoded

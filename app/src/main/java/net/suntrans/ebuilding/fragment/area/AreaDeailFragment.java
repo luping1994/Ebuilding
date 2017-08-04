@@ -177,7 +177,7 @@ public class AreaDeailFragment extends RxFragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            return new ViewHolder(inflater.inflate(R.layout.item_light, parent, false));
+            return new ViewHolder(inflater.inflate(R.layout.item_area, parent, false));
         }
 
         @Override

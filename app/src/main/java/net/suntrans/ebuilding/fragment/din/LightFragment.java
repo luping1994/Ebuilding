@@ -97,15 +97,18 @@ public class LightFragment extends RxFragment {
 
         class ViewHolder extends RecyclerView.ViewHolder{
             TextView name;
+            TextView area;
             SwitchButton button;
             public void setData(int position){
                 button.setCheckedImmediately(datas.get(position).status.equals("1")?true:false);
                 name.setText(datas.get(position).name);
+                area.setText(datas.get(position).area_name);
             }
             public ViewHolder(View itemView) {
                 super(itemView);
                 button = (SwitchButton) itemView.findViewById(R.id.checkbox);
                 name = (TextView) itemView.findViewById(R.id.name);
+                area = (TextView) itemView.findViewById(R.id.area);
                 button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

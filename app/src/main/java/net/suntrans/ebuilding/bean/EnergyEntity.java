@@ -20,6 +20,8 @@ public class EnergyEntity {
         public int id;
         public String sno;
         public String name;
+        public String yesterday;
+        public String today;
         public AmmeterInfo ammeter3;
 
     }

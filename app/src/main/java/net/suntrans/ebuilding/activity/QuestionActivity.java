@@ -1,14 +1,27 @@
 package net.suntrans.ebuilding.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.trello.rxlifecycle.android.ActivityEvent;
+
+import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.api.RetrofitHelper;
+import net.suntrans.ebuilding.bean.ChangedPasswordEntity;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.EditView;
+import net.suntrans.ebuilding.views.LoadingDialog;
+
+import java.security.PublicKey;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Looney on 2017/7/24.
@@ -37,22 +50,61 @@ public class QuestionActivity extends BasedActivity {
     }
 
     public void changePass(View view) {
-        String oldpass = oldPass.getText().toString();
-        oldpass = oldpass.replace(" ","");
-        if (TextUtils.isEmpty(oldpass)) {
+        String contents = oldPass.getText().toString();
+        contents = contents.replace(" ", "");
+        if (TextUtils.isEmpty(contents)) {
             UiUtils.showToast("请您输入具体内容");
             return;
         }
 
-        new AlertDialog.Builder(this)
-                .setMessage("已收到您的建议!")
-                .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+        commit(contents);
+
+
+    }
+
+    private LoadingDialog dialog;
+
+    private void commit(String contents) {
+        if (dialog == null) {
+            dialog = new LoadingDialog(this);
+            dialog.setWaitText("请稍后...");
+        }
+        dialog.show();
+        RetrofitHelper.getApi().commitGusetBook(contents)
+                .compose(this.<ChangedPasswordEntity>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ChangedPasswordEntity>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                    public void onCompleted() {
+
                     }
-                }).create().show();
 
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        dialog.dismiss();
+                        if (e != null)
+                            UiUtils.showToast(e.getMessage());
+                    }
 
+                    @Override
+                    public void onNext(ChangedPasswordEntity result) {
+                        dialog.dismiss();
+                        if (result == null) {
+                            UiUtils.showToast(result.msg);
+                        } else {
+                            new AlertDialog.Builder(QuestionActivity.this)
+                                    .setMessage("已收到您的反馈,我们会认真查看,并尽快修复及完善,感谢您的支持!")
+                                    .setCancelable(false)
+                                    .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    }).create().show();
+                        }
+                    }
+                });
     }
 }

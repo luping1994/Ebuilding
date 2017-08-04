@@ -77,6 +77,7 @@
         android:orientation="vertical">
 
         <net.suntrans.ebuilding.views.EditView
+            android:maxLength="70"
             android:padding="8dp"
             android:gravity="start"
             android:id="@+id/oldPass"
@@ -84,7 +85,7 @@
             android:layout_height="140dp"
             android:layout_marginTop="16dp"
             android:background="@null"
-            android:hint="请输入您的问题及建议"
+            android:hint="请输入遇到的问题或建议"
             android:paddingLeft="16dp"
             android:textSize="@dimen/textNormalSize" />
 
