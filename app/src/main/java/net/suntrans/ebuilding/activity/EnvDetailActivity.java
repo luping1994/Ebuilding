@@ -219,7 +219,7 @@ public class EnvDetailActivity extends BasedActivity {
                 valueTx.setVisibility(View.GONE);
                 layout_arrow.setVisibility(View.GONE);
                 standard.setVisibility(View.GONE);
-                nameTx.setText("水平夹角");
+                nameTx.setText("建筑姿态");
                 if (data != null) {
                     valueTx.setText(data.getOffset()+"°");
                     evaluateTx.setText(data.zEva);

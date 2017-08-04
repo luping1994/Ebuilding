@@ -89,7 +89,7 @@ public class SceneDetailActivity extends BasedActivity {
         protected void convert(BaseViewHolder helper, SceneChannelResult.SceneChannel item) {
             helper.setText(R.id.name, item.name);
             AppCompatCheckBox compatCheckBox = helper.getView(R.id.checkbox);
-            compatCheckBox.setChecked(item.status.equals("1") ? true : false);
+            compatCheckBox.setChecked(item.cmd.equals("1") ? true : false);
         }
     }
 
