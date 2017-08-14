@@ -21,6 +21,7 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.EnvDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SensusEntity;
+import net.suntrans.ebuilding.fragment.base.BasedFragment;
 import net.suntrans.ebuilding.utils.UiUtils;
 
 import java.net.ConnectException;
@@ -32,34 +33,26 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static net.suntrans.ebuilding.utils.UiUtils.getContext;
+
 /**
  * Created by Looney on 2017/7/20.
  */
 
-public class EnvFragment extends RxFragment {
+public class EnvFragment extends BasedFragment {
 
     private RecyclerView recyclerView;
     private List<SensusEntity.SixInfo> datas;
     private EnvAdapter adapter;
     private Observable<SensusEntity> getDataOb;
     private SwipeRefreshLayout refreshLayout;
-    private TextView tips;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_env, container, false);
-        return view;
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         datas = new ArrayList<>();
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        tips = (TextView) view.findViewById(R.id.tips);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshlayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -74,14 +67,20 @@ public class EnvFragment extends RxFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), EnvDetailActivity.class);
-                intent.putExtra("din",datas.get(position).din);
-                intent.putExtra("info",datas.get(position).sub);
-                intent.putExtra("name",datas.get(position).name);
+                intent.putExtra("din", datas.get(position).din);
+                intent.putExtra("info", datas.get(position).sub);
+                intent.putExtra("name", datas.get(position).name);
                 startActivity(intent);
             }
         });
 
+        super.onViewCreated(view, savedInstanceState);
 
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.fragment_env;
     }
 
 
@@ -103,12 +102,20 @@ public class EnvFragment extends RxFragment {
     }
 
     @Override
-    public void onResume() {
+    protected void onFragmentFirstVisible() {
         getData();
-        super.onResume();
+        super.onFragmentFirstVisible();
     }
 
+    @Override
+    public void onRetryClick() {
+        getData();
+        super.onRetryClick();
+    }
+
+
     private void getData() {
+        stateView.showLoading();
         if (getDataOb == null)
             getDataOb = RetrofitHelper.getApi().getHomeSceneNew()
                     .compose(this.<SensusEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -129,6 +136,7 @@ public class EnvFragment extends RxFragment {
                         refreshLayout.setRefreshing(false);
                 }
                 e.printStackTrace();
+                stateView.showRetry();
             }
 
             @Override
@@ -136,6 +144,11 @@ public class EnvFragment extends RxFragment {
 
                 if (refreshLayout != null)
                     refreshLayout.setRefreshing(false);
+                if (data.data.lists==null||data.data.lists.size()==0){
+                    stateView.showEmpty();
+                    return;
+                }
+                stateView.showContent();
                 if (data.code == 200) {
 
                     for (SensusEntity.SixInfo ds : data.data.lists) {
@@ -148,16 +161,6 @@ public class EnvFragment extends RxFragment {
                 } else {
                     UiUtils.showToast("暂无信息");
                 }
-
-                if (datas.size() != 0) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    tips.setVisibility(View.GONE);
-
-                } else {
-                    tips.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.INVISIBLE);
-                }
-
             }
         });
     }

@@ -8,7 +8,9 @@ import net.suntrans.ebuilding.fragment.AreaFragment;
 import net.suntrans.ebuilding.fragment.DiningRoomFragment;
 import net.suntrans.ebuilding.fragment.EnergyConFragment;
 import net.suntrans.ebuilding.fragment.EnergyConFragment2;
+import net.suntrans.ebuilding.fragment.EnvHomeFragment;
 import net.suntrans.ebuilding.fragment.PerCenFragment;
+import net.suntrans.ebuilding.fragment.din.EnvFragment;
 
 /**
  * Created by Looney on 2017/7/20.
@@ -23,7 +25,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         AreaFragment fragment2 = new AreaFragment();
         EnergyConFragment2 fragment3 = new EnergyConFragment2();
         PerCenFragment fragment4 = new PerCenFragment();
-        fragments = new Fragment[]{fragment1, fragment2, fragment3, fragment4};
+        EnvHomeFragment fragment5 = new EnvHomeFragment();
+        fragments = new Fragment[]{fragment1, fragment2,fragment5, fragment3, fragment4};
     }
 
     @Override

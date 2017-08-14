@@ -21,6 +21,7 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.SceneDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SceneEntity;
+import net.suntrans.stateview.StateView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +41,24 @@ public class SceneFragment extends RxFragment {
     private List<SceneEntity.Scene> datas;
     private SceneAdapter adapter;
     private Observable<SceneEntity> getDataOb;
-
+    private StateView stateView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scene, container, false);
+        stateView = StateView.inject(view,false);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         datas = new ArrayList<>();
-
+        stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
+            @Override
+            public void onRetryClick() {
+                getSceneData();
+            }
+        });
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SceneAdapter(R.layout.item_scene, datas);
@@ -96,6 +103,7 @@ public class SceneFragment extends RxFragment {
     }
 
     private void getSceneData() {
+        stateView.showLoading();
         if (getDataOb == null)
             getDataOb = RetrofitHelper.getApi().getHomeScene()
                     .compose(this.<SceneEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -110,10 +118,16 @@ public class SceneFragment extends RxFragment {
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+                stateView.showRetry();
             }
 
             @Override
             public void onNext(SceneEntity result) {
+                if (result.data.lists==null||result.data.lists.size()==0){
+                    stateView.showEmpty();
+                    return;
+                }
+                stateView.showContent();
                 datas.clear();
                 datas.addAll(result.data.lists);
 //                SceneEntity.Scene scene = new SceneEntity.Scene();

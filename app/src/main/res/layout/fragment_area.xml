@@ -14,11 +14,16 @@
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="57dp" />
-    <ExpandableListView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f7f7f7">
+   <FrameLayout
+       android:id="@+id/content"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <ExpandableListView
+           android:id="@+id/recyclerview"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:background="#f7f7f7">
 
-    </ExpandableListView>
+       </ExpandableListView>
+   </FrameLayout>
 </LinearLayout>

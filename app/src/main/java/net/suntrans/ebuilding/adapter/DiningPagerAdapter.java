@@ -20,14 +20,15 @@ import rx.Observable;
 
 public class DiningPagerAdapter extends FragmentPagerAdapter {
     private Fragment[] fragments;
-    private final String[] titles = new String[]{"场景","照明","环境"};
+    private final String[] titles = new String[]{"场景"};
 
     public DiningPagerAdapter(FragmentManager fm) {
         super(fm);
         SceneFragment fragment1 = new SceneFragment();
-        LightFragment fragment2 = new LightFragment();
-        EnvFragment fragment3 = new EnvFragment();
-        fragments = new Fragment[]{fragment1, fragment2, fragment3};
+//        LightFragment fragment2 = new LightFragment();
+//        EnvFragment fragment3 = new EnvFragment();
+//        fragments = new Fragment[]{fragment1, fragment2, fragment3};
+        fragments = new Fragment[]{fragment1};
     }
 
     @Override

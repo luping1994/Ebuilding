@@ -14,6 +14,7 @@ import net.suntrans.ebuilding.activity.AreaDetailActivity
 import net.suntrans.ebuilding.adapter.AreaAdapter
 import net.suntrans.ebuilding.api.RetrofitHelper
 import net.suntrans.ebuilding.bean.AreaEntity
+import net.suntrans.ebuilding.fragment.base.BasedFragment
 import net.suntrans.ebuilding.utils.LogUtil
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -24,15 +25,15 @@ import java.util.*
  * Created by Looney on 2017/7/20.
  */
 
-class AreaFragment : RxFragment() {
+class AreaFragment : BasedFragment() {
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_area;
+    }
+
     private val refreshLayout: SwipeRefreshLayout? = null
     private var datas: MutableList<AreaEntity.AreaFloor>? = null
     private var adapter: AreaAdapter? = null
     private var expandableListView: ExpandableListView? = null
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_area, container, false)
-        return view
-    }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         datas = ArrayList<AreaEntity.AreaFloor>()
@@ -48,13 +49,16 @@ class AreaFragment : RxFragment() {
             activity.overridePendingTransition(android.support.v7.appcompat.R.anim.abc_popup_enter, android.support.v7.appcompat.R.anim.abc_popup_exit)
             true
         }
+        stateView.setEmptyResource(R.layout.base_empty)
+        stateView.setLoadingResource(R.layout.base_loading)
+        stateView.setRetryResource(R.layout.base_retry)
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private fun getAreaData() {
+        stateView.showLoading()
         RetrofitHelper.getApi().homeHouse
                 .compose(this.bindUntilEvent<AreaEntity>(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
@@ -66,19 +70,23 @@ class AreaFragment : RxFragment() {
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
-
+                        stateView.showRetry()
                     }
 
                     override fun onNext(homeSceneResult: AreaEntity?) {
                         LogUtil.i("房间获取成功！")
                         if (homeSceneResult != null) {
                             if (homeSceneResult.code == 200) {
+                                if (homeSceneResult.data.lists==null||homeSceneResult.data.lists.size==0){
+                                    stateView.showEmpty()
+                                    return
+                                }
                                 datas!!.clear()
                                 datas!!.addAll(homeSceneResult.data.lists)
                                 adapter!!.notifyDataSetChanged()
                                 expandableListView!!.expandGroup(0, true)
                             } else {
-
+                                stateView.showRetry()
                             }
                         }
                     }
@@ -87,6 +95,13 @@ class AreaFragment : RxFragment() {
 
     override fun onResume() {
         super.onResume()
+    }
+
+    override fun onFragmentFirstVisible() {
+        getAreaData()
+    }
+
+    override fun onRetryClick() {
         getAreaData()
     }
 

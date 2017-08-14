@@ -14,5 +14,6 @@
     <string name="company_reserved">Copyright © 2017 广州三川智控工程装备有限公司版权所有</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
+    <string name="nav_env">环境</string>
 
 </resources>
