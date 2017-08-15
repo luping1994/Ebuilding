@@ -150,11 +150,10 @@ public class EnvFragment extends BasedFragment {
                 }
                 stateView.showContent();
                 if (data.code == 200) {
-
                     for (SensusEntity.SixInfo ds : data.data.lists) {
                         ds.sub.setEva();
+                        System.out.println(ds.name);
                     }
-
                     datas.clear();
                     datas.addAll(data.data.lists);
                     adapter.notifyDataSetChanged();

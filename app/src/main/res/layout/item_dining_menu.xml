@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="155dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/overflowbg">
+
+        <TextView
+            android:id="@+id/name"
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="添加场景"
+            android:textColor="@color/black"
+            android:textSize="18sp">
+
+        </TextView>
+    </RelativeLayout>
+</RelativeLayout>

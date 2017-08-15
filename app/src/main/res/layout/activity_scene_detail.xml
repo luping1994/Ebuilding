@@ -9,7 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="224dp"
+        android:layout_height="217dp"
         app:elevation="0dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -61,6 +61,14 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
+                <ImageView
+                    android:id="@+id/menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/menu" />
+
             </RelativeLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -70,7 +78,7 @@
 
 
    <LinearLayout
-       android:layout_marginTop="131dp"
+       android:layout_marginTop="146dp"
        android:orientation="vertical"
        android:layout_width="match_parent"
        android:layout_height="match_parent">

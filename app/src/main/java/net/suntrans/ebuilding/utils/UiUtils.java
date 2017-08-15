@@ -2,6 +2,7 @@ package net.suntrans.ebuilding.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.CursorLoader;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -311,5 +313,11 @@ public class UiUtils {
             cursor.close();
         }
         return filePath;
+    }
+
+    public static AlertDialog.Builder getAlertDialog(Context context,String msg){
+        return new AlertDialog.Builder(context)
+                .setMessage(msg)
+                .setNegativeButton("取消",null);
     }
 }

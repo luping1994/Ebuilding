@@ -7,7 +7,9 @@
     android:layout_marginLeft="13.8333333333dp"
     android:layout_marginTop="16dp"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardCornerRadius="8dp"
+    app:contentPadding="0dp"
     app:cardElevation="5dp">
 
     <RelativeLayout

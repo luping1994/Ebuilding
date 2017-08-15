@@ -31,6 +31,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static net.suntrans.ebuilding.utils.UiUtils.getContext;
+
 /**
  * Created by Looney on 2017/7/20.
  */
@@ -76,6 +78,8 @@ public class SceneFragment extends RxFragment {
     }
 
 
+
+
     private class SceneAdapter extends BaseQuickAdapter<SceneEntity.Scene, BaseViewHolder> {
 
         public SceneAdapter(@LayoutRes int layoutResId, @Nullable List<SceneEntity.Scene> data) {
@@ -84,7 +88,6 @@ public class SceneFragment extends RxFragment {
 
         @Override
         protected void convert(BaseViewHolder helper, SceneEntity.Scene item) {
-//            System.out.println(item.name);
             helper.setText(R.id.sceneName,item.name)
                     .setText(R.id.sceneNameEn,item.name_en);
             ImageView imageView = helper.getView(R.id.sceneBg);
@@ -130,12 +133,12 @@ public class SceneFragment extends RxFragment {
                 stateView.showContent();
                 datas.clear();
                 datas.addAll(result.data.lists);
-//                SceneEntity.Scene scene = new SceneEntity.Scene();
-//                scene.name = "sdsdsad";
-//                datas.add(scene);
                 adapter.notifyDataSetChanged();
             }
         });
     }
+
+
+
 
 }

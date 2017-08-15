@@ -23,6 +23,7 @@ public class AreaEntity {
         public String img_url;
         public String show_sort;
         public List<FloorRoom> sub;
+        public boolean isCheck;
     }
 
     public static class FloorRoom{
@@ -31,6 +32,15 @@ public class AreaEntity {
         public String name;
         public String img_url;
         public String show_sort;
+        public List<Channel> lists;
+
+    }
+
+    public static class Channel{
+        public String area_id;
+        public String channel_id;
+        public String id;
+        public String name;
 
     }
 }

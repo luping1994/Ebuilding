@@ -15,5 +15,6 @@
     <color name="blue">#0000ff</color>
     <color name="subTextColor">#9d9e9e</color>
     <color name="bg_color">#f5f5f9</color>
+    <color name="scan_sencond_text_color">#5a5a5a</color>
 
 </resources>

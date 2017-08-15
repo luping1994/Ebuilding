@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f3f3f3"
-    android:fitsSystemWindows="true"
     tools:context="net.suntrans.ebuilding.MainActivity">
     <!--<ImageView-->
         <!--android:visibility="gone"-->
@@ -16,7 +15,7 @@
         <!--app:layout_constraintRight_toRightOf="parent"-->
         <!--android:layout_width="0dp"-->
         <!--android:layout_height="20dp"/>-->
-    <net.suntrans.ebuilding.views.IViewPager
+    <FrameLayout
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -25,12 +24,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-    </net.suntrans.ebuilding.views.IViewPager>
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
-        android:layout_height="4dp"
+        android:layout_height="2dp"
         android:layout_above="@id/main_tabLayout"
         android:src="@drawable/gradient_shape2"
         app:layout_constraintBottom_toTopOf="@+id/main_tabLayout"

@@ -4,33 +4,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="193dp"
-        android:background="@color/colorPrimary" />
+        android:layout_height="217dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:gravity="center_horizontal"
-        android:text="TIT餐厅智能配电"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
 
-    <ImageView
-        android:layout_marginTop="4dp"
-        android:src="@drawable/logo"
-        android:layout_marginLeft="13dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+        <!--要扩展到状态栏的空间，必须为AppBarLayout的直接子控件，记得设置app:layout_scrollFlag属性-->
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <ImageView
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/banner_xiawucha"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+
+
+            <RelativeLayout
+                android:id="@+id/toobar"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <RelativeLayout
+                    android:id="@+id/fanhui"
+                    android:layout_width="60dp"
+                    android:layout_height="45dp"
+                    android:fitsSystemWindows="true">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="14dp"
+
+                        android:src="@drawable/logo" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:fitsSystemWindows="true"
+                    android:gravity="center"
+                    android:text="智能场景"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/menu" />
+
+            </RelativeLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+        <!--当然在此处还可以添加其他控件，例如CollapsingToolbarLayout-->
+    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/titleHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:background="@drawable/icon_dining_hentiao">
+        android:background="@drawable/icon_dining_hentiao"
+        android:visibility="gone">
 
         <android.support.design.widget.TabLayout
 
@@ -40,11 +90,11 @@
             android:layout_marginLeft="13dp"
             android:layout_marginRight="14dp"
             android:layout_marginTop="3dp"
-            android:gravity="center"
             android:text="TIT餐厅"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:tabIndicatorColor="@color/white"
+            app:tabMaxWidth="0dp"
             app:tabSelectedTextColor="@color/white"
             app:tabTextColor="#78b3e4" />
 
@@ -54,10 +104,8 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="110dp"
         android:background="@android:color/transparent"
-
         android:orientation="vertical">
 
     </android.support.v4.view.ViewPager>

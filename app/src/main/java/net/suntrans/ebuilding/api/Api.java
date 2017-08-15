@@ -1,5 +1,6 @@
 package net.suntrans.ebuilding.api;
 
+import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
 import net.suntrans.ebuilding.bean.AreaEntity;
@@ -16,7 +17,10 @@ import net.suntrans.ebuilding.bean.SceneEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.bean.UserInfo;
 
+import java.util.Map;
+
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
@@ -111,4 +115,16 @@ public interface Api {
     @FormUrlEncoded
     @POST("user/info")
     Observable<EnergyUsedEntity> getEnergyUsed(@Field("time") String date,@Field("type") String type);
+
+    @FormUrlEncoded
+    @POST("scene/add")
+    Observable<SampleResult> addScene(@FieldMap Map<String,String> map);
+
+    @FormUrlEncoded
+    @POST("scene/delete")
+    Observable<SampleResult> deleteScene(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("scene/update")
+    Observable<SampleResult> deleteScene(@FieldMap Map<String,String> map);
 }

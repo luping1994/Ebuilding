@@ -85,6 +85,7 @@ class AreaFragment : BasedFragment() {
                                 datas!!.addAll(homeSceneResult.data.lists)
                                 adapter!!.notifyDataSetChanged()
                                 expandableListView!!.expandGroup(0, true)
+                                stateView.showContent()
                             } else {
                                 stateView.showRetry()
                             }
