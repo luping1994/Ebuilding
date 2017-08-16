@@ -48,7 +48,7 @@ public class SceneFragment extends RxFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scene, container, false);
-        stateView = StateView.inject(view,false);
+        stateView = StateView.inject(view.findViewById(R.id.content),false);
         return view;
     }
 

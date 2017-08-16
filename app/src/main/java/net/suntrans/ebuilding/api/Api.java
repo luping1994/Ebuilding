@@ -1,5 +1,7 @@
 package net.suntrans.ebuilding.api;
 
+import net.suntrans.ebuilding.bean.AddSceneChannelResult;
+import net.suntrans.ebuilding.bean.FreshChannelEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
@@ -13,16 +15,21 @@ import net.suntrans.ebuilding.bean.EnergyUsedEntity;
 import net.suntrans.ebuilding.bean.EnvDetailEntity;
 import net.suntrans.ebuilding.bean.LoginResult;
 import net.suntrans.ebuilding.bean.SceneChannelResult;
+import net.suntrans.ebuilding.bean.SceneEdit;
 import net.suntrans.ebuilding.bean.SceneEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
+import net.suntrans.ebuilding.bean.UpLoadImageMessage;
 import net.suntrans.ebuilding.bean.UserInfo;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import rx.Observable;
 
 /**
@@ -114,11 +121,11 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("user/info")
-    Observable<EnergyUsedEntity> getEnergyUsed(@Field("time") String date,@Field("type") String type);
+    Observable<EnergyUsedEntity> getEnergyUsed(@Field("time") String date, @Field("type") String type);
 
     @FormUrlEncoded
     @POST("scene/add")
-    Observable<SampleResult> addScene(@FieldMap Map<String,String> map);
+    Observable<SampleResult> addScene(@FieldMap Map<String, String> map);
 
     @FormUrlEncoded
     @POST("scene/delete")
@@ -126,5 +133,56 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("scene/update")
-    Observable<SampleResult> deleteScene(@FieldMap Map<String,String> map);
+    Observable<SampleResult> updateScene(@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("scene/addchannel")
+    Observable<AddSceneChannelResult> addChannel(@Field("scene_id") String scene_id,
+                                                 @Field("channel_id") String channel_id,
+                                                 @Field("cmd") String cmd);
+
+    @FormUrlEncoded
+    @POST("scene/deletechannel")
+    Observable<SampleResult> deleteChannel(@Field("id") String scene_id);
+
+    @FormUrlEncoded
+    @POST("scene/setchannel")
+    Observable<SampleResult> setChannel(@Field("id") String id, @Field("cmd") String cmd);
+
+    @FormUrlEncoded
+    @POST("house/add")
+    Observable<SampleResult> addFloor(@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("house/add_area")
+    Observable<SampleResult> addArea(@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("house/delete_area")
+    Observable<SampleResult> deleteArea(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("house/delete_channel")
+    Observable<SampleResult> deleteAreaChannel(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("scene/edit")
+    Observable<SceneEdit> getSceneInfo(@Field("id") String id);
+
+
+
+    @POST("house/freshchannel")
+    Observable<FreshChannelEntity> getFreshChannel();
+
+    @FormUrlEncoded
+    @POST("house/add_channel")
+    Observable<AddSceneChannelResult> addAreaChannel(@Field("area_id") String area_id,
+                                                     @Field("channel_id") String channel_id,
+                                                     @Field("show_sort") String show_sort);
+
+    @Multipart
+    @POST("upload/image")
+    Observable<UpLoadImageMessage> upload(
+            @Part MultipartBody.Part file);
+
 }

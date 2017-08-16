@@ -1,0 +1,176 @@
+package net.suntrans.ebuilding.adapter;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+
+import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.bean.AreaEntity;
+
+import java.util.List;
+
+import android.content.Context;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+/**
+ * Created by Administrator on 2017/8/16.
+ */
+
+public class ParentAdapter extends BaseExpandableListAdapter {
+
+    private List<AreaEntity.FloorRoom> datas;
+    private Context mContext;
+
+    public ParentAdapter(List<AreaEntity.FloorRoom> datas, Context mContext) {
+        this.datas = datas;
+        this.mContext = mContext;
+    }
+
+    @Override
+    public int getGroupCount() {
+
+        return datas.size();
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return datas.get(groupPosition).lists.size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return datas.get(groupPosition);
+    }
+
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return datas.get(groupPosition).lists.get(childPosition);
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        View view = null;
+        GroupHolder groupHolder = null;
+        if (convertView != null) {
+            view = convertView;
+            groupHolder = (GroupHolder) view.getTag();
+        } else {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_group_sub, parent, false);
+            groupHolder = new GroupHolder(view);
+            view.setTag(groupHolder);
+        }
+        groupHolder.setData(groupPosition);
+        return view;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        View view = null;
+        ChildHolder holder = null;
+        if (convertView != null) {
+            view = convertView;
+            holder = (ChildHolder) view.getTag();
+        } else {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_children, parent, false);
+            holder = new ChildHolder(view);
+            view.setTag(holder);
+        }
+        holder.setData(groupPosition, childPosition);
+        return view;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return false;
+    }
+
+
+    public class GroupHolder {
+        TextView mName;
+        CheckBox state;
+        TextView count;
+
+        public GroupHolder(View view) {
+            mName = (TextView) view.findViewById(R.id.name);
+            state = (CheckBox) view.findViewById(R.id.checkbox);
+            count = (TextView) view.findViewById(R.id.count);
+
+        }
+
+        public void setData(final int groupPosition) {
+            mName.setText(datas.get(groupPosition).name);
+            state.setChecked(datas.get(groupPosition).isChecked);
+            state.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (state.isChecked()) {
+                        for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
+                            datas.get(groupPosition).lists.get(i).setChecked(true);
+                        }
+                        datas.get(groupPosition).setChecked(true);
+                    } else {
+                        for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
+                            datas.get(groupPosition).lists.get(i).setChecked(false);
+                        }
+                        datas.get(groupPosition).setChecked(false);
+                    }
+                    notifyDataSetChanged();
+                }
+            });
+            count.setText(datas.get(groupPosition).lists.size() + "");
+        }
+    }
+
+    public class ChildHolder {
+        TextView mText;
+        CheckBox state;
+
+        public ChildHolder(View view) {
+            mText = (TextView) view.findViewById(R.id.name);
+            state = (CheckBox) view.findViewById(R.id.checkbox);
+
+        }
+
+        public void setData(final int groupPosition, final int childPosition) {
+            mText.setText(datas.get(groupPosition).lists.get(childPosition).name);
+            state.setChecked(datas.get(groupPosition).lists.get(childPosition).isChecked());
+
+            state.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    datas.get(groupPosition).lists.get(childPosition).setChecked(state.isChecked());
+                    int checkedCount = 0;
+                    for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
+                        if (datas.get(groupPosition).lists.get(i).isChecked())
+                            checkedCount++;
+                    }
+                    if (checkedCount == datas.get(groupPosition).lists.size()) {
+                        datas.get(groupPosition).setChecked(true);
+                    } else {
+                        datas.get(groupPosition).setChecked(false);
+
+                    }
+                    notifyDataSetChanged();
+                }
+            });
+        }
+    }
+}

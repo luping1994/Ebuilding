@@ -2,12 +2,14 @@ package net.suntrans.ebuilding.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -24,6 +26,7 @@ import net.suntrans.ebuilding.activity.LoginActivity;
 import net.suntrans.ebuilding.activity.QuestionActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.UserInfo;
+import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.ebuilding.utils.UiUtils;
 
 import rx.Subscriber;
@@ -40,6 +43,17 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_percen, container, false);
+        View statusBar = view.findViewById(R.id.statusbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int statusBarHeight = StatusBarCompat.getStatusBarHeight(getContext());
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
+            params.height = statusBarHeight;
+            statusBar.setLayoutParams(params);
+            statusBar.setVisibility(View.VISIBLE);
+        }else {
+            statusBar.setVisibility(View.GONE);
+
+        }
         return view;
     }
 

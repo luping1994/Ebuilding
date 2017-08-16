@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="PGYER_APPID"
-            android:value=" a173a0ab75faa5162d9991df3ed25aee"></meta-data>
+            android:value=" a173a0ab75faa5162d9991df3ed25aee" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="net.suntrans.ebuilding.fileProvider"
@@ -28,11 +29,8 @@
         </provider>
 
         <activity
-            android:theme="@style/AppTheme.translate"
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WelcomeActivity"
             android:screenOrientation="portrait">
@@ -80,10 +78,13 @@
             android:name=".activity.HistroyDataActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:theme="@style/AppTheme.translate"
             android:name=".activity.AddSceneActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.translate" />
         <activity android:name=".activity.AddSceneChannelActivity" />
+        <activity android:name=".activity.AddFloorActivity" />
+        <activity android:name=".activity.AddAreaActivity"></activity>
+        <activity android:name=".activity.AddAreaChannelActivity" />
     </application>
 
 </manifest>

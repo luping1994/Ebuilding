@@ -68,7 +68,7 @@
                     android:layout_centerHorizontal="true"
                     android:fitsSystemWindows="true"
                     android:gravity="center"
-                    android:text="wucan"
+                    android:text="添加场景"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 

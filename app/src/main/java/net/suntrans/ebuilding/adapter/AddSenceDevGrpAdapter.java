@@ -2,15 +2,20 @@ package net.suntrans.ebuilding.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.bean.AreaEntity;
+import net.suntrans.ebuilding.views.CustomExpandableListView;
+
 import java.util.List;
 
 /**
@@ -24,7 +29,6 @@ public class AddSenceDevGrpAdapter extends BaseExpandableListAdapter {
     public AddSenceDevGrpAdapter(List<AreaEntity.AreaFloor> datas, Context mContext) {
         this.datas = datas;
         this.mContext = mContext;
-
     }
 
     @Override
@@ -86,7 +90,7 @@ public class AddSenceDevGrpAdapter extends BaseExpandableListAdapter {
             view = convertView;
             holder = (ChildHolder) view.getTag();
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_children, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_father, parent, false);
             holder = new ChildHolder(view);
             view.setTag(holder);
         }
@@ -101,58 +105,42 @@ public class AddSenceDevGrpAdapter extends BaseExpandableListAdapter {
 
 
     public class GroupHolder {
-        TextView mName;
+        TextView mText;
+        TextView mCount;
         CheckBox state;
-        String[] colors = new String[]{"#f99e5b", "#d3e4ad", "#94c9d6"};
-        TextView count;
 
         public GroupHolder(View view) {
-            mName = (TextView) view.findViewById(R.id.name);
-            state = (CheckBox) view.findViewById(R.id.checkbox);
-            count = (TextView) view.findViewById(R.id.count);
+            mText = (TextView) view.findViewById(R.id.name);
+            mCount = (TextView) view.findViewById(R.id.count);
+            state = (AppCompatCheckBox) view.findViewById(R.id.checkbox);
 
         }
 
         public void setData(final int groupPosition) {
-            mName.setText(datas.get(groupPosition).name);
-            state.setChecked(datas.get(groupPosition).isCheck);
-            state.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    notifyDataSetChanged();
-                }
-            });
+            mText.setText(datas.get(groupPosition).name);
+            int count = 0;
+            for (int j = 0; j < datas.get(groupPosition).sub.size(); j++) {
+                count += datas.get(groupPosition).sub.get(j).lists.size();
+            }
+            mCount.setText(count + "");
+            state.setChecked(true);
         }
     }
 
     public class ChildHolder {
-        ImageView mImage;
-        TextView mText;
-        CheckBox state;
 
+        CustomExpandableListView listView;
+        ParentAdapter adapter;
         public ChildHolder(View view) {
-            mText = (TextView) view.findViewById(R.id.name);
-            state = (CheckBox) view.findViewById(R.id.checkbox);
-
+            listView = (CustomExpandableListView) view.findViewById(R.id.expandListView);
         }
 
         public void setData(final int groupPosition, final int childPosition) {
-
-
+            adapter =  new ParentAdapter(datas.get(groupPosition).sub, mContext);
+            listView.setAdapter(adapter);
+            listView. setGroupIndicator(null);
         }
     }
 
 
-    public void setOnItemClickListener(AddSenceDevGrpAdapter.onItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    private onItemClickListener onItemClickListener;
-
-    public interface onItemClickListener {
-        void onParentChekBoxCheckedListener(CheckBox checkBox);
-
-        void onChildrenChekBoxCheckedListener(CheckBox checkBox);
-    }
 }

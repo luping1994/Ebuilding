@@ -3,8 +3,10 @@ package net.suntrans.ebuilding.fragment;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
@@ -22,6 +25,7 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.AddSceneActivity;
 import net.suntrans.ebuilding.adapter.DiningPagerAdapter;
+import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.ebuilding.utils.UiUtils;
 
 import static android.support.design.widget.TabLayout.GRAVITY_FILL;
@@ -40,6 +44,17 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dining, container, false);
         setHasOptionsMenu(true);
+        View statusBar = view.findViewById(R.id.statusbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int statusBarHeight = StatusBarCompat.getStatusBarHeight(getContext());
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) statusBar.getLayoutParams();
+            params.height = statusBarHeight;
+            statusBar.setLayoutParams(params);
+            statusBar.setVisibility(View.VISIBLE);
+        }else {
+            statusBar.setVisibility(View.GONE);
+
+        }
         return view;
     }
 

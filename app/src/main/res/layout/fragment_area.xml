@@ -2,28 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <TextView
-        android:textColor="@color/white"
-        android:paddingLeft="19dp"
-        android:gravity="center_vertical"
-        android:text="区域"
-        android:textSize="20sp"
-        android:background="@color/colorPrimary"
+    <View
+        android:id="@+id/statusbar"
         android:layout_width="match_parent"
-        android:layout_height="57dp" />
-   <FrameLayout
-       android:id="@+id/content"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <ExpandableListView
-           android:id="@+id/recyclerview"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:background="#f7f7f7">
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark" />
 
-       </ExpandableListView>
-   </FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="19dp"
+            android:text="区域"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="16dp"
+            android:src="@drawable/ic_add" />
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout
+            android:id="@+id/refreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ExpandableListView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f7f7f7">
+
+            </ExpandableListView>
+        </net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout>
+
+    </FrameLayout>
 </LinearLayout>

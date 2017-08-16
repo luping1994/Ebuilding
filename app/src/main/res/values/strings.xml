@@ -17,5 +17,10 @@
     <string name="nav_env">环境</string>
     <string name="dinTitle">TIT餐厅智能配电</string>
     <string name="abcd">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="queding">确定</string>
+    <string name="qvxiao">取消</string>
+    <string name="choose_action">选择动作</string>
+    <string name="channel_choose_close">关闭</string>
+    <string name="channel_choose_open">打开</string>
 
 </resources>

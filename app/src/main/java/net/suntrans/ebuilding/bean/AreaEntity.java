@@ -23,7 +23,7 @@ public class AreaEntity {
         public String img_url;
         public String show_sort;
         public List<FloorRoom> sub;
-        public boolean isCheck;
+        public boolean isCheck = false;
     }
 
     public static class FloorRoom{
@@ -33,7 +33,15 @@ public class AreaEntity {
         public String img_url;
         public String show_sort;
         public List<Channel> lists;
+        public boolean isChecked = false;
 
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
     }
 
     public static class Channel{
@@ -41,6 +49,14 @@ public class AreaEntity {
         public String channel_id;
         public String id;
         public String name;
+        public boolean isChecked = false;
 
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
     }
 }

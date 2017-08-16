@@ -21,12 +21,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/delete"
+                android:id="@+id/addFloor"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:text="删除场景"
+                android:text="新建楼层"
                 android:textColor="@color/black"
                 android:textSize="18sp">
 
@@ -40,12 +40,12 @@
             </View>
 
             <TextView
-                android:id="@+id/addChannel"
+                android:id="@+id/addArea"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:text="添加设备"
+                android:text="添加区域"
                 android:textColor="@color/black"
                 android:textSize="18sp">
 

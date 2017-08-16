@@ -1,6 +1,7 @@
 package net.suntrans.ebuilding.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
@@ -21,6 +23,7 @@ import net.suntrans.ebuilding.adapter.EnergyFragAdapter;
 import net.suntrans.ebuilding.adapter.EnergyFragAdapter2;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.EnergyEntity;
+import net.suntrans.ebuilding.utils.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,17 @@ public class EnergyConFragment2 extends RxFragment {
         setHasOptionsMenu(true);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("能耗");
+        View statusBar = view.findViewById(R.id.statusbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int statusBarHeight = StatusBarCompat.getStatusBarHeight(getContext());
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
+            params.height = statusBarHeight;
+            statusBar.setLayoutParams(params);
+            statusBar.setVisibility(View.VISIBLE);
+        }else {
+            statusBar.setVisibility(View.GONE);
+
+        }
         return view;
     }
 

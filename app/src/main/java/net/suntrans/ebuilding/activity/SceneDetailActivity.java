@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,9 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -30,9 +29,12 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.SceneChannelResult;
+import net.suntrans.ebuilding.bean.SceneEdit;
+import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
+import net.suntrans.ebuilding.fragment.din.MyBottomDialogFragment;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -63,6 +65,17 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     private TextView tips;
     private ImageView banner;
     private Subscription subscribe;
+    private String[] items = {"删除设备", "更改操作"};
+    private String[] items2 = {"更改名称", "更换背景"};
+    private List<String> con;
+    private TextView txTitle;
+    private String img_url;
+    private String img_banner;
+    private String img_url1;
+    private String name_en;
+    private int id1;
+    private MyBottomDialogFragment fragment;
+    private ChangeNameDialogFragment fragment2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +86,11 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         title = getIntent().getStringExtra("title");
         id = getIntent().getStringExtra("id");
 
-
+        con = new ArrayList<>();
+        con.add(getString(R.string.channel_choose_close));
+        con.add(getString(R.string.channel_choose_open));
         findViewById(R.id.menu).setOnClickListener(this);
-        TextView txTitle = (TextView) findViewById(R.id.title);
+        txTitle = (TextView) findViewById(R.id.title);
         txTitle.setText(title);
         imgurl = getIntent().getStringExtra("imgurl");
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -83,7 +98,6 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter1 = new MyAdapter(R.layout.item_scene_detail, datas);
         recyclerView.setAdapter(adapter1);
-
         banner = (ImageView) findViewById(R.id.banner);
         findViewById(R.id.fanhui).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +105,73 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 finish();
             }
         });
+
+        findViewById(R.id.banner).setOnClickListener(this);
+        adapter1.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SceneDetailActivity.this);
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                showDeleteDialog(datas.get(position).id);
+
+                                break;
+                            case 1:
+                                OptionsPickerView pickerView1 = null;
+                                if (pickerView1 == null) {
+                                    pickerView1 = new OptionsPickerView.Builder(SceneDetailActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
+                                        @Override
+                                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                                            setSceneChannel(position, options1);
+                                        }
+                                    })
+                                            .setTitleText(getString(R.string.choose_action))
+                                            .build();
+                                    pickerView1.setPicker(con);
+                                }
+                                pickerView1.show();
+                                break;
+                        }
+                    }
+                });
+                builder.create().show();
+                return true;
+            }
+        });
+    }
+
+    private void setSceneChannel(int position, int options1) {
+        String id = datas.get(position).id;
+        String cmd = options1 == 0 ? "0" : "1";
+        RetrofitHelper.getApi().setChannel(id, cmd)
+                .compose(this.<SampleResult>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<SampleResult>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        UiUtils.showToast(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(SampleResult result) {
+                        if (result.getCode() == 200) {
+                            UiUtils.showToast("修改成功");
+                            getData();
+                        } else {
+                            UiUtils.showToast("服务器错误修改失败");
+                        }
+                    }
+                });
     }
 
     @Override
@@ -98,8 +179,46 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         if (v.getId() == R.id.menu) {
             showPopupMenu();
         }
+        if (v.getId() == R.id.banner) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SceneDetailActivity.this);
+            builder.setItems(items2, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            showChangedNameDialog();
+                            break;
+                        case 1:
+                            showBottomSheet();
+                            break;
+                    }
+                }
+            });
+            builder.create().show();
+        }
     }
 
+    private void showBottomSheet() {
+        fragment = (MyBottomDialogFragment) getSupportFragmentManager().findFragmentByTag("bottomSheetDialog");
+        if (fragment == null) {
+            fragment = MyBottomDialogFragment.newInstance();
+//            Dialog dialog = fragment.getDialog();
+//            View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
+//            dialog.setContentView(view);
+            fragment.setCancelable(true);
+        }
+        fragment.show(getSupportFragmentManager(),"bottomSheetDialog");
+
+    }
+
+    private void showChangedNameDialog() {
+        fragment2 = (ChangeNameDialogFragment) getSupportFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
+        if (fragment2 == null) {
+            fragment2 = ChangeNameDialogFragment.newInstance(id);
+            fragment2.setCancelable(true);
+        }
+        fragment2.show(getSupportFragmentManager(),"ChangeNameDialogFragment");
+    }
 
 
     class MyAdapter extends BaseQuickAdapter<SceneChannelResult.SceneChannel, BaseViewHolder> {
@@ -120,7 +239,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         getData();
-
+        getSceneInfo(id);
     }
 
     private void getData() {
@@ -240,7 +359,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
                     mPopupWindow.dismiss();
-                    startActivity(new Intent(SceneDetailActivity.this,AddSceneChannelActivity.class));
+                    Intent intent = new Intent(SceneDetailActivity.this, AddSceneChannelActivity.class);
+                    intent.putExtra("scene_id", id);
+                    startActivity(intent);
                 }
             });
             view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
@@ -253,7 +374,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                         public void onClick(DialogInterface dialog, int which) {
                             deleteScene(id);
                         }
-                    }).setNegativeButton("取消",null).create().show();
+                    }).setNegativeButton("取消", null).create().show();
                 }
             });
             mPopupWindow = new PopupWindow(getContext());
@@ -282,7 +403,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     }
 
     private void deleteScene(String id) {
-        if (dialog==null){
+        if (dialog == null) {
             dialog = new LoadingDialog(this);
             dialog.setWaitText("请稍后");
             dialog.setOnDismissListener(this);
@@ -309,17 +430,17 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     @Override
                     public void onNext(SampleResult addResult) {
                         dialog.dismiss();
-                        if (addResult.getCode()==200){
-                          new AlertDialog.Builder(SceneDetailActivity.this)
-                                  .setMessage("删除成功")
-                                  .setCancelable(false)
-                                  .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
-                                      @Override
-                                      public void onClick(DialogInterface dialog, int which) {
-                                          finish();
-                                      }
-                                  }).create().show();
-                        }else {
+                        if (addResult.getCode() == 200) {
+                            new AlertDialog.Builder(SceneDetailActivity.this)
+                                    .setMessage("删除成功")
+                                    .setCancelable(false)
+                                    .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    }).create().show();
+                        } else {
                             UiUtils.showToast("删除失败");
                         }
 
@@ -330,5 +451,79 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     @Override
     public void onDismiss(DialogInterface dialog) {
         subscribe.unsubscribe();
+    }
+
+    private void showDeleteDialog(final String id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setPositiveButton(R.string.queding, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LogUtil.i(id);
+                delete(id);
+            }
+
+        });
+        builder.setNegativeButton(R.string.qvxiao, null);
+        builder.setMessage("是否将该设备从场景中移除?")
+                .create().show();
+    }
+
+    private void delete(String id) {
+        RetrofitHelper.getApi().deleteChannel(id)
+                .compose(this.<SampleResult>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<SampleResult>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        UiUtils.showToast(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(SampleResult result) {
+                        if (result.getCode() == 200) {
+                            UiUtils.showToast("删除成功");
+                            getData();
+                        } else {
+                            UiUtils.showToast("删除失败");
+                        }
+                    }
+                });
+    }
+
+
+    private void getSceneInfo(String id) {
+        RetrofitHelper.getApi().getSceneInfo(id)
+                .compose(this.<SceneEdit>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<SceneEdit>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(SceneEdit info) {
+                        txTitle.setText(info.getData().getRow().get(0).getName());
+                        img_url = info.getData().getRow().get(0).getImg_url();
+                        img_banner = info.getData().getRow().get(0).getImg_banner();
+                        img_url1 = info.getData().getRow().get(0).getImg_url();
+                        name_en = info.getData().getRow().get(0).getName_en();
+                        id1 = info.getData().getRow().get(0).getId();
+                    }
+                });
     }
 }

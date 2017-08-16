@@ -1,5 +1,7 @@
 package net.suntrans.ebuilding;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
@@ -36,11 +38,21 @@ public class MainActivity extends BasedActivity {
     private final int[] TAB_IMGS = new int[]{R.drawable.select_home, R.drawable.select_area, R.drawable.select_env, R.drawable.select_power, R.drawable.select_user};
     private TabLayout tabLayout;
 
+    private DiningRoomFragment fragment1;
+    private AreaFragment fragment2;
+    private EnergyConFragment2 fragment3;
+    private PerCenFragment fragment4;
+    private EnvHomeFragment fragment5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
         if (!DEBUG)
             PgyUpdateManager.register(this, "net.suntrans.ebuilding.fileProvider");
         init();
@@ -49,13 +61,30 @@ public class MainActivity extends BasedActivity {
     private Fragment[] fragments;
 
     private void init() {
-        DiningRoomFragment fragment1 = new DiningRoomFragment();
-        AreaFragment fragment2 = new AreaFragment();
-        EnergyConFragment2 fragment3 = new EnergyConFragment2();
-        PerCenFragment fragment4 = new PerCenFragment();
-        EnvHomeFragment fragment5 = new EnvHomeFragment();
+        fragment1 = (DiningRoomFragment) getSupportFragmentManager().findFragmentByTag("0");
+        fragment2 = (AreaFragment) getSupportFragmentManager().findFragmentByTag("1");
+        fragment3 = (EnergyConFragment2) getSupportFragmentManager().findFragmentByTag("2");
+        fragment4 = (PerCenFragment) getSupportFragmentManager().findFragmentByTag("3");
+        fragment5 = (EnvHomeFragment) getSupportFragmentManager().findFragmentByTag("4");
+
+
+        if (fragment1 == null)
+            fragment1 = new DiningRoomFragment();
+
+        if (fragment2 == null)
+            fragment2 = new AreaFragment();
+
+        if (fragment3 == null)
+            fragment3 = new EnergyConFragment2();
+
+        if (fragment4 == null)
+            fragment4 = new PerCenFragment();
+
+        if (fragment5 == null)
+            fragment5 = new EnvHomeFragment();
+
         fragments = new Fragment[]{fragment1, fragment2, fragment5, fragment3, fragment4};
-        changFragment(0);
+        changFragment(0, "0");
 
         tabLayout = (TabLayout) findViewById(R.id.main_tabLayout);
         tabLayout.setTabMode(MODE_FIXED);
@@ -65,7 +94,7 @@ public class MainActivity extends BasedActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                changFragment(tab.getPosition());
+                changFragment(tab.getPosition(), tab.getPosition() + "");
             }
 
             @Override
@@ -127,12 +156,13 @@ public class MainActivity extends BasedActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    int currentIndex=0;
-    private void changFragment(int index) {
+    int currentIndex = 0;
+
+    private void changFragment(int index, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[currentIndex]);
         if (!fragments[index].isAdded()) {
-            transaction.add(R.id.content, fragments[index]);
+            transaction.add(R.id.content, fragments[index], tag);
         }
         transaction.show(fragments[index]).commit();
         currentIndex = index;

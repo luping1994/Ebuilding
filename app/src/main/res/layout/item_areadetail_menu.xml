@@ -26,7 +26,7 @@
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:text="删除场景"
+                android:text="删除区域"
                 android:textColor="@color/black"
                 android:textSize="18sp">
 

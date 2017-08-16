@@ -1,6 +1,8 @@
 package net.suntrans.ebuilding.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,6 +39,7 @@ public class AddSceneActivity extends BasedActivity implements DialogInterface.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scene);
+
         name = (EditView) findViewById(R.id.name);
         nameEn = (EditView) findViewById(R.id.nameEn);
         findViewById(R.id.fanhui).setOnClickListener(new View.OnClickListener() {

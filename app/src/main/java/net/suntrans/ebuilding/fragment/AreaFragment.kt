@@ -1,21 +1,27 @@
 package net.suntrans.ebuilding.fragment
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v4.view.ViewCompat
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ExpandableListView
+import android.widget.*
 import com.trello.rxlifecycle.android.FragmentEvent
-import com.trello.rxlifecycle.components.support.RxFragment
 import net.suntrans.ebuilding.R
+import net.suntrans.ebuilding.activity.AddAreaActivity
+import net.suntrans.ebuilding.activity.AddFloorActivity
 import net.suntrans.ebuilding.activity.AreaDetailActivity
 import net.suntrans.ebuilding.adapter.AreaAdapter
 import net.suntrans.ebuilding.api.RetrofitHelper
 import net.suntrans.ebuilding.bean.AreaEntity
 import net.suntrans.ebuilding.fragment.base.BasedFragment
 import net.suntrans.ebuilding.utils.LogUtil
+import net.suntrans.ebuilding.utils.StatusBarCompat
+import net.suntrans.ebuilding.utils.UiUtils
+import net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -27,20 +33,36 @@ import java.util.*
 
 class AreaFragment : BasedFragment() {
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_area;
+        return R.layout.fragment_area
     }
 
-    private val refreshLayout: SwipeRefreshLayout? = null
     private var datas: MutableList<AreaEntity.AreaFloor>? = null
     private var adapter: AreaAdapter? = null
     private var expandableListView: ExpandableListView? = null
-
+    private var add: ImageView? = null
+    private var refreshLayout: ScrollChildSwipeRefreshLayout? = null
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        val statusBar = view!!.findViewById(R.id.statusbar)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val statusBarHeight = StatusBarCompat.getStatusBarHeight(context)
+            val params = statusBar.layoutParams as LinearLayout.LayoutParams
+            params.height = statusBarHeight
+            statusBar.layoutParams = params
+            statusBar.visibility = View.VISIBLE
+        } else {
+            statusBar.visibility = View.GONE
+
+        }
+        refreshLayout = view.findViewById(R.id.refreshlayout) as ScrollChildSwipeRefreshLayout
+        refreshLayout?.setOnRefreshListener { getAreaData(1) }
+
         datas = ArrayList<AreaEntity.AreaFloor>()
         expandableListView = view!!.findViewById(R.id.recyclerview) as ExpandableListView
         adapter = AreaAdapter(datas, context)
         expandableListView!!.setAdapter(adapter)
         expandableListView!!.divider = null
+        add = view!!.findViewById(R.id.add) as ImageView
+        add!!.setOnClickListener { v -> showPopupMenu() }
         expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
             val intent = Intent(activity, AreaDetailActivity::class.java)
             intent.putExtra("id", datas!![groupPosition].sub[childPosition].id.toString() + "")
@@ -57,8 +79,9 @@ class AreaFragment : BasedFragment() {
     }
 
 
-    private fun getAreaData() {
-        stateView.showLoading()
+    private fun getAreaData(a: Int) {
+        if (a == 0)
+            stateView.showLoading()
         RetrofitHelper.getApi().homeHouse
                 .compose(this.bindUntilEvent<AreaEntity>(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
@@ -71,13 +94,16 @@ class AreaFragment : BasedFragment() {
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
                         stateView.showRetry()
+                        refreshLayout?.isRefreshing = false
+
                     }
 
                     override fun onNext(homeSceneResult: AreaEntity?) {
                         LogUtil.i("房间获取成功！")
+                        refreshLayout?.isRefreshing = false
                         if (homeSceneResult != null) {
                             if (homeSceneResult.code == 200) {
-                                if (homeSceneResult.data.lists==null||homeSceneResult.data.lists.size==0){
+                                if (homeSceneResult.data.lists == null || homeSceneResult.data.lists.size == 0) {
                                     stateView.showEmpty()
                                     return
                                 }
@@ -85,7 +111,8 @@ class AreaFragment : BasedFragment() {
                                 datas!!.addAll(homeSceneResult.data.lists)
                                 adapter!!.notifyDataSetChanged()
                                 expandableListView!!.expandGroup(0, true)
-                                stateView.showContent()
+                                if (a == 0)
+                                    stateView.showContent()
                             } else {
                                 stateView.showRetry()
                             }
@@ -99,11 +126,50 @@ class AreaFragment : BasedFragment() {
     }
 
     override fun onFragmentFirstVisible() {
-        getAreaData()
+        getAreaData(0)
     }
 
     override fun onRetryClick() {
-        getAreaData()
+        getAreaData(0)
+    }
+
+    private var mPopupWindow: PopupWindow? = null
+    private fun showPopupMenu() {
+        if (mPopupWindow == null) {
+            val view = LayoutInflater.from(context).inflate(R.layout.item_area_menu, null)
+            val ll = view.findViewById(R.id.content)
+            ViewCompat.setElevation(ll, 20f)
+            view.findViewById(R.id.addFloor).setOnClickListener {
+                val intent = Intent(activity, AddFloorActivity::class.java)
+                intent.putExtra("type", "addFloor")
+                startActivity(intent)
+                mPopupWindow!!.dismiss()
+            }
+            view . findViewById (R.id.addArea).setOnClickListener {
+                val intent = Intent(activity, AddAreaActivity::class.java)
+                intent.putExtra("type", "addFloor")
+                startActivity(intent)
+                mPopupWindow!!.dismiss()
+            }
+            mPopupWindow = PopupWindow(context)
+            mPopupWindow!!.contentView = view
+            mPopupWindow!!.height = UiUtils.dip2px(120)
+            mPopupWindow!!.width = UiUtils.dip2px(155)
+            mPopupWindow!!.animationStyle = R.style.TRM_ANIM_STYLE
+            mPopupWindow!!.isFocusable = true
+            mPopupWindow!!.isOutsideTouchable = true
+            mPopupWindow!!.setBackgroundDrawable(ColorDrawable())
+            mPopupWindow!!.setOnDismissListener {
+                //                    setBackgroundAlpha(0.75f, 1f, 300);
+            }
+        }
+
+        if (!mPopupWindow!!.isShowing) {
+            val width = UiUtils.getDisplaySize(context)[0]
+            mPopupWindow!!.showAtLocation(add, Gravity.NO_GRAVITY, width, UiUtils.dip2px(24))
+
+        }
+
     }
 
 }

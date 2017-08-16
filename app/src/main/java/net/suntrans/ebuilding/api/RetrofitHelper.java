@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper {
 
-
+    private static Api api;
     //public static final String BASE_URL = "http://www.suntrans.net:8956";
     public static final String BASE_URL = "http://adminiot.suntrans-cloud.com/api/v1/";
     public static final String BASE_URL2 = "http://adminiot.suntrans-cloud.com/";
@@ -42,13 +42,17 @@ public class RetrofitHelper {
     }
 
     public static Api getApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(mOkHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-        return retrofit.create(Api.class);
+        if (api==null){
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(mOkHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+             api = retrofit.create(Api.class);
+        }
+
+        return api;
     }
 
 

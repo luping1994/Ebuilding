@@ -1,8 +1,10 @@
 package net.suntrans.ebuilding.fragment.area;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,14 +17,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.activity.SceneDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
 import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.DeviceEntity;
+import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -168,6 +173,8 @@ public class AreaDeailFragment extends RxFragment {
     }
 
 
+    private String[] items = {"移除设备"};
+
     class DevicesAdapter extends RecyclerView.Adapter {
         String[] colors = new String[]{"#f99e5b", "#d3e4ad", "#94c9d6"};
 
@@ -200,12 +207,35 @@ public class AreaDeailFragment extends RxFragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
+                root = (RelativeLayout) itemView.findViewById(R.id.root);
                 name = (TextView) itemView.findViewById(R.id.name);
                 checkbox = (SwitchButton) itemView.findViewById(R.id.checkbox);
                 checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         sendCmd(getAdapterPosition());
+                    }
+                });
+                root.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        showDeleteDialog(datas.get(getAdapterPosition()).id);
+
+                                        break;
+                                    case 1:
+
+                                        break;
+                                }
+                            }
+                        });
+                        builder.create().show();
+                        return true;
                     }
                 });
             }
@@ -280,5 +310,51 @@ public class AreaDeailFragment extends RxFragment {
 
             }
         });
+    }
+
+
+    private void showDeleteDialog(final String id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setPositiveButton(R.string.queding, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LogUtil.i(id);
+                delete(id);
+            }
+
+        });
+        builder.setNegativeButton(R.string.qvxiao, null);
+        builder.setMessage("是否将该设备从该区域中移除?")
+                .create().show();
+    }
+
+    private void delete(String id) {
+        RetrofitHelper.getApi().deleteAreaChannel(id)
+                .compose(this.<SampleResult>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<SampleResult>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        UiUtils.showToast(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(SampleResult result) {
+                        if (result.getCode()==200){
+                            UiUtils.showToast("删除成功");
+                            getData();
+                        }else {
+                            UiUtils.showToast("删除失败");
+                        }
+                    }
+                });
     }
 }
