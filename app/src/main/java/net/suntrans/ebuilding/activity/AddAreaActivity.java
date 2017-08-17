@@ -58,8 +58,10 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long ids) {
-                if (position==0)
+                if (position==0){
+                    id=null;
                     return;
+                }
                 id = floor.get(position-1).id+"";
             }
 
@@ -120,12 +122,13 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
 
     public void addArea(View view) {
         String name1  = name.getText().toString();
-        if (TextUtils.isEmpty(id)){
-            UiUtils.showToast("请选择楼层");
-            return;
-        }
         if (TextUtils.isEmpty(name1)){
             UiUtils.showToast("请输入名称");
+            return;
+        }
+
+        if (TextUtils.isEmpty(id)){
+            UiUtils.showToast("请选择楼层");
             return;
         }
 
