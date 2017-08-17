@@ -66,39 +66,30 @@ public class ChangeNameDialogFragment extends BottomSheetDialogFragment implemen
         }
     }
 
+    private ChangeNameListener listener;
+
+    public ChangeNameListener getListener() {
+        return listener;
+    }
+
+    public void setListener(ChangeNameListener listener) {
+        this.listener = listener;
+    }
+
+    public interface ChangeNameListener{
+        void changeName(String name);
+    }
     private void update() {
         String name1 =name.getText().toString();
         if (TextUtils.isEmpty(name1)){
             UiUtils.showToast("请输入场景名字");
             return;
         }
-        LogUtil.i(id);
         LogUtil.i(name1);
-        Map<String,String> map = new HashMap<>();
-        map.put("id",id);
-        map.put("name",name1);
-        RetrofitHelper.getApi().updateScene(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SampleResult>() {
-                    @Override
-                    public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(SampleResult result) {
-                        UiUtils.showToast(result.getMsg());
-                        if (result.getCode()==200){
-                            dismiss();
-                        }
-                    }
-                });
+        if (listener!=null){
+            listener.changeName(name1);
+        }
+        dismiss();
     }
 }

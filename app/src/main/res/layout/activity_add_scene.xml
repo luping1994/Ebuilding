@@ -26,12 +26,14 @@
                 android:fitsSystemWindows="true">
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/banner_xiawucha"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed" />
                 <TextView
+                    android:visibility="gone"
                     android:onClick="changeBg"
                     android:textColor="@color/white"
                     android:text="更换背景"
@@ -73,6 +75,7 @@
                     android:textSize="20sp" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/menu"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

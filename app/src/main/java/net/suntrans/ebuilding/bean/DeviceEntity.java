@@ -18,6 +18,7 @@ public class DeviceEntity {
 
     public static class ChannelInfo {
         public String id;
+        public String channel_id;
         public String dev_id;
         public String datapoint;
         public String name;

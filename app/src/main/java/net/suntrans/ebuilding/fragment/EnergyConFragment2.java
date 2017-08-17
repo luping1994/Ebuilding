@@ -24,6 +24,7 @@ import net.suntrans.ebuilding.adapter.EnergyFragAdapter2;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.EnergyEntity;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
+import net.suntrans.stateview.StateView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +47,13 @@ public class EnergyConFragment2 extends RxFragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private List<EnergyEntity.EnergyData> datas = new ArrayList<>();
-
+    private StateView stateView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_energy2, container, false);
         setHasOptionsMenu(true);
+        stateView = StateView.inject(view.findViewById(R.id.content));
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("能耗");
         View statusBar = view.findViewById(R.id.statusbar);
@@ -70,7 +72,12 @@ public class EnergyConFragment2 extends RxFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+        stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
+            @Override
+            public void onRetryClick() {
+                getData();
+            }
+        });
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshlayout);
         adapter = new EnergyFragAdapter2(getContext(), datas, new EnergyFragAdapter2.OnitemClickListener() {
@@ -102,6 +109,7 @@ public class EnergyConFragment2 extends RxFragment {
     }
 
     private void getData() {
+        stateView.showLoading();
         RetrofitHelper.getApi().getEnergyIndex()
                 .compose(this.<EnergyEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
@@ -114,15 +122,22 @@ public class EnergyConFragment2 extends RxFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        stateView.showRetry();
                         refreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onNext(EnergyEntity energyEntity) {
-                        datas.clear();
-                        datas.addAll(energyEntity.data.lists);
-                        adapter.notifyDataSetChanged();
-                        refreshLayout.setRefreshing(false);
+                        if (energyEntity.data.lists==null||energyEntity.data.lists.size()==0){
+                            stateView.showEmpty();
+                        }else {
+                            stateView.showContent();
+                            datas.clear();
+                            datas.addAll(energyEntity.data.lists);
+                            adapter.notifyDataSetChanged();
+                            refreshLayout.setRefreshing(false);
+                        }
+
                     }
                 });
     }

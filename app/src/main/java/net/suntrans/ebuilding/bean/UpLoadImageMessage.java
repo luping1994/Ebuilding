@@ -5,11 +5,7 @@ package net.suntrans.ebuilding.bean;
  */
 
 public class UpLoadImageMessage {
-    public String error;
-    public String success;
-    public String status;
-    public String url;
-    public String path;
-    public String name;
-    public String id;
+   public int code;
+   public String data;
+   public String msg;
 }

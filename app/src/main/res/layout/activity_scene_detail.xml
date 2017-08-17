@@ -22,11 +22,11 @@
             android:fitsSystemWindows="true">
 
             <ImageView
+                android:scaleType="fitXY"
                 android:fitsSystemWindows="true"
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/banner_xiawucha"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed" />
 
 
@@ -61,13 +61,18 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
-                <ImageView
-                    android:id="@+id/menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/menu" />
+              <RelativeLayout
+                  android:id="@+id/menu"
+                  android:layout_marginRight="14dp"
+                  android:layout_alignParentRight="true"
+                  android:layout_width="60dp"
+                  android:layout_height="match_parent">
+                  <ImageView
+                      android:layout_alignParentRight="true"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:src="@drawable/menu" />
+              </RelativeLayout>
 
             </RelativeLayout>
         </android.support.design.widget.CollapsingToolbarLayout>

@@ -9,6 +9,8 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +23,16 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import net.suntrans.ebuilding.MainActivity;
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.activity.AreaDetailActivity;
 import net.suntrans.ebuilding.activity.SceneDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
 import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.DeviceEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
+import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -35,7 +40,9 @@ import net.suntrans.ebuilding.views.SwitchButton;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
@@ -49,8 +56,8 @@ import static net.suntrans.ebuilding.R.id.recyclerView;
  * Created by Looney on 2017/7/21.
  */
 
-public class AreaDeailFragment extends RxFragment {
-    private  final String TAG = this.getClass().getSimpleName();
+public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFragment.ChangeNameListener {
+    private final String TAG = this.getClass().getSimpleName();
 
     private Observable<AreaDetailEntity> getDataObv;
     private SwipeRefreshLayout refreshLayout;
@@ -61,11 +68,12 @@ public class AreaDeailFragment extends RxFragment {
     private String channelType;
 
     private LoadingDialog dialog;
+
     public static final AreaDeailFragment newInstance(String channel_type, String id) {
         AreaDeailFragment fragment = new AreaDeailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("channel_type",channel_type);
-        bundle.putString("id",id);
+        bundle.putString("channel_type", channel_type);
+        bundle.putString("id", id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,7 +81,7 @@ public class AreaDeailFragment extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_area_detail,container,false);
+        View view = inflater.inflate(R.layout.fragment_area_detail, container, false);
         return view;
 
     }
@@ -110,7 +118,7 @@ public class AreaDeailFragment extends RxFragment {
     }
 
     public void getData() {
-
+        LogUtil.i(house_id);
         if (getDataObv == null) {
             getDataObv = RetrofitHelper.getApi().getRoomChannel(house_id)
                     .compose(this.<AreaDetailEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -136,7 +144,7 @@ public class AreaDeailFragment extends RxFragment {
                         UiUtils.showToast("服务器错误");
                     }
                 }
-                if (e instanceof SocketTimeoutException){
+                if (e instanceof SocketTimeoutException) {
                     UiUtils.showToast("连接超时");
                 }
                 if (refreshLayout != null) {
@@ -152,8 +160,8 @@ public class AreaDeailFragment extends RxFragment {
                 if (result != null) {
                     datas.clear();
 
-                    for (int i= 0;i<result.data.lists.size();i++){
-                        if (result.data.lists.get(i).channel_type.equals(channelType)){
+                    for (int i = 0; i < result.data.lists.size(); i++) {
+                        if (result.data.lists.get(i).channel_type.equals(channelType)) {
                             datas.add(result.data.lists.get(i));
                         }
 
@@ -172,8 +180,6 @@ public class AreaDeailFragment extends RxFragment {
         });
     }
 
-
-    private String[] items = {"移除设备"};
 
     class DevicesAdapter extends RecyclerView.Adapter {
         String[] colors = new String[]{"#f99e5b", "#d3e4ad", "#94c9d6"};
@@ -229,7 +235,7 @@ public class AreaDeailFragment extends RxFragment {
 
                                         break;
                                     case 1:
-
+                                        showChangedNameDialog(datas.get(getAdapterPosition()).channel_id);
                                         break;
                                 }
                             }
@@ -255,7 +261,7 @@ public class AreaDeailFragment extends RxFragment {
     private Observable<ControlEntity> conOb;
 
     private void sendCmd(int position) {
-        if (position==-1){
+        if (position == -1) {
             UiUtils.showToast("请不要频繁操作！");
             return;
         }
@@ -348,13 +354,70 @@ public class AreaDeailFragment extends RxFragment {
 
                     @Override
                     public void onNext(SampleResult result) {
-                        if (result.getCode()==200){
+                        if (result.getCode() == 200) {
                             UiUtils.showToast("删除成功");
                             getData();
-                        }else {
+                        } else {
                             UiUtils.showToast("删除失败");
                         }
                     }
                 });
+    }
+
+    ChangeNameDialogFragment fragment2;
+    private String selectedId;
+
+    private void showChangedNameDialog(String id) {
+        selectedId = id;
+        fragment2 = (ChangeNameDialogFragment) getChildFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
+        if (fragment2 == null) {
+            fragment2 = ChangeNameDialogFragment.newInstance("");
+            fragment2.setCancelable(true);
+            fragment2.setListener(this);
+        }
+        fragment2.show(getChildFragmentManager(), "ChangeNameDialogFragment");
+    }
+
+    private String[] items = {"移除设备","更改名称"};
+
+    @Override
+    public void changeName(String name) {
+        upDate(selectedId, name);
+    }
+
+
+    private void upDate(String id, String name) {
+        if (dialog == null) {
+            dialog = new LoadingDialog(getContext());
+            dialog.setWaitText("请稍后");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("channel_id", id);
+        map.put("name", name);
+        LogUtil.i(id+","+name);
+        ((AreaDetailActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateChannel(map), new Subscriber<SampleResult>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                dialog.dismiss();
+                UiUtils.showToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(SampleResult result) {
+                dialog.dismiss();
+                if (result.getCode() == 200) {
+                    UiUtils.showToast("更新成功");
+                    getData();
+                } else {
+                    UiUtils.showToast(result.getMsg());
+                }
+            }
+        });
     }
 }

@@ -103,7 +103,7 @@
 # Gson
 -keep class com.google.gson.stream.** { *; }
 -keepattributes EnclosingMethod
-
+#pgy
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
 #glide
@@ -116,3 +116,8 @@
 #我的
     -keep class net.suntrans.ebuilding.bean.**{*;}
     -dontwarn android.support.**
+
+#ucrop
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }

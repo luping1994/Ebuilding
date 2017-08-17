@@ -36,13 +36,14 @@
             android:textSize="20sp" />
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/rightTitleMore"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:gravity="center"
-            android:text="更多"
+            android:gravity="center|right"
+            android:text="详细"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </RelativeLayout>

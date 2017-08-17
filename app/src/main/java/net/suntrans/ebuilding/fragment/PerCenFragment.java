@@ -6,13 +6,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.trello.rxlifecycle.android.ActivityEvent;
+import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -25,9 +27,17 @@ import net.suntrans.ebuilding.activity.DeviceManagerActivity;
 import net.suntrans.ebuilding.activity.LoginActivity;
 import net.suntrans.ebuilding.activity.QuestionActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
+import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.UserInfo;
+import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
+import net.suntrans.ebuilding.fragment.din.UpLoadImageFragment;
+import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.ebuilding.utils.UiUtils;
+import net.suntrans.ebuilding.views.LoadingDialog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,8 +47,10 @@ import rx.schedulers.Schedulers;
  * Created by Looney on 2017/7/20.
  */
 
-public class PerCenFragment extends RxFragment implements View.OnClickListener {
+public class PerCenFragment extends RxFragment implements View.OnClickListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
     TextView name;
+    private ImageView avatar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,6 +72,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setListener(view);
+        avatar = (ImageView) view.findViewById(R.id.img);
     }
 
     private void setListener(View view) {
@@ -69,6 +82,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
         view.findViewById(R.id.RLModify).setOnClickListener(this);
         view.findViewById(R.id.RLQues).setOnClickListener(this);
         view.findViewById(R.id.loginOut).setOnClickListener(this);
+        view.findViewById(R.id.titleHeader).setOnClickListener(this);
 
         name = (TextView) view.findViewById(R.id.name);
     }
@@ -107,8 +121,26 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
                             }
                         }).setNegativeButton("取消",null).create().show();
                 break;
+            case R.id.titleHeader:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setItems(items2, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                showChangedNameDialog();
+                                break;
+                            case 1:
+                                showBottomSheet();
+                                break;
+                        }
+                    }
+                });
+                builder.create().show();
+                break;
         }
     }
+    private String[] items2 = {"更改名称", "更换头像"};
 
     @Override
     public void onResume() {
@@ -138,9 +170,13 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
 
                         if (info != null) {
                             if (info.code==200) {
-                                name.setText(info.data.getNickname());
-                                App.getSharedPreferences().edit().putString("user_id", info.data.getId()).commit();
-
+                                name.setText(info.data.nickname);
+                                App.getSharedPreferences().edit().putString("user_id", info.data.id).commit();
+                                Glide.with(getContext())
+                                        .load("http://tit.suntrans-cloud.com"+info.data.avatar_url)
+                                        .override(UiUtils.dip2px(33),UiUtils.dip2px(33))
+                                        .placeholder(R.drawable.user_white)
+                                        .into(avatar);
                             } else {
 
                             }
@@ -148,5 +184,79 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener {
                         }
                     }
                 });
+    }
+
+
+    ChangeNameDialogFragment fragment2;
+    private void showChangedNameDialog() {
+        fragment2 = (ChangeNameDialogFragment) getChildFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
+        if (fragment2 == null) {
+            fragment2 = ChangeNameDialogFragment.newInstance("");
+            fragment2.setCancelable(true);
+            fragment2.setListener(this);
+        }
+        fragment2.show(getChildFragmentManager(), "ChangeNameDialogFragment");
+    }
+
+    UpLoadImageFragment fragment;
+    private void showBottomSheet() {
+        fragment = (UpLoadImageFragment) getChildFragmentManager().findFragmentByTag("bottomSheetDialog");
+        if (fragment == null) {
+            fragment = UpLoadImageFragment.newInstance("2");
+            fragment.setCancelable(true);
+            fragment.setLoadListener(this);
+        }
+        fragment.show(getChildFragmentManager(), "bottomSheetDialog");
+
+    }
+
+    @Override
+    public void changeName(String name) {
+        upDate(name,null);
+    }
+
+    @Override
+    public void uploadImageSuccess(String path) {
+        upDate(null,path);
+    }
+
+    private LoadingDialog dialog;
+    private void upDate(String name, String path) {
+        if (dialog == null) {
+            dialog = new LoadingDialog(getContext());
+            dialog.setWaitText("请稍后");
+        }
+        Map<String, String> map = new HashMap<>();
+        if (!TextUtils.isEmpty(name)) {
+            map.put("nickname", name);
+        }
+        if (!TextUtils.isEmpty(path)) {
+            map.put("avatar_url", path);
+        }
+        LogUtil.i("percenfragment:"+path);
+        ((MainActivity)getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new Subscriber<SampleResult>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                dialog.dismiss();
+                UiUtils.showToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(SampleResult result) {
+                dialog.dismiss();
+                if (result.getCode() == 200) {
+                    UiUtils.showToast("更新成功");
+                    getInfo();
+                } else {
+                    UiUtils.showToast(result.getMsg());
+                }
+            }
+        });
     }
 }

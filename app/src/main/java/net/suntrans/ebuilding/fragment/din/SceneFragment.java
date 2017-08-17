@@ -6,6 +6,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,23 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import net.suntrans.ebuilding.App;
+import net.suntrans.ebuilding.MainActivity;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.SceneDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
+import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.SceneEntity;
+import net.suntrans.ebuilding.bean.UserInfo;
+import net.suntrans.ebuilding.utils.LogUtil;
+import net.suntrans.ebuilding.utils.UiUtils;
+import net.suntrans.ebuilding.views.LoadingDialog;
 import net.suntrans.stateview.StateView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -44,11 +54,13 @@ public class SceneFragment extends RxFragment {
     private SceneAdapter adapter;
     private Observable<SceneEntity> getDataOb;
     private StateView stateView;
+    private String[] items2 = {"更改名称", "更换头像"};
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scene, container, false);
-        stateView = StateView.inject(view.findViewById(R.id.content),false);
+        stateView = StateView.inject(view,false);
         return view;
     }
 

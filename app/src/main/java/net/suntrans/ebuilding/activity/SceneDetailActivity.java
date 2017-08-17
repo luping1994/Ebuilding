@@ -2,15 +2,18 @@ package net.suntrans.ebuilding.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,11 +37,13 @@ import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
-import net.suntrans.ebuilding.fragment.din.MyBottomDialogFragment;
+import net.suntrans.ebuilding.fragment.din.UpLoadImageFragment;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
@@ -47,13 +52,14 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static java.lang.System.load;
 import static net.suntrans.ebuilding.utils.UiUtils.getContext;
 
 /**
  * Created by Looney on 2017/7/21.
  */
 
-public class SceneDetailActivity extends BasedActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
+public class SceneDetailActivity extends BasedActivity implements View.OnClickListener, DialogInterface.OnDismissListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
     private RecyclerView recyclerView;
     private String title;
     private String imgurl;
@@ -65,16 +71,12 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     private TextView tips;
     private ImageView banner;
     private Subscription subscribe;
-    private String[] items = {"删除设备", "更改操作"};
+    private String[] items = {"移除设备", "更改操作"};
     private String[] items2 = {"更改名称", "更换背景"};
     private List<String> con;
     private TextView txTitle;
-    private String img_url;
-    private String img_banner;
     private String img_url1;
-    private String name_en;
-    private int id1;
-    private MyBottomDialogFragment fragment;
+    private UpLoadImageFragment fragment;
     private ChangeNameDialogFragment fragment2;
 
     @Override
@@ -93,6 +95,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         txTitle = (TextView) findViewById(R.id.title);
         txTitle.setText(title);
         imgurl = getIntent().getStringExtra("imgurl");
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -105,11 +108,16 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 finish();
             }
         });
+        System.out.println(imgurl);
+        Glide.with(this)
+                .load(imgurl)
+                .override(UiUtils.getDisplaySize(this)[0], UiUtils.dip2px(217))
+                .into(banner);
 
-        findViewById(R.id.banner).setOnClickListener(this);
-        adapter1.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+        banner.setOnClickListener(this);
+        adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(SceneDetailActivity.this);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
@@ -138,7 +146,6 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     }
                 });
                 builder.create().show();
-                return true;
             }
         });
     }
@@ -199,15 +206,16 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     }
 
     private void showBottomSheet() {
-        fragment = (MyBottomDialogFragment) getSupportFragmentManager().findFragmentByTag("bottomSheetDialog");
+        fragment = (UpLoadImageFragment) getSupportFragmentManager().findFragmentByTag("bottomSheetDialog");
         if (fragment == null) {
-            fragment = MyBottomDialogFragment.newInstance();
+            fragment = UpLoadImageFragment.newInstance("1");
 //            Dialog dialog = fragment.getDialog();
 //            View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
 //            dialog.setContentView(view);
             fragment.setCancelable(true);
+            fragment.setLoadListener(this);
         }
-        fragment.show(getSupportFragmentManager(),"bottomSheetDialog");
+        fragment.show(getSupportFragmentManager(), "bottomSheetDialog");
 
     }
 
@@ -216,8 +224,66 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         if (fragment2 == null) {
             fragment2 = ChangeNameDialogFragment.newInstance(id);
             fragment2.setCancelable(true);
+            fragment2.setListener(this);
         }
-        fragment2.show(getSupportFragmentManager(),"ChangeNameDialogFragment");
+        fragment2.show(getSupportFragmentManager(), "ChangeNameDialogFragment");
+    }
+
+    @Override
+    public void changeName(String name) {
+        if (dialog == null) {
+            dialog = new LoadingDialog(this);
+            dialog.setWaitText("请稍后");
+        }
+        dialog.show();
+        upDate(name, null);
+    }
+
+    @Override
+    public void uploadImageSuccess(String path) {
+        if (dialog == null) {
+            dialog = new LoadingDialog(this);
+            dialog.setWaitText("请稍后");
+        }
+        LogUtil.i("path=" + path);
+        LogUtil.i("path=");
+        dialog.show();
+        upDate(null, path);
+    }
+
+    private void upDate(String name, String path) {
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        if (!TextUtils.isEmpty(name)) {
+            map.put("name", name);
+        }
+        if (!TextUtils.isEmpty(path)) {
+            map.put("img_url", path);
+        }
+        addSubscription(RetrofitHelper.getApi().updateScene(map), new Subscriber<SampleResult>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                dialog.dismiss();
+                UiUtils.showToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(SampleResult result) {
+                dialog.dismiss();
+                if (result.getCode() == 200) {
+                    UiUtils.showToast("更新成功");
+                    getSceneInfo(id);
+                } else {
+                    UiUtils.showToast(result.getMsg());
+                }
+            }
+        });
     }
 
 
@@ -264,11 +330,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                         datas.clear();
                         datas.addAll(result.data.lists);
                         adapter1.notifyDataSetChanged();
-                        Glide.with(SceneDetailActivity.this)
-                                .load(result.data.img_banner)
-                                .placeholder(R.drawable.banner_xiawucha)
-                                .centerCrop()
-                                .into(banner);
+
                         LogUtil.i("场景动作的数量：" + datas.size());
                         if (datas.size() != 0) {
                             recyclerView.setVisibility(View.VISIBLE);
@@ -518,12 +580,29 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     @Override
                     public void onNext(SceneEdit info) {
                         txTitle.setText(info.getData().getRow().get(0).getName());
-                        img_url = info.getData().getRow().get(0).getImg_url();
-                        img_banner = info.getData().getRow().get(0).getImg_banner();
                         img_url1 = info.getData().getRow().get(0).getImg_url();
-                        name_en = info.getData().getRow().get(0).getName_en();
-                        id1 = info.getData().getRow().get(0).getId();
+                        System.out.println(img_url1);
+                        Glide.with(SceneDetailActivity.this)
+                                .load(img_url1)
+                                .override(UiUtils.getDisplaySize(SceneDetailActivity.this)[0], UiUtils.dip2px(217))
+                                .into(banner);
                     }
                 });
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_STORAGE_READ_ACCESS_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

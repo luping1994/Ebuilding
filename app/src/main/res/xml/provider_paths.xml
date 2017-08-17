@@ -9,12 +9,11 @@
         name="beta_external_files_path"
         path="Android/data/" />
     <external-path
-        name="suntrans_photo"
-        path="" />
-    <external-path
         name="files_root"
         path="Android/data/com/pgyersdk" />
     <external-path
         name="external_storage_root"
         path="." />
+
+    <external-path name="my_images" path="Android/data/net.suntrans.ebuilding/files/Pictures" />
 </paths>

@@ -33,7 +33,7 @@ public class StateView extends View {
     private int mEmptyResource;
     private int mRetryResource;
     private int mLoadingResource;
-
+    private View content;
     private View mEmptyView;
     private View mRetryView;
     private View mLoadingView;

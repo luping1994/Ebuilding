@@ -8,17 +8,18 @@ android {
         applicationId "net.suntrans.ebuilding"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 12
-        versionName "1.1.1"
+        versionCode 13
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
+            shrinkResources true
+            zipAlignEnabled true
         }
         debug {
             // 显示Log
@@ -97,6 +98,7 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile 'com.github.yalantis:ucrop:2.2.1'
 }
 repositories {
     mavenCentral()

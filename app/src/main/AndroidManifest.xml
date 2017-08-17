@@ -81,10 +81,22 @@
             android:name=".activity.AddSceneActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.translate" />
-        <activity android:name=".activity.AddSceneChannelActivity" />
-        <activity android:name=".activity.AddFloorActivity" />
-        <activity android:name=".activity.AddAreaActivity"></activity>
-        <activity android:name=".activity.AddAreaChannelActivity" />
+        <activity
+            android:name=".activity.AddSceneChannelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddFloorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddAreaActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.AddAreaChannelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

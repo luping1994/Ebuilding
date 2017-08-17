@@ -1,27 +1,18 @@
 package net.suntrans.ebuilding.activity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
-import android.support.annotation.StringDef;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -29,41 +20,26 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Utils;
-import com.trello.rxlifecycle.android.ActivityEvent;
 
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
-import net.suntrans.ebuilding.bean.Ammeter3Eneity;
-import net.suntrans.ebuilding.bean.EnergyUsedEntity;
+import net.suntrans.ebuilding.bean.Ameter3Entity;
 import net.suntrans.ebuilding.chart.DayAxisValueFormatter;
 import net.suntrans.ebuilding.chart.MyAxisValueFormatter;
 import net.suntrans.ebuilding.views.CompatDatePickerDialog;
 import net.suntrans.ebuilding.views.SegmentedGroup;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-import static android.R.attr.type;
-import static android.os.Build.VERSION_CODES.M;
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
-import static com.pgyersdk.views.b.p;
 
 /**
  * Created by Looney on 2017/7/13.
@@ -87,7 +63,13 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
     private TextView time;
     private SegmentedGroup group;
     private int currentRaidoId = R.id.radio0;
+    private String sno;
+    private List<Ameter3Entity.DataBean.EletricityDayBean> dayDatas;
+    private List<Ameter3Entity.DataBean.EletricityMonthBean> monthDatas;
+    private List<Ameter3Entity.DataBean.EletricityYearBean> yearDatas;
 
+
+    int currentType = DayAxisValueFormatter.DAYS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +94,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
         time = (TextView) findViewById(R.id.time);
-        time.setText(mYear + "-" + mMonth + "-" + mDay);
+        time.setText(mYear + "-" + pad(mMonth) + "-" + mDay);
         mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
 
         group = (SegmentedGroup) findViewById(R.id.segmented_group);
@@ -121,20 +103,19 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio0) {
                     currentRaidoId = R.id.radio0;
-                    initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图",40);
+                    initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图", 40);
                     mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
                 }
                 if (checkedId == R.id.radio1) {
                     currentRaidoId = R.id.radio1;
-                    initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图",600);
+                    initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图", 600);
                     mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
 
                 }
                 if (checkedId == R.id.radio2) {
                     currentRaidoId = R.id.radio2;
-                    initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图",20000);
+                    initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图", 20000);
                     mChartDes.setText(mYear + "年各月份用电量柱形图");
-
 
                 }
             }
@@ -150,6 +131,8 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         initChart("2017年个月用电量柱形图");
         today = (TextView) findViewById(R.id.today);
         yesterday = (TextView) findViewById(R.id.yesterday);
+
+        sno = getIntent().getStringExtra("sno");
     }
 
     private void initToolBar() {
@@ -161,40 +144,14 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
                 finish();
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getData(getIntent().getStringExtra("sno"));
+        getData(getIntent().getStringExtra("sno"), time.getText().toString());
     }
 
-    private void getData(String sno) {
-        RetrofitHelper.getApi().getAmmeter3Detail(sno)
-                .compose(this.<Ammeter3Eneity>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Ammeter3Eneity>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Ammeter3Eneity da) {
-                        today.setText(da.data.today + "kwh");
-                        yesterday.setText(da.data.yesterday + "kwh");
-
-                    }
-                });
-
-    }
 
     private void initChart(String chartName) {
 
@@ -243,6 +200,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         rightAxis.setSpaceTop(15f);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
+
         Legend l = mChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
@@ -259,7 +217,6 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 //        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
 //        mv.setChartView(mChart); // For bounds control
 //        mChart.setMarker(mv); // Set the marker to the chart
-        setData(chartName, 40, DayAxisValueFormatter.DAYS);
 
     }
 
@@ -267,7 +224,8 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 //        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart, type);
 //        XAxis xAxis = mChart.getXAxis();
 //        xAxis.setValueFormatter(xAxisFormatter);
-        setData(chartName, range, type);
+        currentType = type;
+        setData(type);
 
     }
 
@@ -283,7 +241,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
     }
 
 
-    private void setData(String barName, float range, int type) {
+    private void setData(int type) {
         mProgressBar.setVisibility(View.VISIBLE);
         mChart.setVisibility(View.INVISIBLE);
         float start = 1f;
@@ -292,23 +250,41 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
         switch (type) {
             case 1:
+                if (dayDatas == null)
+                    break;
                 for (int i = 1; i <= 24; i++) {
-                    float mult = (range + 1);
-                    float val = (float) (Math.random() * mult);
+                    float val = 0;
+                    for (int j = 0; j < dayDatas.size(); j++) {
+                        if (dayDatas.get(j).getX() == i) {
+                            val = Float.parseFloat(dayDatas.get(j).getY());
+                        }
+                    }
                     yVals1.add(new BarEntry(i, val));
                 }
                 break;
             case 2:
+                if (monthDatas == null)
+                    break;
                 for (int i = 1; i <= 30; i++) {
-                    float mult = (range + 1);
-                    float val = (float) (Math.random() * mult);
+                    float val = 0;
+                    for (int j = 0; j < monthDatas.size(); j++) {
+                        if (monthDatas.get(j).getX() == i) {
+                            val = Float.parseFloat(monthDatas.get(j).getY());
+                        }
+                    }
                     yVals1.add(new BarEntry(i, val));
                 }
                 break;
             case 3:
+                if (yearDatas == null)
+                    break;
                 for (int i = 1; i <= 12; i++) {
-                    float mult = (range + 1);
-                    float val = (float) (Math.random() * mult);
+                    float val = 0;
+                    for (int j = 0; j < yearDatas.size(); j++) {
+                        if (yearDatas.get(j).getX() == i) {
+                            val = Float.parseFloat(yearDatas.get(j).getY());
+                        }
+                    }
                     yVals1.add(new BarEntry(i, val));
                 }
                 break;
@@ -321,7 +297,6 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
             set1.setValues(yVals1);
-
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -344,7 +319,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
             public void run() {
                 showSuccessState();
             }
-        }, 1500);
+        }, 1000);
     }
 
     @Override
@@ -387,6 +362,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
                 break;
             case R.id.rightTitleMore:
                 Intent intent = new Intent();
+                intent.putExtra("sno",sno);
                 intent.setClass(this, AmmeterParameterActivity.class);
                 startActivity(intent);
                 break;
@@ -406,7 +382,8 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
                                     .append(pad(mMonth)).append("-")
                                     .append(pad(mDay))
                     );
-                    checkChartType();
+                    upDateDes();
+                    getData(sno, time.getText().toString());
 
                 }
             };
@@ -428,67 +405,10 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
     }
 
-    private void checkChartType() {
-        if (currentRaidoId == R.id.radio0) {
-            initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图",40);
-            mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
-        }
-        if (currentRaidoId == R.id.radio1) {
-            initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图",600);
-            mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
-
-        }
-        if (currentRaidoId == R.id.radio2) {
-            initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图",20000);
-            mChartDes.setText(mYear + "年各月份用电量柱形图");
-
-
-        }
-    }
-
     public static final int[] MATERIAL_COLORS = {
             rgb("#cc7832")
     };
 
-
-    protected void getData(int currentRaidoId) {
-        String type = "";
-        String date = "";
-        switch (currentRaidoId) {
-            case R.id.radio0:
-                type = "1";
-                date = mYear + "-" + mMonth + "-" + mDay;
-                break;
-            case R.id.radio1:
-                date = mYear + "-" + mMonth;
-                type = "2";
-                break;
-            case R.id.radio2:
-                date = mYear + "";
-                type = "3";
-                break;
-        }
-        RetrofitHelper.getApi().getEnergyUsed(date, type)
-                .compose(this.<EnergyUsedEntity>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<EnergyUsedEntity>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        showErrorState();
-                    }
-
-                    @Override
-                    public void onNext(EnergyUsedEntity energyUsedEntity) {
-
-                    }
-                });
-    }
 
     private void showErrorState() {
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -511,5 +431,47 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
     public void reload(View view) {
 
     }
+
+    private void getData(String sno, String date) {
+        showLoadingState();
+        addSubscription(RetrofitHelper.getApi().getAmmeter3Data(sno, date), new Subscriber<Ameter3Entity>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                showErrorState();
+            }
+
+            @Override
+            public void onNext(Ameter3Entity info) {
+                dayDatas = info.getData().getEletricity_day();
+                monthDatas = info.getData().getEletricity_month();
+                yearDatas = info.getData().getEletricity_year();
+                setData(currentType);
+                showSuccessState();
+            }
+
+
+        });
+
+
+    }
+
+    private void upDateDes() {
+        if (currentRaidoId == R.id.radio0) {
+            mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
+        }
+        if (currentRaidoId == R.id.radio1) {
+            mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
+        }
+        if (currentRaidoId == R.id.radio2) {
+            mChartDes.setText(mYear + "年各月份用电量柱形图");
+        }
+    }
+
 }
 

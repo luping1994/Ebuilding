@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.Ameter3;
+import net.suntrans.ebuilding.bean.AmmeterInfos;
+import net.suntrans.ebuilding.bean.EnergyEntity;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.OffsetDecoration;
 
@@ -19,6 +22,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import rx.Subscriber;
+
+import static android.R.attr.data;
 
 /**
  * Created by Looney on 2017/7/31.
@@ -77,19 +84,19 @@ public class AmmeterParameterActivity extends BasedActivity {
         dictionary.put("ActivePower", "有功功率");
         dictionary.put("ActivePowerU", "W");
         dictionary.put("ActivePowerA", "A相有功功率");
-        dictionary.put("ActivePowerAU", "W");
+        dictionary.put("ActivePowerAU", "kW");
         dictionary.put("ActivePowerB", "B相有功功率");
-        dictionary.put("ActivePowerBU", "W");
+        dictionary.put("ActivePowerBU", "kW");
         dictionary.put("ActivePowerC", "C相有功功率");
-        dictionary.put("ActivePowerCU", "W");
+        dictionary.put("ActivePowerCU", "kW");
         dictionary.put("ReactivePower", "无功功率");
-        dictionary.put("ReactivePowerU", "W");
+        dictionary.put("ReactivePowerU", "kW");
         dictionary.put("ReactivePowerA", "A相无功功率");
-        dictionary.put("ReactivePowerAU", "W");
+        dictionary.put("ReactivePowerAU", "kW");
         dictionary.put("ReactivePowerB", "B相无功功率");
-        dictionary.put("ReactivePowerBU", "W");
+        dictionary.put("ReactivePowerBU", "kW");
         dictionary.put("ReactivePowerC", "C相无功功率");
-        dictionary.put("ReactivePowerCU", "W");
+        dictionary.put("ReactivePowerCU", "kW");
         dictionary.put("PowerFactor", "功率因素");
         dictionary.put("PowerFactorU", "");
         dictionary.put("PowerFactorA", "A相功率因素");
@@ -106,22 +113,46 @@ public class AmmeterParameterActivity extends BasedActivity {
         dictionary.put("EletricityPeakU", "");
         dictionary.put("EletricityFlat", "平");
         dictionary.put("EletricityFlatU", "");
-        dictionary.put("EletricityValley", "");
+        dictionary.put("EletricityValley", "谷");
         dictionary.put("EletricityValleyU", "");
     }
 
     private void getData() {
-        for (int i=0;i<6;i++){
-            Ameter3 ameter3 = new Ameter3();
-            ameter3.name = "VolC";
-            ameter3.nameCH="A相电压";
-            ameter3.unit="V";
-            ameter3.value="100";
-            datas.add(ameter3);
-        }
-        adapter.notifyDataSetChanged();
-        refreshLayout.setRefreshing(false);
+        System.out.println(sno);
+        addSubscription(RetrofitHelper.getApi().getAmmeterInfo(sno), new Subscriber<AmmeterInfos>() {
+            @Override
+            public void onCompleted() {
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onNext(AmmeterInfos data) {
+                System.out.println(data.msg);
+                if (refreshLayout != null) {
+                    refreshLayout.setRefreshing(false);
+                }
+                Map<String, Object> map = data.data;
+                datas.clear();
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    if (entry.getKey().equals("id") || entry.getKey().equals("sno")
+                            || entry.getKey().equals("din") || entry.getKey().equals("user_id")) {
+                        continue;
+                    }
+                    Ameter3 ameter3 = new Ameter3(entry.getKey(), (String) entry.getValue(), dictionary.get(entry.getKey()));
+                    ameter3.unit = dictionary.get(entry.getKey() + "U");
+                    datas.add(ameter3);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -131,6 +162,7 @@ public class AmmeterParameterActivity extends BasedActivity {
     }
 
     private List<Ameter3> datas = new ArrayList<>();
+
     class Myadapter extends RecyclerView.Adapter<Myadapter.ViewHolder> {
         private Activity mActivity;
 
@@ -166,20 +198,20 @@ public class AmmeterParameterActivity extends BasedActivity {
                 itemView.findViewById(R.id.dianliull).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(mActivity, HistroyDataActivity.class);
-                        intent.putExtra("sno", sno);
-                        intent.putExtra("vtype", "3");
-                        intent.putExtra("name",getIntent().getStringExtra("name") );
-                        intent.putExtra("data_type", datas.get(getAdapterPosition()).name);
-                        intent.putExtra("shuoming", dictionary.get(datas.get(getAdapterPosition()).name));
-                        startActivity(intent);
+//                        Intent intent = new Intent(mActivity, HistroyDataActivity.class);
+//                        intent.putExtra("sno", sno);
+//                        intent.putExtra("vtype", "3");
+//                        intent.putExtra("name",getIntent().getStringExtra("name") );
+//                        intent.putExtra("data_type", datas.get(getAdapterPosition()).name);
+//                        intent.putExtra("shuoming", dictionary.get(datas.get(getAdapterPosition()).name));
+//                        startActivity(intent);
                     }
                 });
             }
 
             public void setData(int position) {
                 name.setText(datas.get(position).nameCH);
-                value.setText(datas.get(position).value+datas.get(position).unit);
+                value.setText(datas.get(position).value + datas.get(position).unit);
             }
         }
     }

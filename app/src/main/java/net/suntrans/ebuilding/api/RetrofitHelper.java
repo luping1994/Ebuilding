@@ -23,8 +23,8 @@ public class RetrofitHelper {
 
     private static Api api;
     //public static final String BASE_URL = "http://www.suntrans.net:8956";
-    public static final String BASE_URL = "http://adminiot.suntrans-cloud.com/api/v1/";
-    public static final String BASE_URL2 = "http://adminiot.suntrans-cloud.com/";
+    public static final String BASE_URL = "http://tit.suntrans-cloud.com/api/v1/";
+    public static final String BASE_URL2 = "http://tit.suntrans-cloud.com/";
 
     private static OkHttpClient mOkHttpClient;
 

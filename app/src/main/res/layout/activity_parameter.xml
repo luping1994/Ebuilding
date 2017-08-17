@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="其他参数"
+            android:text="详细参数"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

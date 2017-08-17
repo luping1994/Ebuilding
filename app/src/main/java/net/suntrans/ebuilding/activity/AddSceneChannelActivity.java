@@ -7,8 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.squareup.haha.trove.THash;
-
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AddSceneChannelResult;

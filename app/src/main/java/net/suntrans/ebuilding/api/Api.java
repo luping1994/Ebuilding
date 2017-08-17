@@ -1,6 +1,8 @@
 package net.suntrans.ebuilding.api;
 
 import net.suntrans.ebuilding.bean.AddSceneChannelResult;
+import net.suntrans.ebuilding.bean.Ameter3Entity;
+import net.suntrans.ebuilding.bean.AmmeterInfos;
 import net.suntrans.ebuilding.bean.FreshChannelEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
@@ -119,9 +121,9 @@ public interface Api {
     Observable<ChangedPasswordEntity> commitGusetBook(@Field("contents") String oldPassword);
 
 
-    @FormUrlEncoded
-    @POST("user/info")
-    Observable<EnergyUsedEntity> getEnergyUsed(@Field("time") String date, @Field("type") String type);
+//    @FormUrlEncoded
+//    @POST("user/info")
+//    Observable<EnergyUsedEntity> getEnergyUsed(@Field("time") String date, @Field("type") String type);
 
     @FormUrlEncoded
     @POST("scene/add")
@@ -169,10 +171,26 @@ public interface Api {
     @POST("scene/edit")
     Observable<SceneEdit> getSceneInfo(@Field("id") String id);
 
+    @FormUrlEncoded
+    @POST("energy/more")
+    Observable<AmmeterInfos> getAmmeterInfo(@Field("sno") String sno);
 
 
     @POST("house/freshchannel")
     Observable<FreshChannelEntity> getFreshChannel();
+
+    @FormUrlEncoded
+    @POST("user/profile")
+    Observable<SampleResult> updateProfile(@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("device/updatechannel")
+    Observable<SampleResult> updateChannel(@FieldMap Map<String, String> map);
+
+
+    @FormUrlEncoded
+    @POST("energy/ammeter3")
+    Observable<Ameter3Entity> getAmmeter3Data(@Field("sno") String sno, @Field("date") String date);
 
     @FormUrlEncoded
     @POST("house/add_channel")
@@ -181,8 +199,8 @@ public interface Api {
                                                      @Field("show_sort") String show_sort);
 
     @Multipart
-    @POST("upload/image")
+    @POST("upload/images")
     Observable<UpLoadImageMessage> upload(
-            @Part MultipartBody.Part file);
+            @Part MultipartBody.Part image);
 
 }
