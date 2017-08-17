@@ -371,7 +371,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
         selectedId = id;
         fragment2 = (ChangeNameDialogFragment) getChildFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
         if (fragment2 == null) {
-            fragment2 = ChangeNameDialogFragment.newInstance("");
+            fragment2 = ChangeNameDialogFragment.newInstance("更改设备名称");
             fragment2.setCancelable(true);
             fragment2.setListener(this);
         }

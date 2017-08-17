@@ -222,7 +222,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     private void showChangedNameDialog() {
         fragment2 = (ChangeNameDialogFragment) getSupportFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
         if (fragment2 == null) {
-            fragment2 = ChangeNameDialogFragment.newInstance(id);
+            fragment2 = ChangeNameDialogFragment.newInstance("更改场景名称");
             fragment2.setCancelable(true);
             fragment2.setListener(this);
         }

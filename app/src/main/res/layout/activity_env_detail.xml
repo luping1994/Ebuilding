@@ -90,7 +90,7 @@
 
                 <include layout="@layout/item_sensor" />
 
-                <include layout="@layout/item_sensor" />
+                <!--<include layout="@layout/item_sensor" />-->
 
                 <include layout="@layout/item_sensor" />
 

@@ -83,7 +83,7 @@ public class EnvDetailActivity extends BasedActivity {
             time.setText(data.updated_at);
         }
         for (int i = 0; i < rootLL.getChildCount(); i++) {
-            if (i == 0 || i == 1 || i == 7 || i == 13)
+            if (i == 0 || i == 1 || i == 6 || i == 12)
                 continue;
             initView(i, data);
         }
@@ -136,15 +136,15 @@ public class EnvDetailActivity extends BasedActivity {
                     setPading(data.daqiyaPro, layout_arrow, valueTx);
                 }
                 break;
+//            case 5:
+//                nameTx.setText("人员信息");
+//                valueTx.setVisibility(View.GONE);
+//                layout_arrow.setVisibility(View.INVISIBLE);
+//                if (data != null) {
+//                    evaluateTx.setText(data.getRenyuan().equals("1") ? "有人" : "没人");
+//                }
+//                break;
             case 5:
-                nameTx.setText("人员信息");
-                valueTx.setVisibility(View.GONE);
-                layout_arrow.setVisibility(View.INVISIBLE);
-                if (data != null) {
-                    evaluateTx.setText(data.getRenyuan().equals("1") ? "有人" : "没人");
-                }
-                break;
-            case 6:
                 nameTx.setText("光照强度");
                 standard.setImageResource(R.drawable.standard_light);
                 if (data != null) {
@@ -153,7 +153,7 @@ public class EnvDetailActivity extends BasedActivity {
                     setPading(data.guanzhaoPro, layout_arrow, valueTx);
                 }
                 break;
-            case 8:
+            case 7:
                 nameTx.setText("烟雾");
                 standard.setImageResource(R.drawable.standard_smoke);
                 if (data != null) {
@@ -162,7 +162,7 @@ public class EnvDetailActivity extends BasedActivity {
                     setPading(data.yanwuPro, layout_arrow, valueTx);
                 }
                 break;
-            case 9:
+            case 8:
                 nameTx.setText("甲醛");
                 standard.setImageResource(R.drawable.standard_smoke);
                 if (data != null) {
@@ -171,7 +171,7 @@ public class EnvDetailActivity extends BasedActivity {
                     setPading(data.jiaquanPro, layout_arrow, valueTx);
                 }
                 break;
-            case 10:
+            case 9:
                 nameTx.setText("PM1");
                 standard.setImageResource(R.drawable.bg_standard);
                 if (data != null) {
@@ -180,7 +180,7 @@ public class EnvDetailActivity extends BasedActivity {
                     setPading(data.pm1Pro, layout_arrow, valueTx);
                 }
                 break;
-            case 11:
+            case 10:
                 nameTx.setText("PM2.5");
                 standard.setImageResource(R.drawable.bg_standard);
                 if (data != null) {
@@ -189,7 +189,7 @@ public class EnvDetailActivity extends BasedActivity {
                     setPading(data.pm25Pro, layout_arrow, valueTx);
                 }
                 break;
-            case 12:
+            case 11:
                 nameTx.setText("PM10");
                 standard.setImageResource(R.drawable.bg_standard);
                 if (data != null) {
@@ -214,7 +214,7 @@ public class EnvDetailActivity extends BasedActivity {
 //                    evaluateTx.setText(data.yEva);
 //                }
 //                break;
-            case 14:
+            case 13:
                 valueTx.setVisibility(View.GONE);
                 layout_arrow.setVisibility(View.GONE);
                 standard.setVisibility(View.GONE);
@@ -224,7 +224,7 @@ public class EnvDetailActivity extends BasedActivity {
                     evaluateTx.setText(data.zEva);
                 }
                 break;
-            case 17:
+            case 16:
 //                valueTx.setVisibility(View.GONE);
 //                layout_arrow.setVisibility(View.INVISIBLE);
 //                nameTx.setText("振动强度");

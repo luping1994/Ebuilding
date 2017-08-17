@@ -26,6 +26,7 @@ import net.suntrans.ebuilding.activity.ChangePassActivity;
 import net.suntrans.ebuilding.activity.DeviceManagerActivity;
 import net.suntrans.ebuilding.activity.LoginActivity;
 import net.suntrans.ebuilding.activity.QuestionActivity;
+import net.suntrans.ebuilding.activity.YichangActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.UserInfo;
@@ -50,6 +51,8 @@ import rx.schedulers.Schedulers;
 public class PerCenFragment extends RxFragment implements View.OnClickListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
     TextView name;
     private ImageView avatar;
+    private TextView bagde;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
             params.height = statusBarHeight;
             statusBar.setLayoutParams(params);
             statusBar.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             statusBar.setVisibility(View.GONE);
 
         }
@@ -72,6 +75,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setListener(view);
         avatar = (ImageView) view.findViewById(R.id.img);
+        bagde = (TextView) view.findViewById(R.id.bagde);
     }
 
     private void setListener(View view) {
@@ -82,6 +86,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
         view.findViewById(R.id.RLQues).setOnClickListener(this);
         view.findViewById(R.id.loginOut).setOnClickListener(this);
         view.findViewById(R.id.titleHeader).setOnClickListener(this);
+        view.findViewById(R.id.RLtishi).setOnClickListener(this);
 
         name = (TextView) view.findViewById(R.id.name);
     }
@@ -106,6 +111,10 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                 startActivity(new Intent(getActivity(), AboutActivity.class));
 
                 break;
+            case R.id.RLtishi:
+                startActivity(new Intent(getActivity(), YichangActivity.class));
+
+                break;
             case R.id.loginOut:
                 new AlertDialog.Builder(getContext())
                         .setMessage("是否退出当前账号?")
@@ -113,12 +122,12 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 App.getSharedPreferences().edit().clear().commit();
-                                ((MainActivity)getActivity()).killAll();
+                                ((MainActivity) getActivity()).killAll();
                                 UiUtils.showToast("已退出当前账号");
                                 startActivity(new Intent(getActivity(), LoginActivity.class));
 
                             }
-                        }).setNegativeButton("取消",null).create().show();
+                        }).setNegativeButton("取消", null).create().show();
                 break;
             case R.id.titleHeader:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -139,6 +148,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                 break;
         }
     }
+
     private String[] items2 = {"更改名称", "更换头像"};
 
     @Override
@@ -168,15 +178,15 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                     public void onNext(UserInfo info) {
 
                         if (info != null) {
-                            if (info.code==200) {
+                            if (info.code == 200) {
                                 name.setText(info.data.nickname);
                                 App.getSharedPreferences().edit().putString("user_id", info.data.id)
-                                        .putString("nikename",info.data.nickname)
-                                        .putString("touxiang",info.data.avatar_url)
+                                        .putString("nikename", info.data.nickname)
+                                        .putString("touxiang", info.data.avatar_url)
                                         .commit();
-                                Glide.with(getContext())
-                                        .load("http://tit.suntrans-cloud.com"+info.data.avatar_url)
-                                        .override(UiUtils.dip2px(33),UiUtils.dip2px(33))
+                                Glide.with(getActivity())
+                                        .load("http://tit.suntrans-cloud.com" + info.data.avatar_url)
+                                        .override(UiUtils.dip2px(33), UiUtils.dip2px(33))
                                         .placeholder(R.drawable.user_white)
                                         .into(avatar);
                             } else {
@@ -190,10 +200,11 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
 
 
     ChangeNameDialogFragment fragment2;
+
     private void showChangedNameDialog() {
         fragment2 = (ChangeNameDialogFragment) getChildFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
         if (fragment2 == null) {
-            fragment2 = ChangeNameDialogFragment.newInstance("");
+            fragment2 = ChangeNameDialogFragment.newInstance("更改昵称");
             fragment2.setCancelable(true);
             fragment2.setListener(this);
         }
@@ -201,6 +212,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
     }
 
     UpLoadImageFragment fragment;
+
     private void showBottomSheet() {
         fragment = (UpLoadImageFragment) getChildFragmentManager().findFragmentByTag("bottomSheetDialog");
         if (fragment == null) {
@@ -214,15 +226,16 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
 
     @Override
     public void changeName(String name) {
-        upDate(name,null);
+        upDate(name, null);
     }
 
     @Override
     public void uploadImageSuccess(String path) {
-        upDate(null,path);
+        upDate(null, path);
     }
 
     private LoadingDialog dialog;
+
     private void upDate(String name, String path) {
         if (dialog == null) {
             dialog = new LoadingDialog(getContext());
@@ -235,8 +248,8 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
         if (!TextUtils.isEmpty(path)) {
             map.put("avatar_url", path);
         }
-        LogUtil.i("percenfragment:"+path);
-        ((MainActivity)getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new Subscriber<SampleResult>() {
+        LogUtil.i("percenfragment:" + path);
+        ((MainActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new Subscriber<SampleResult>() {
             @Override
             public void onCompleted() {
 

@@ -30,12 +30,13 @@ import rx.schedulers.Schedulers;
 
 public class ChangeNameDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
-    private String id;
+    private String title;
     private TextView name;
+    private TextView txTitle;
 
-    public static ChangeNameDialogFragment newInstance(String id){
+    public static ChangeNameDialogFragment newInstance(String title){
         Bundle bundle = new Bundle();
-        bundle.putString("id",id);
+        bundle.putString("title",title);
         ChangeNameDialogFragment dialogFragment = new ChangeNameDialogFragment();
         dialogFragment.setArguments(bundle);
         return dialogFragment;
@@ -48,10 +49,12 @@ public class ChangeNameDialogFragment extends BottomSheetDialogFragment implemen
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        id = getArguments().getString("id");
+        title = getArguments().getString("title");
         view.findViewById(R.id.queding).setOnClickListener(this);
          view.findViewById(R.id.qvxiao).setOnClickListener(this);
         name = (TextView) view.findViewById(R.id.name);
+        txTitle = (TextView) view.findViewById(R.id.title);
+        txTitle.setText(title);
     }
 
     @Override

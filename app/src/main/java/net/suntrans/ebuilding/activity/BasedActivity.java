@@ -1,6 +1,7 @@
 package net.suntrans.ebuilding.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -149,7 +150,6 @@ public class BasedActivity extends RxAppCompatActivity implements SlidingPaneLay
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
-            overridePendingTransition(android.support.v7.appcompat.R.anim.abc_popup_enter, android.support.v7.appcompat.R.anim.abc_popup_exit);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -213,4 +213,9 @@ public class BasedActivity extends RxAppCompatActivity implements SlidingPaneLay
     }
     protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
     protected static final int REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 102;
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+    }
 }
