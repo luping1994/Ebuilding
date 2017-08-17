@@ -80,7 +80,6 @@ public class EnvDetailActivity extends BasedActivity {
 
     private void initView(SensusEntity.SixDetailData data) {
         if (data != null) {
-
             time.setText(data.updated_at);
         }
         for (int i = 0; i < rootLL.getChildCount(); i++) {

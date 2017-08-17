@@ -93,7 +93,7 @@ public class EnvFragment extends BasedFragment {
         @Override
         protected void convert(BaseViewHolder helper, SensusEntity.SixInfo item) {
             helper.setText(R.id.name, item.name)
-                    .setText(R.id.isOnline, item.is_online.equals("1") ? "在线" : "不在线")
+                    .setText(R.id.isOnline, item.is_online.equals("1") ? "" : "不在线")
                     .setText(R.id.wendu, item.sub.getWendu() + "℃")
                     .setText(R.id.shidu, item.sub.getShidu() + "%")
                     .setText(R.id.pm25, item.sub.getPm25())

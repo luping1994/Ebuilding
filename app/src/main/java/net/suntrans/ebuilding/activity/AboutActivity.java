@@ -20,18 +20,7 @@ public class AboutActivity extends BasedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        guangwang = (TextView) findViewById(R.id.guangwang);
-        guangwang. getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        guangwang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("http://www.suntrans.net/");
-                intent.setData(content_url);
-                startActivity(intent);
-            }
-        });
+
         findViewById(R.id.fanhui).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,10 +29,28 @@ public class AboutActivity extends BasedActivity {
         });
         TextView textView = (TextView)findViewById(R.id.version);
         textView .setText("版本号:"+ BuildConfig.VERSION_NAME);
+        findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                share("分享智能配电");
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    public  void share(String desc)
+    {
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,"");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,  "智能配电app下载地址:https://www.pgyer.com/5xcP");
+        shareIntent.setType("text/plain");
+       startActivity(Intent.createChooser(shareIntent, desc));
+    }
+
+
 }

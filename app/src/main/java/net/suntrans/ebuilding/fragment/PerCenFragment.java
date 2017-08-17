@@ -50,7 +50,6 @@ import rx.schedulers.Schedulers;
 public class PerCenFragment extends RxFragment implements View.OnClickListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
     TextView name;
     private ImageView avatar;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -171,7 +170,10 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                         if (info != null) {
                             if (info.code==200) {
                                 name.setText(info.data.nickname);
-                                App.getSharedPreferences().edit().putString("user_id", info.data.id).commit();
+                                App.getSharedPreferences().edit().putString("user_id", info.data.id)
+                                        .putString("nikename",info.data.nickname)
+                                        .putString("touxiang",info.data.avatar_url)
+                                        .commit();
                                 Glide.with(getContext())
                                         .load("http://tit.suntrans-cloud.com"+info.data.avatar_url)
                                         .override(UiUtils.dip2px(33),UiUtils.dip2px(33))

@@ -206,7 +206,10 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
 
                         if (info != null) {
                             if (info.code == 200) {
-                                App.getSharedPreferences().edit().putString("user_id", info.data.id).commit();
+                                App.getSharedPreferences().edit().putString("user_id", info.data.id)
+                                        .putString("touxiang",info.data.avatar_url)
+                                        .putString("nikename",info.data.nickname)
+                                        .commit();
                                 Glide.with(getContext())
                                         .load(info.data.img_url.get(0))
                                         .placeholder(R.drawable.banner_xiawucha)

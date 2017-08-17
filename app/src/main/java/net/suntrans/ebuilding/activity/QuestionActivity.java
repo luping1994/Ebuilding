@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle.android.ActivityEvent;
 
 import net.suntrans.ebuilding.App;
@@ -47,6 +50,17 @@ public class QuestionActivity extends BasedActivity {
                 finish();
             }
         });
+        ImageView touxiang  = (ImageView) findViewById(R.id.img);
+        TextView name = (TextView) findViewById(R.id.name);
+        String name1 = App.getSharedPreferences().getString("nikename","TIT餐厅");
+        name.setText(name1);
+        String imgurl = App.getSharedPreferences().getString("touxiang","-1");
+        Glide.with(this)
+                .load("http://tit.suntrans-cloud.com"+imgurl)
+                .crossFade()
+                .override(UiUtils.dip2px(35),UiUtils.dip2px(35))
+                .placeholder(R.drawable.user_white)
+                .into(touxiang);
     }
 
     public void changePass(View view) {

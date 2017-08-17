@@ -32,69 +32,84 @@
             android:text="关于"
             android:textColor="@color/white"
             android:textSize="20sp" />
+        <RelativeLayout
+            android:id="@+id/share"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_alignParentRight="true"
+            android:layout_width="45dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:background="#e0e0e0"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#e0e0e0"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_marginTop="100dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp">
+
             <ImageView
                 android:id="@+id/rl"
-                android:layout_width="75dp"
-                android:src="@mipmap/ic_launcher"
-                android:layout_height="75dp"
-                android:scaleType="fitXY"
-                android:layout_centerInParent="true">
-
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/logo2">
             </ImageView>
         </RelativeLayout>
+
         <RelativeLayout
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
 
             <TextView
                 android:id="@+id/appName"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:text="@string/app_name"
-                android:textColor="@color/black"
-                android:layout_height="30dp" />
+                android:textColor="@color/black" />
 
             <TextView
-                android:layout_below="@+id/appName"
                 android:id="@+id/version"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/appName"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="当前版本 1.0.0"
-                />
+                android:text="当前版本 1.0.0" />
+
             <TextView
-                android:layout_marginBottom="4dp"
+
                 android:id="@+id/guangwang"
-                android:autoLink="all"
-                android:textColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/name1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:autoLink="phone"
                 android:gravity="center"
-                android:text="官网"
+                android:text="服务热线020-6103-2072"
+                android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
+
             <TextView
-                android:paddingBottom="8dp"
                 android:id="@+id/name1"
-                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:gravity="center"
+                android:paddingBottom="8dp"
                 android:text="@string/company_reserved"
                 android:textSize="12sp" />
         </RelativeLayout>
