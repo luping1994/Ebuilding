@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -35,6 +36,7 @@ import net.suntrans.ebuilding.fragment.din.UpLoadImageFragment;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.ebuilding.utils.UiUtils;
+import net.suntrans.ebuilding.views.GlideRoundTransform;
 import net.suntrans.ebuilding.views.LoadingDialog;
 
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
     TextView name;
     private ImageView avatar;
     private TextView bagde;
-
+    private RequestManager glideRequest;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
         setListener(view);
         avatar = (ImageView) view.findViewById(R.id.img);
         bagde = (TextView) view.findViewById(R.id.bagde);
+        glideRequest = Glide.with(this);
+
     }
 
     private void setListener(View view) {
@@ -184,8 +188,10 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                                         .putString("nikename", info.data.nickname)
                                         .putString("touxiang", info.data.avatar_url)
                                         .commit();
-                                Glide.with(getActivity())
+                                LogUtil.i("http://tit.suntrans-cloud.com" + info.data.avatar_url);
+                                glideRequest
                                         .load("http://tit.suntrans-cloud.com" + info.data.avatar_url)
+                                        .transform(new GlideRoundTransform(getActivity(),UiUtils.dip2px(16)))
                                         .override(UiUtils.dip2px(33), UiUtils.dip2px(33))
                                         .placeholder(R.drawable.user_white)
                                         .into(avatar);

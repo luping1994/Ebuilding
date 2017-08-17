@@ -20,6 +20,7 @@ import net.suntrans.ebuilding.bean.ChangedPasswordEntity;
 import net.suntrans.ebuilding.test.post;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.EditView;
+import net.suntrans.ebuilding.views.GlideRoundTransform;
 import net.suntrans.ebuilding.views.LoadingDialog;
 
 import retrofit2.http.POST;
@@ -62,6 +63,7 @@ public class ChangePassActivity extends BasedActivity {
         String imgurl = App.getSharedPreferences().getString("touxiang","-1");
         Glide.with(this)
                 .load("http://tit.suntrans-cloud.com"+imgurl)
+                .transform(new GlideRoundTransform(this,UiUtils.dip2px(17)))
                 .crossFade()
                 .override(UiUtils.dip2px(35),UiUtils.dip2px(35))
                 .placeholder(R.drawable.user_white)

@@ -37,15 +37,13 @@
             android:layout_marginTop="56dp"
             android:background="@drawable/bg_card">
 
-            <net.suntrans.ebuilding.views.CircleImageView
+            <ImageView
                 android:id="@+id/img"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_marginLeft="28dp"
                 android:layout_marginTop="17dp"
-                android:src="@drawable/user_white"
-                app:border_color2="#f1f1f1"
-                app:border_width="1dp" />
+                />
 
             <TextView
                 android:id="@+id/name"
