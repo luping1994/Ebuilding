@@ -134,14 +134,18 @@ public class SceneFragment extends RxFragment {
             public void onError(Throwable e) {
                 e.printStackTrace();
                 stateView.showRetry();
+                recyclerView.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onNext(SceneEntity result) {
                 if (result.data.lists==null||result.data.lists.size()==0){
                     stateView.showEmpty();
+                    recyclerView.setVisibility(View.INVISIBLE);
                     return;
                 }
+                recyclerView.setVisibility(View.VISIBLE);
+
                 stateView.showContent();
                 datas.clear();
                 datas.addAll(result.data.lists);

@@ -81,6 +81,7 @@ class AddFloorActivity : BasedActivity(), DialogInterface.OnDismissListener {
                         dialog?.dismiss()
                         if (addResult.code == 200) {
                             UiUtils.showToast("添加成功")
+                            finish()
                         } else {
                             UiUtils.showToast("添加失败")
                         }

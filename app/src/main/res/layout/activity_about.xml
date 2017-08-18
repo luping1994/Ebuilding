@@ -99,7 +99,7 @@
                 android:layout_marginBottom="4dp"
                 android:autoLink="phone"
                 android:gravity="center"
-                android:text="服务热线020-6103-2072"
+                android:text="服务热线137-1052-2185"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
 

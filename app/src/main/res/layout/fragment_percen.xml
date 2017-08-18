@@ -46,6 +46,9 @@
                 />
 
             <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxLength="8"
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
@@ -61,7 +64,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="298dp"
+            android:layout_height="305dp"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="124dp"
@@ -215,7 +218,7 @@
                     android:layout_height="18dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="18dp"
-                    android:src="@drawable/icon_user_about" />
+                    android:src="@drawable/ic_user_tishi" />
 
                 <TextView
                     android:id="@+id/tishi"

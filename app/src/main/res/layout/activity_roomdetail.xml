@@ -30,12 +30,15 @@
 
 
         <TextView
+            android:ellipsize="end"
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:fitsSystemWindows="true"
             android:gravity="center"
+            android:maxLength="8"
+            android:maxLines="1"
             android:text="wucan"
             android:textColor="@color/white"
             android:textSize="20sp" />

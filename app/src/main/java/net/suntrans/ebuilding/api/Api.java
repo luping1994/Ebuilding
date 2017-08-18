@@ -22,6 +22,7 @@ import net.suntrans.ebuilding.bean.SceneEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.bean.UpLoadImageMessage;
 import net.suntrans.ebuilding.bean.UserInfo;
+import net.suntrans.ebuilding.bean.YichangEntity;
 
 import java.util.Map;
 
@@ -202,5 +203,12 @@ public interface Api {
     @POST("upload/images")
     Observable<UpLoadImageMessage> upload(
             @Part MultipartBody.Part image);
+
+    @POST("device/abnormal")
+    Observable<YichangEntity> getYichang();
+
+    @FormUrlEncoded
+    @POST("house/delete")
+    Observable<SampleResult> deleteFloor(@Field("id") String id);
 
 }

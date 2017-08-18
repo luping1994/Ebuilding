@@ -23,9 +23,12 @@
             android:orientation="horizontal">
 
             <TextView
+                android:maxLength="10"
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="1楼餐厅"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
@@ -40,23 +43,23 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="52dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_centerVertical="true"
                 android:layout_width="7dp"
                 android:layout_height="16dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="19dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_wendu" />
 
             <TextView
                 android:id="@+id/wendu"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="35dp"
                 android:text="27.35℃"
@@ -64,30 +67,36 @@
                 android:textSize="@dimen/textNormalSize" />
 
             <ImageView
-                android:layout_centerVertical="true"
                 android:layout_width="9dp"
                 android:layout_height="16dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="105dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_shidu" />
+
             <TextView
+                android:maxLength="6"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:id="@+id/shidu"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginLeft="123dp"
                 android:text="52%RH"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textNormalSize" />
-            <ImageView
-                android:layout_centerVertical="true"
 
+            <ImageView
                 android:layout_width="17dp"
                 android:layout_height="9dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="196dp"
                 android:scaleType="center"
                 android:src="@drawable/icon_pm" />
 
             <TextView
+                android:maxLines="4"
+                android:ellipsize="end"
                 android:id="@+id/pm25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,14 +106,17 @@
                 android:textSize="@dimen/textNormalSize" />
 
             <ImageView
-                android:layout_centerVertical="true"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="265dp"
                 android:scaleType="center"
                 android:src="@drawable/icon_guangzhao" />
 
             <TextView
+                android:ellipsize="end"
+                android:maxLength="3"
+                android:maxLines="1"
                 android:id="@+id/guanzhao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

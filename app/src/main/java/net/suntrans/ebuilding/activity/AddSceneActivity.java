@@ -92,6 +92,7 @@ public class AddSceneActivity extends BasedActivity implements DialogInterface.O
                         dialog.dismiss();
                         if (addResult.getCode()==200){
                             UiUtils.showToast("添加成功");
+                            finish();
                         }else {
                             UiUtils.showToast("添加失败");
                         }

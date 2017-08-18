@@ -9,17 +9,27 @@ import android.support.v7.widget.Toolbar;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.YichangEntity;
+import net.suntrans.ebuilding.utils.UiUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import rx.Subscriber;
+
+import static net.suntrans.ebuilding.R.id.recyclerView;
 
 /**
  * Created by Looney on 2017/8/17.
  */
 
 public class YichangActivity extends BasedActivity{
-    private List<YichangEntity> datas;
+    private List<YichangEntity.DataBean.ListsBean> datas;
+    private MyAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +39,9 @@ public class YichangActivity extends BasedActivity{
     }
 
     private void init() {
+        datas = new ArrayList<>();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        MyAdapter adapter = new MyAdapter(R.layout.item_yicahng,datas);
+        adapter = new MyAdapter(R.layout.item_yicahng,datas);
         recyclerView.setAdapter(adapter);
     }
 
@@ -43,15 +54,16 @@ public class YichangActivity extends BasedActivity{
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
     }
 
-    class MyAdapter extends BaseQuickAdapter<YichangEntity,BaseViewHolder>{
+    class MyAdapter extends BaseQuickAdapter<YichangEntity.DataBean.ListsBean,BaseViewHolder>{
 
-        public MyAdapter(@LayoutRes int layoutResId, @Nullable List<YichangEntity> data) {
+        public MyAdapter(@LayoutRes int layoutResId, @Nullable List<YichangEntity.DataBean.ListsBean> data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, YichangEntity item) {
-
+        protected void convert(BaseViewHolder helper, YichangEntity.DataBean.ListsBean item) {
+            helper.setText(R.id.msg,""+item.getName()+",异常类型:"+item.getMessage())
+                    .setText(R.id.time,item.getCreated_at());
         }
     }
 
@@ -62,5 +74,35 @@ public class YichangActivity extends BasedActivity{
     }
 
     private void getdata() {
+        addSubscription(RetrofitHelper.getApi().getYichang(), new Subscriber<YichangEntity>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                    e.printStackTrace();
+                UiUtils.showToast("服务器错误");
+            }
+
+            @Override
+            public void onNext(YichangEntity o) {
+                if (o.getCode()==200){
+                    List<YichangEntity.DataBean.ListsBean> lists = o.getData().getLists();
+                    datas.clear();
+                    datas.addAll(lists);
+                    adapter.notifyDataSetChanged();
+                }else {
+                    UiUtils.showToast("获取数据失败");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        App.getSharedPreferences().edit().putInt("yichangCount",datas.size()).commit();
+        super.onStop();
     }
 }

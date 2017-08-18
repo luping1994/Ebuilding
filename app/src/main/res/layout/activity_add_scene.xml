@@ -102,6 +102,7 @@
         android:orientation="vertical">
 
         <net.suntrans.ebuilding.views.EditView
+            android:maxLength="8"
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -117,6 +118,7 @@
             android:background="@color/devisionColor" />
 
         <net.suntrans.ebuilding.views.EditView
+            android:maxLength="26"
             android:id="@+id/nameEn"
             android:layout_width="match_parent"
             android:layout_height="48dp"

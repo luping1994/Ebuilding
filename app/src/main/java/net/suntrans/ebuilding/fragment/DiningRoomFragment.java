@@ -7,11 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -24,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -32,7 +27,6 @@ import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.MainActivity;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.AddSceneActivity;
-import net.suntrans.ebuilding.adapter.DiningPagerAdapter;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.UserInfo;
@@ -51,11 +45,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static android.support.design.widget.TabLayout.GRAVITY_FILL;
-import static android.support.design.widget.TabLayout.MODE_FIXED;
-import static net.suntrans.ebuilding.R.id.banner;
-import static net.suntrans.ebuilding.R.id.tabLayout;
-
 /**
  * Created by Looney on 2017/7/20.
  */
@@ -64,7 +53,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
 
     private ImageView menu;
     private ImageView banner;
-    private String[] items2 = { "更换背景"};
+    private String[] items2 = {"更换背景"};
 
     @Nullable
     @Override
@@ -183,7 +172,6 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
     }
 
 
-
     private void getInfo() {
         RetrofitHelper.getApi()
                 .getUserInfo()
@@ -207,15 +195,15 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                         if (info != null) {
                             if (info.code == 200) {
                                 App.getSharedPreferences().edit().putString("user_id", info.data.id)
-                                        .putString("touxiang",info.data.avatar_url)
-                                        .putString("nikename",info.data.nickname)
+                                        .putString("touxiang", info.data.avatar_url)
+                                        .putString("nikename", info.data.nickname)
                                         .commit();
-                                Glide.with(getContext())
-                                        .load(info.data.img_url.get(0))
-                                        .placeholder(R.drawable.banner_xiawucha)
-                                        .crossFade()
-                                        .override(UiUtils.getDisplaySize(getContext())[0], UiUtils.dip2px(217))
-                                        .into(banner);
+//                                Glide.with(getContext())
+//                                        .load(info.data.img_url.get(0))
+//                                        .placeholder(R.drawable.banner_xiawucha)
+//                                        .crossFade()
+//                                        .override(UiUtils.getDisplaySize(getContext())[0], UiUtils.dip2px(217))
+//                                        .into(banner);
                             } else {
 
                             }
@@ -300,6 +288,53 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                 }
             }
         });
+    }
+
+    private void deleteFloor(final int id) {
+//        new AlertDialog.Builder(getContext())
+//                .setMessage("是否删除该楼层?")
+//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        delete(id);
+//                    }
+//                }).setNegativeButton("取消",null).create().show();
+//
+//    }
+
+//    private void delete(int id){
+//        RetrofitHelper.getApi().deleteFloor(id+"")
+//                .compose(this.<SampleResult>bindToLifecycle())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<SampleResult>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                        UiUtils.showToast(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(SampleResult result) {
+//                        if (result.getCode() == 200) {
+//                            new AlertDialog.Builder(getContext())
+//                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            getActivity().finish();
+//                                        }
+//                                    }).setMessage("删除成功")
+//                                    .create().show();
+//                        }else {
+//                            UiUtils.showToast("删除失败");
+//                        }
+//                    }
+//                });
     }
 
 

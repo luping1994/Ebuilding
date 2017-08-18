@@ -1,10 +1,12 @@
 package net.suntrans.ebuilding.fragment
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
+import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import net.suntrans.ebuilding.activity.AreaDetailActivity
 import net.suntrans.ebuilding.adapter.AreaAdapter
 import net.suntrans.ebuilding.api.RetrofitHelper
 import net.suntrans.ebuilding.bean.AreaEntity
+import net.suntrans.ebuilding.bean.SampleResult
 import net.suntrans.ebuilding.fragment.base.BasedFragment
 import net.suntrans.ebuilding.utils.LogUtil
 import net.suntrans.ebuilding.utils.StatusBarCompat
@@ -63,6 +66,15 @@ class AreaFragment : BasedFragment() {
         expandableListView!!.divider = null
         add = view!!.findViewById(R.id.add) as ImageView
         add!!.setOnClickListener { v -> showPopupMenu() }
+        expandableListView!!.setOnItemLongClickListener { parent, view, position, id ->
+            if (view.getTag(R.id.name) is AreaAdapter.GroupHolder){
+
+                println("我被长按了,"+view.getTag(R.id.root))
+                deleteFloor(datas!!.get(view.getTag(R.id.root) as Int).id)
+            }
+
+            true
+        }
         expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
             val intent = Intent(activity, AreaDetailActivity::class.java)
             intent.putExtra("id", datas!![groupPosition].sub[childPosition].id.toString() + "")
@@ -145,7 +157,7 @@ class AreaFragment : BasedFragment() {
                 startActivity(intent)
                 mPopupWindow!!.dismiss()
             }
-            view . findViewById (R.id.addArea).setOnClickListener {
+            view.findViewById(R.id.addArea).setOnClickListener {
                 val intent = Intent(activity, AddAreaActivity::class.java)
                 intent.putExtra("type", "addFloor")
                 startActivity(intent)
@@ -171,5 +183,40 @@ class AreaFragment : BasedFragment() {
         }
 
     }
+
+    private fun deleteFloor(id: Int) {
+        AlertDialog.Builder(context)
+                .setMessage("是否删除该楼层?")
+                .setPositiveButton("确定") { dialog, which -> delete(id) }.setNegativeButton("取消", null).create().show()
+
+    }
+
+    private fun delete(id: Int) {
+        RetrofitHelper.getApi().deleteFloor(id.toString() + "")
+                .compose(this.bindToLifecycle<SampleResult>())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Subscriber<SampleResult>() {
+                    override fun onCompleted() {
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        UiUtils.showToast(e.message)
+                    }
+
+                    override fun onNext(result: SampleResult) {
+                        if (result.code == 200) {
+                            AlertDialog.Builder(context)
+                                    .setPositiveButton("确定") { dialog, which -> getAreaData(1) }.setMessage("删除成功")
+                                    .create().show()
+                        } else {
+                            UiUtils.showToast("删除失败")
+                        }
+                    }
+                })
+    }
+
 
 }

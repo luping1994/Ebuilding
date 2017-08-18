@@ -31,6 +31,9 @@ import net.suntrans.ebuilding.activity.YichangActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.UserInfo;
+import net.suntrans.ebuilding.bean.YichangEntity;
+import net.suntrans.ebuilding.fragment.base.BasedFragment;
+import net.suntrans.ebuilding.fragment.base.LazyLoadFragment;
 import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
 import net.suntrans.ebuilding.fragment.din.UpLoadImageFragment;
 import net.suntrans.ebuilding.utils.LogUtil;
@@ -40,21 +43,27 @@ import net.suntrans.ebuilding.views.GlideRoundTransform;
 import net.suntrans.ebuilding.views.LoadingDialog;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.R.attr.y;
+import static net.suntrans.ebuilding.utils.UiUtils.getContext;
+
 /**
  * Created by Looney on 2017/7/20.
  */
 
-public class PerCenFragment extends RxFragment implements View.OnClickListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
+public class PerCenFragment extends LazyLoadFragment implements View.OnClickListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
     TextView name;
     private ImageView avatar;
     private TextView bagde;
     private RequestManager glideRequest;
+    private List<YichangEntity.DataBean.ListsBean> lists;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -159,6 +168,23 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
     public void onResume() {
         super.onResume();
         getInfo();
+        getBadgeCount();
+    }
+
+    private void checkBadge() {
+        int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
+        if (lists==null){
+            bagde.setVisibility(View.INVISIBLE);
+
+        }else {
+            if (lists.size()!=yichangCount){
+                bagde.setVisibility(View.VISIBLE);
+            }else {
+                bagde.setVisibility(View.INVISIBLE);
+
+            }
+        }
+
     }
 
     private void getInfo() {
@@ -279,5 +305,39 @@ public class PerCenFragment extends RxFragment implements View.OnClickListener, 
                 }
             }
         });
+    }
+
+    private void getBadgeCount() {
+        ((MainActivity) getActivity()).   addSubscription(RetrofitHelper.getApi().getYichang(), new Subscriber<YichangEntity>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(YichangEntity o) {
+                if (o.getCode()==200){
+                    lists = o.getData().getLists();
+                    int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
+                    if (lists.size()!=yichangCount){
+                        bagde.setVisibility(View.VISIBLE);
+                    }else {
+                        bagde.setVisibility(View.INVISIBLE);
+
+                    }
+                }else {
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        checkBadge();
     }
 }

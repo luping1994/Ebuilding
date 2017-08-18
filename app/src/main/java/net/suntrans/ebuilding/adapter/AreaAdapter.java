@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AreaEntity;
 
 import java.util.List;
@@ -71,11 +72,13 @@ public class AreaAdapter extends BaseExpandableListAdapter {
         GroupHolder groupHolder = null;
         if (convertView != null) {
             view = convertView;
-            groupHolder = (GroupHolder) view.getTag();
+            groupHolder = (GroupHolder) view.getTag(R.id.name);
+            view.setTag(R.id.root,groupPosition);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_group_area, parent, false);
             groupHolder = new GroupHolder(view);
-            view.setTag(groupHolder);
+            view.setTag(R.id.name,groupHolder);
+            view.setTag(R.id.root,groupPosition);
         }
         groupHolder.setData(groupPosition);
         return view;
@@ -108,15 +111,17 @@ public class AreaAdapter extends BaseExpandableListAdapter {
         ImageView mImage;
         String[] colors = new String[]{"#f99e5b", "#d3e4ad", "#94c9d6"};
         TextView count;
+        private final View root;
 
         public GroupHolder(View view) {
             mName = (TextView) view.findViewById(R.id.name);
             mImage = (ImageView) view.findViewById(R.id.imageView);
 
-
+            root = view.findViewById(R.id.root);
         }
 
         public void setData(final int groupPosition) {
+
             mName.setText(datas.get(groupPosition).name);
 //            mImage.setBackgroundColor(Color.parseColor(colors[groupPosition % 3]));
 //            count.setText(datas.get(groupPosition).sub.size() + "");
@@ -143,15 +148,16 @@ public class AreaAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    public void setOnItemClickListener(AreaAdapter.onItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public void setOnGroupLongClickListener(AreaAdapter.onParentLongClickListener listener) {
+        this.listener = listener;
     }
 
-    private onItemClickListener onItemClickListener;
+    private onParentLongClickListener listener;
 
-    public interface onItemClickListener {
-        void onParentChekBoxCheckedListener(CheckBox checkBox);
+    public interface onParentLongClickListener {
+        void onLongParentClick(int parentPosition);
 
-        void onChildrenChekBoxCheckedListener(CheckBox checkBox);
     }
+
+
 }

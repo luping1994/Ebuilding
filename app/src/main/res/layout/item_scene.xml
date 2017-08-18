@@ -25,16 +25,18 @@
             android:src="@drawable/ic_wucang" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="75.5dp"
-            android:minWidth="60dp"
             android:orientation="vertical">
 
             <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center"
                 android:id="@+id/sceneName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="午餐模式"
                 android:textColor="@color/colorPrimary"
@@ -47,6 +49,8 @@
                 android:background="@color/colorPrimary" />
 
             <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:id="@+id/sceneNameEn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

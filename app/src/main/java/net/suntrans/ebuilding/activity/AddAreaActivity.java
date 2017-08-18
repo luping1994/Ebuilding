@@ -171,6 +171,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                         dialog.dismiss();
                         if (addResult.getCode() == 200) {
                             UiUtils.showToast("添加成功");
+                            finish();
                         } else {
                             UiUtils.showToast("添加失败");
                         }
