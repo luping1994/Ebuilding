@@ -62,6 +62,8 @@ public class EnvFragment extends BasedFragment {
             }
         });
         adapter = new EnvAdapter(R.layout.item_env, datas);
+        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        adapter.addFooterView(getFooterView());
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -77,6 +79,12 @@ public class EnvFragment extends BasedFragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+    private View getFooterView() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.footer, null, false);
+        return view;
+    }
+
 
     @Override
     public int getLayoutRes() {
@@ -144,7 +152,7 @@ public class EnvFragment extends BasedFragment {
 
                 if (refreshLayout != null)
                     refreshLayout.setRefreshing(false);
-                if (data.data.lists==null||data.data.lists.size()==0){
+                if (data.data.lists == null || data.data.lists.size() == 0) {
                     stateView.showEmpty();
                     return;
                 }

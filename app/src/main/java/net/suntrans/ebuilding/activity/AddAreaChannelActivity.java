@@ -22,6 +22,7 @@ import net.suntrans.ebuilding.bean.FreshChannelEntity;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
+import net.suntrans.stateview.StateView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,20 @@ public class AddAreaChannelActivity extends BasedActivity {
     private RecyclerView recyclerView;
     private List<FreshChannelEntity.DataBean.ListsBean> datas;
     private MyAdapter adapter;
+    private StateView stateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_area_channel);
+        stateView = StateView.inject(findViewById(R.id.content));
+        stateView.setEmptyResource(R.layout.add_area_empty);
+        stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
+            @Override
+            public void onRetryClick() {
+                getData();
+            }
+        });
         setUpToolBar();
         init();
     }
@@ -112,7 +122,7 @@ public class AddAreaChannelActivity extends BasedActivity {
                             .append(",");
                 }
             }
-            if (count<1){
+            if (count < 1) {
                 UiUtils.showToast("请选择一个设备");
                 return true;
             }
@@ -124,7 +134,7 @@ public class AddAreaChannelActivity extends BasedActivity {
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            add(area_id,getIntent().getStringExtra("id"),show_sort);
+                            add(area_id, getIntent().getStringExtra("id"), show_sort);
                         }
                     }).setNegativeButton("取消", null).create().show();
             return true;
@@ -135,15 +145,16 @@ public class AddAreaChannelActivity extends BasedActivity {
     }
 
     private LoadingDialog dialog;
-    private void add(String channel_id, String area_id,String show_sort) {
+
+    private void add(String channel_id, String area_id, String show_sort) {
         if (dialog == null) {
             dialog = new LoadingDialog(this);
             dialog.setCancelable(false);
             dialog.setWaitText("请稍后");
         }
         dialog.show();
-        LogUtil.i("区域id="+area_id+",channelid="+channel_id);
-         RetrofitHelper.getApi().addAreaChannel(area_id, channel_id,show_sort)
+        LogUtil.i("区域id=" + area_id + ",channelid=" + channel_id);
+        RetrofitHelper.getApi().addAreaChannel(area_id, channel_id, show_sort)
                 .compose(this.<AddSceneChannelResult>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -171,6 +182,7 @@ public class AddAreaChannelActivity extends BasedActivity {
                                     count++;
                             }
                             UiUtils.showToast("添加" + count + "个设备成功");
+                            finish();
                         } else {
                             UiUtils.showToast("添加失败");
                         }
@@ -186,6 +198,7 @@ public class AddAreaChannelActivity extends BasedActivity {
     }
 
     private void getData() {
+        showLoading();
         RetrofitHelper.getApi().getFreshChannel()
                 .compose(this.<FreshChannelEntity>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -202,14 +215,55 @@ public class AddAreaChannelActivity extends BasedActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         UiUtils.showToast(e.getMessage());
+                        showError();
                     }
 
                     @Override
                     public void onNext(FreshChannelEntity result) {
-                        datas.clear();
-                        datas.addAll(result.getData().getLists());
-                        adapter.notifyDataSetChanged();
+                        if (result.getCode().equals("200")) {
+                            if (result.getData() != null) {
+                                if (result.getData().getLists().size() != 0) {
+                                    showContent();
+                                    datas.clear();
+                                    datas.addAll(result.getData().getLists());
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    showEmpty();
+                                }
+                            } else {
+                                showError();
+
+                            }
+                        } else {
+                            showError();
+                        }
+
                     }
                 });
+    }
+
+
+
+
+
+    private void showError() {
+        stateView.showRetry();
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showLoading() {
+        stateView.showLoading();
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showEmpty() {
+        stateView.showEmpty();
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showContent() {
+        stateView.showContent();
+        recyclerView.setVisibility(View.VISIBLE);
+
     }
 }

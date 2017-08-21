@@ -110,6 +110,7 @@ public class EnergyConFragment2 extends RxFragment {
 
     private void getData() {
         stateView.showLoading();
+        recyclerView.setVisibility(View.INVISIBLE);
         RetrofitHelper.getApi().getEnergyIndex()
                 .compose(this.<EnergyEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
@@ -124,14 +125,20 @@ public class EnergyConFragment2 extends RxFragment {
                     public void onError(Throwable e) {
                         stateView.showRetry();
                         refreshLayout.setRefreshing(false);
+                        recyclerView.setVisibility(View.INVISIBLE);
+
                     }
 
                     @Override
                     public void onNext(EnergyEntity energyEntity) {
                         if (energyEntity.data.lists==null||energyEntity.data.lists.size()==0){
                             stateView.showEmpty();
+                            recyclerView.setVisibility(View.INVISIBLE);
+
                         }else {
                             stateView.showContent();
+                            recyclerView.setVisibility(View.VISIBLE);
+
                             datas.clear();
                             datas.addAll(energyEntity.data.lists);
                             adapter.notifyDataSetChanged();

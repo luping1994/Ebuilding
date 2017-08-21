@@ -60,7 +60,7 @@ class AddFloorActivity : BasedActivity(), DialogInterface.OnDismissListener {
         }
         dialog?.show()
         val map = HashMap<String, String>()
-        map.put("name", name1)
+        map.put("name", name1.replace(" ",""))
         map.put("imgurl", "")
         map.put("show_sort", "1")
         subscribe = RetrofitHelper.getApi().addFloor(map)
@@ -83,7 +83,7 @@ class AddFloorActivity : BasedActivity(), DialogInterface.OnDismissListener {
                             UiUtils.showToast("添加成功")
                             finish()
                         } else {
-                            UiUtils.showToast("添加失败")
+                            UiUtils.showToast(addResult.msg)
                         }
 
                     }

@@ -67,7 +67,8 @@ public class LoginActivity extends BasedActivity implements View.OnClickListener
             dialog.setWaitText("登录中...");
         }
         dialog.show();
-
+        accounts = accounts.replace(" ","");
+        passwords =passwords.replace(" ","");
         RetrofitHelper.getLoginApi().login("password", "2", "559eb687a4fcafdabe991c320172fcc9", accounts, passwords)
                 .compose(this.<LoginResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <View
         android:layout_width="match_parent"
@@ -29,37 +29,41 @@
         android:orientation="vertical">
 
         <net.suntrans.ebuilding.views.EditView
-            android:maxLines="1"
             android:id="@+id/account"
-            android:paddingLeft="16dp"
-            android:textSize="@dimen/textNormalSize"
-            android:hint="请输入账号"
-            android:background="@null"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:background="@null"
+            android:hint="请输入账号"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:textSize="@dimen/textNormalSize" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
+
         <net.suntrans.ebuilding.views.EditView
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:id="@+id/password"
             android:paddingLeft="16dp"
-            android:textSize="@dimen/textNormalSize"
-            android:hint="请输入密码"
-            android:background="@null"
-            android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:textSize="@dimen/textNormalSize" />
 
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_below="@+id/loginForm"
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/loginForm"
         android:background="@drawable/bg_user_zhuxiao"
         android:text="注   销"
         android:textColor="@color/white"
@@ -77,22 +81,23 @@
     </RelativeLayout>
 
     <TextView
-        android:layout_marginBottom="4dp"
         android:id="@+id/guangwang"
-        android:autoLink="all"
-        android:layout_above="@+id/name1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/name1"
+        android:layout_marginBottom="4dp"
+        android:autoLink="all"
         android:gravity="center"
         android:text="@string/company_name_CH"
         android:textSize="14sp" />
+
     <TextView
-        android:paddingBottom="8dp"
         android:id="@+id/name1"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
+        android:paddingBottom="8dp"
         android:text="@string/company_name_EN"
         android:textSize="12sp" />
 </RelativeLayout>

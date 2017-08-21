@@ -108,10 +108,12 @@ public class AddSenceDevGrpAdapter extends BaseExpandableListAdapter {
         TextView mText;
         TextView mCount;
         CheckBox state;
+        ImageView arrow;
 
         public GroupHolder(View view) {
             mText = (TextView) view.findViewById(R.id.name);
-            mCount = (TextView) view.findViewById(R.id.count);
+//            mCount = (TextView) view.findViewById(R.id.count);
+            arrow = (ImageView) view.findViewById(R.id.arrow);
             state = (AppCompatCheckBox) view.findViewById(R.id.checkbox);
 
         }
@@ -122,8 +124,9 @@ public class AddSenceDevGrpAdapter extends BaseExpandableListAdapter {
             for (int j = 0; j < datas.get(groupPosition).sub.size(); j++) {
                 count += datas.get(groupPosition).sub.get(j).lists.size();
             }
-            mCount.setText(count + "");
+//            mCount.setText(count + "");
             state.setChecked(true);
+            arrow.setVisibility(View.INVISIBLE);
         }
     }
 

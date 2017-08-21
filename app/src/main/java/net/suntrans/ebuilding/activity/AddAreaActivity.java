@@ -173,7 +173,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                             UiUtils.showToast("添加成功");
                             finish();
                         } else {
-                            UiUtils.showToast("添加失败");
+                            UiUtils.showToast(addResult.getMsg());
                         }
 
                     }

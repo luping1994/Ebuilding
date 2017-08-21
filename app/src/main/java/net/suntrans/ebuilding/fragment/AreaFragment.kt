@@ -135,10 +135,11 @@ class AreaFragment : BasedFragment() {
 
     override fun onResume() {
         super.onResume()
+        getAreaData(0)
     }
 
     override fun onFragmentFirstVisible() {
-        getAreaData(0)
+
     }
 
     override fun onRetryClick() {
@@ -211,6 +212,7 @@ class AreaFragment : BasedFragment() {
                             AlertDialog.Builder(context)
                                     .setPositiveButton("确定") { dialog, which -> getAreaData(1) }.setMessage("删除成功")
                                     .create().show()
+
                         } else {
                             UiUtils.showToast("删除失败")
                         }

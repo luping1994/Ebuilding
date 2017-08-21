@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -55,6 +56,7 @@ public class SceneFragment extends RxFragment {
     private Observable<SceneEntity> getDataOb;
     private StateView stateView;
     private String[] items2 = {"更改名称", "更换头像"};
+    private SwipeRefreshLayout refreshLayout;
 
     @Nullable
     @Override
@@ -67,15 +69,24 @@ public class SceneFragment extends RxFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         datas = new ArrayList<>();
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshlayout);
         stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
             @Override
             public void onRetryClick() {
-                getSceneData();
+                getSceneData(0);
+            }
+        });
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getSceneData(1);
             }
         });
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SceneAdapter(R.layout.item_scene, datas);
+        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        adapter.addFooterView(getFooterView());
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -89,7 +100,10 @@ public class SceneFragment extends RxFragment {
         });
     }
 
-
+    private View getFooterView() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.footer,null,false);
+        return view;
+    }
 
 
     private class SceneAdapter extends BaseQuickAdapter<SceneEntity.Scene, BaseViewHolder> {
@@ -114,11 +128,15 @@ public class SceneFragment extends RxFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSceneData();
+        getSceneData(0);
     }
 
-    private void getSceneData() {
-        stateView.showLoading();
+    private void getSceneData(int type) {
+        if (type==0){
+            stateView.showLoading();
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
+
         if (getDataOb == null)
             getDataOb = RetrofitHelper.getApi().getHomeScene()
                     .compose(this.<SceneEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -134,18 +152,19 @@ public class SceneFragment extends RxFragment {
             public void onError(Throwable e) {
                 e.printStackTrace();
                 stateView.showRetry();
+                refreshLayout.setRefreshing(false);
                 recyclerView.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onNext(SceneEntity result) {
+                refreshLayout.setRefreshing(false);
                 if (result.data.lists==null||result.data.lists.size()==0){
                     stateView.showEmpty();
                     recyclerView.setVisibility(View.INVISIBLE);
                     return;
                 }
                 recyclerView.setVisibility(View.VISIBLE);
-
                 stateView.showContent();
                 datas.clear();
                 datas.addAll(result.data.lists);

@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -14,6 +15,7 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.YichangEntity;
 import net.suntrans.ebuilding.utils.UiUtils;
+import net.suntrans.stateview.StateView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,18 +31,27 @@ import static net.suntrans.ebuilding.R.id.recyclerView;
 public class YichangActivity extends BasedActivity{
     private List<YichangEntity.DataBean.ListsBean> datas;
     private MyAdapter adapter;
+    private StateView stateView;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yichang);
+        stateView = StateView.inject(findViewById(R.id.content));
+        stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
+            @Override
+            public void onRetryClick() {
+                getdata();
+            }
+        });
         initToolBar();
         init();
     }
 
     private void init() {
         datas = new ArrayList<>();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         adapter = new MyAdapter(R.layout.item_yicahng,datas);
         recyclerView.setAdapter(adapter);
     }
@@ -74,6 +85,8 @@ public class YichangActivity extends BasedActivity{
     }
 
     private void getdata() {
+        recyclerView.setVisibility(View.INVISIBLE);
+        stateView.showLoading();
         addSubscription(RetrofitHelper.getApi().getYichang(), new Subscriber<YichangEntity>() {
             @Override
             public void onCompleted() {
@@ -84,15 +97,26 @@ public class YichangActivity extends BasedActivity{
             public void onError(Throwable e) {
                     e.printStackTrace();
                 UiUtils.showToast("服务器错误");
+                recyclerView.setVisibility(View.INVISIBLE);
+                stateView.showRetry();
             }
 
             @Override
             public void onNext(YichangEntity o) {
                 if (o.getCode()==200){
                     List<YichangEntity.DataBean.ListsBean> lists = o.getData().getLists();
-                    datas.clear();
-                    datas.addAll(lists);
-                    adapter.notifyDataSetChanged();
+                    if (lists==null||lists.size()==0){
+                        stateView.showEmpty();
+                        recyclerView.setVisibility(View.INVISIBLE);
+
+                    }else {
+                        stateView.showContent();
+                        recyclerView.setVisibility(View.VISIBLE);
+                        datas.clear();
+                        datas.addAll(lists);
+                        adapter.notifyDataSetChanged();
+                    }
+
                 }else {
                     UiUtils.showToast("获取数据失败");
                 }

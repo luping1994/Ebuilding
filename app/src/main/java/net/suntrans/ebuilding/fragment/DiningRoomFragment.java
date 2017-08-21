@@ -51,7 +51,7 @@ import rx.schedulers.Schedulers;
 
 public class DiningRoomFragment extends RxFragment implements View.OnClickListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
 
-    private ImageView menu;
+    private RelativeLayout menu;
     private ImageView banner;
     private String[] items2 = {"更换背景"};
 
@@ -89,7 +89,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
         getChildFragmentManager().beginTransaction().replace(R.id.content, fragment1).commit();
 //        viewPager.setAdapter();
 //        tabLayout.setupWithViewPager(viewPager);
-        menu = (ImageView) view.findViewById(R.id.menu);
+        menu = (RelativeLayout) view.findViewById(R.id.menu);
         menu.setOnClickListener(this);
 //        banner = (ImageView) view.findViewById(R.id.banner);
 //        banner.setOnClickListener(this);

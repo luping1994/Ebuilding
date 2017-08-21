@@ -10,30 +10,31 @@
 
 
     <net.suntrans.ebuilding.views.EditView
-        android:maxLength="8"
-        android:layout_marginTop="50dp"
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="50dp"
         android:background="@color/white"
         android:hint="请输入区域名称"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="8"
         android:maxLines="1"
         android:paddingLeft="16dp"
         android:textSize="@dimen/textNormalSize" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_marginTop="50dp"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
-    </Spinner>
+        android:layout_height="48dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/white"></Spinner>
 
     <RelativeLayout
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginForm"
+        android:layout_marginTop="50dp"
         android:background="@drawable/bg_user_zhuxiao"
         android:onClick="addArea"
         android:textColor="@color/white"

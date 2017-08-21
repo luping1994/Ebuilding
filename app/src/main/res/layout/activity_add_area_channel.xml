@@ -8,15 +8,10 @@
 
     <include layout="@layout/toolbar" />
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:visibility="gone"
-            android:text="暂时没有未分类的设备哦"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
         <android.support.v7.widget.RecyclerView
             app:layoutManager="LinearLayoutManager"
             android:id="@+id/recyclerView"
@@ -24,5 +19,5 @@
             android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
-    </RelativeLayout>
+    </FrameLayout>
 </LinearLayout>

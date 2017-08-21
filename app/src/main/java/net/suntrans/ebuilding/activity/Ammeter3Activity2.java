@@ -95,7 +95,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
         time = (TextView) findViewById(R.id.time);
         time.setText(mYear + "-" + pad(mMonth) + "-" + mDay);
-        mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
+        mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图(单位:度)");
 
         group = (SegmentedGroup) findViewById(R.id.segmented_group);
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -104,17 +104,17 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
                 if (checkedId == R.id.radio0) {
                     currentRaidoId = R.id.radio0;
                     initChartBype(DayAxisValueFormatter.DAYS, "7月31日用电量柱形图", 40);
-                    mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
+                    mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图(单位:度)");
                 }
                 if (checkedId == R.id.radio1) {
                     currentRaidoId = R.id.radio1;
                     initChartBype(DayAxisValueFormatter.MONTHS, "2017年月7月用电量柱形图", 600);
-                    mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
+                    mChartDes.setText(mYear + "年" + mMonth + "月" + "每日电量柱形图(单位:度)");
 
                 }
                 if (checkedId == R.id.radio2) {
                     currentRaidoId = R.id.radio2;
-                    initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图", 20000);
+                    initChartBype(DayAxisValueFormatter.YEARS, "2017年月各个月分用电量柱形图(单位:度)", 20000);
                     mChartDes.setText(mYear + "年各月份用电量柱形图");
 
                 }
@@ -463,13 +463,13 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
     private void upDateDes() {
         if (currentRaidoId == R.id.radio0) {
-            mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图");
+            mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图(单位:度)");
         }
         if (currentRaidoId == R.id.radio1) {
-            mChartDes.setText(mYear + "年" + mMonth + "月" + "用电量柱形图");
+            mChartDes.setText(mYear + "年" + mMonth + "月" + "每日电量柱形图(单位:度)");
         }
         if (currentRaidoId == R.id.radio2) {
-            mChartDes.setText(mYear + "年各月份用电量柱形图");
+            mChartDes.setText(mYear + "年各月份用电量柱形图(单位:度)");
         }
     }
 

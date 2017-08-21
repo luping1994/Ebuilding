@@ -26,5 +26,6 @@
     <string name="tips_upload_failed">图片上传失败</string>
     <string name="permission_title_rationale">请求权限</string>
     <string name="label_select_picture">选择图片</string>
+    <string name="footer_tx">----------------没有更多了----------------</string>
 
 </resources>

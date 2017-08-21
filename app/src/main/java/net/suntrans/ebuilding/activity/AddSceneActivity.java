@@ -68,7 +68,7 @@ public class AddSceneActivity extends BasedActivity implements DialogInterface.O
         }
         dialog.show();
         Map<String,String> map = new HashMap<>();
-        map.put("name",name1);
+        map.put("name",name1.replace(" ",""));
         map.put("name_en",nameEn1);
         map.put("img_banner","123");
         subscribe = RetrofitHelper.getApi().addScene(map)
@@ -94,7 +94,7 @@ public class AddSceneActivity extends BasedActivity implements DialogInterface.O
                             UiUtils.showToast("添加成功");
                             finish();
                         }else {
-                            UiUtils.showToast("添加失败");
+                            UiUtils.showToast(addResult.getMsg());
                         }
 
                     }

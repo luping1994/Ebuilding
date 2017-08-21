@@ -358,7 +358,6 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         if (!canExcute) {
             UiUtils.showToast("请稍后");
             return;
-
         }
         if (conOb == null)
             conOb = RetrofitHelper.getApi().switchScene(id)

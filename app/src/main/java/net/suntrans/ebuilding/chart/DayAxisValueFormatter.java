@@ -41,26 +41,8 @@ public class DayAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        int values = (int) value;
-        if (mType == YEARS) {
-            if (values == 1 || values == 12 || values == 4 || values == 8) {
-                return mYears[values - 1];
-            } else {
-                return "";
-            }
-        } else if (mType == DAYS){
-            if (values == 1 || values == 6 || values == 12 || values == 24||values==18) {
-                return mDays[values - 1];
-            } else {
-                return "";
-            }
-        }else {
-            if (values == 1 || values == 5 || values == 10 || values == 15||values == 20||values == 25||values==30) {
-                return mMonths[values - 1];
-            } else {
-                return "";
-            }
-        }
+
+        return value+"度";
 
     }
 

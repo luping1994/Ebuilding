@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,9 @@ import static android.support.design.widget.TabLayout.MODE_FIXED;
 import static net.suntrans.ebuilding.BuildConfig.DEBUG;
 
 public class MainActivity extends BasedActivity {
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     private final int[] TAB_TITLES = new int[]{R.string.nav_tit, R.string.nav_area, R.string.nav_env, R.string.nav_power, R.string.nav_user};
     private final int[] TAB_IMGS = new int[]{R.drawable.select_home, R.drawable.select_area, R.drawable.select_env, R.drawable.select_power, R.drawable.select_user};
     private TabLayout tabLayout;
