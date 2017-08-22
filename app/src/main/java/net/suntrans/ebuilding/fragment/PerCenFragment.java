@@ -172,18 +172,18 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
     }
 
     private void checkBadge() {
-        int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
-        if (lists==null){
-            bagde.setVisibility(View.INVISIBLE);
-
-        }else {
-            if (lists.size()!=yichangCount){
-                bagde.setVisibility(View.VISIBLE);
-            }else {
-                bagde.setVisibility(View.INVISIBLE);
-
-            }
-        }
+//        int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
+//        if (lists==null){
+//            bagde.setVisibility(View.INVISIBLE);
+//
+//        }else {
+//            if (lists.size()!=yichangCount){
+//                bagde.setVisibility(View.VISIBLE);
+//            }else {
+//                bagde.setVisibility(View.INVISIBLE);
+//
+//            }
+//        }
 
     }
 
@@ -324,12 +324,12 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
                 if (o.getCode()==200){
                     lists = o.getData().getLists();
                     int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
-                    if (lists.size()!=yichangCount){
-                        bagde.setVisibility(View.VISIBLE);
-                    }else {
-                        bagde.setVisibility(View.INVISIBLE);
-
-                    }
+//                    if (lists.size()!=yichangCount){
+//                        bagde.setVisibility(View.VISIBLE);
+//                    }else {
+//                        bagde.setVisibility(View.INVISIBLE);
+//                    }
+                    App.getSharedPreferences().edit().putInt("yichangCount",lists.size()).commit();
                 }else {
                 }
             }

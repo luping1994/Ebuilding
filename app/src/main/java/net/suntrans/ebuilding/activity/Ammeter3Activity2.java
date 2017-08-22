@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.view.MenuItem;
 import android.view.View;
@@ -159,7 +160,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
         mChart.getAxisRight().setEnabled(false);
-
+        mChart.setTouchEnabled(false);
         mChart.getDescription().setEnabled(false);
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -167,10 +168,8 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
-
 
         IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart, DayAxisValueFormatter.DAYS);
 
@@ -226,8 +225,15 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 //        xAxis.setValueFormatter(xAxisFormatter);
         currentType = type;
         setData(type);
-
+        handler.sendMessage(new Message());
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
 
 
     @Override
@@ -252,7 +258,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
             case 1:
                 if (dayDatas == null)
                     break;
-                for (int i = 1; i <= 24; i++) {
+                for (int i = 0; i <= 23; i++) {
                     float val = 0;
                     for (int j = 0; j < dayDatas.size(); j++) {
                         if (dayDatas.get(j).getX() == i) {

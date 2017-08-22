@@ -211,4 +211,8 @@ public interface Api {
     @POST("house/delete")
     Observable<SampleResult> deleteFloor(@Field("id") String id);
 
+    @FormUrlEncoded
+    @POST("device/abnormal_delete")
+    Observable<SampleResult> deleteLog(@Field("log_id") String log_id);
+
 }

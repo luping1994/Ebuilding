@@ -92,7 +92,6 @@ public class Ameter3Entity {
              * y : 0.00
              * x : 0
              */
-
             private String y;
             private int x;
 
@@ -118,7 +117,6 @@ public class Ameter3Entity {
              * y : 2.40
              * x : 3
              */
-
             private String y;
             private int x;
 
@@ -144,7 +142,6 @@ public class Ameter3Entity {
              * y : 11.60
              * x : 8
              */
-
             private String y;
             private int x;
 

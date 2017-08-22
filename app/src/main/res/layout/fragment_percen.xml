@@ -231,6 +231,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:visibility="invisible"
                     android:id="@+id/bagde"
                     android:layout_width="8dp"
                     android:layout_height="8dp"

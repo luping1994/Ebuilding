@@ -76,6 +76,16 @@ public class YichangEntity {
              */
 
             private String created_at;
+            private String updated_at;
+
+            public String getUpdated_at() {
+                return updated_at;
+            }
+
+            public void setUpdated_at(String updated_at) {
+                this.updated_at = updated_at;
+            }
+
             private int log_id;
             private String message;
             private String name;

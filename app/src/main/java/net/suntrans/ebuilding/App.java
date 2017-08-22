@@ -3,6 +3,8 @@ package net.suntrans.ebuilding;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.MessageQueue;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -42,6 +44,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
@@ -63,7 +66,6 @@ public class App extends MultiDexApplication {
 //        }.start();
         if (!DEBUG)
             PgyCrashManager.register(this);
-
     }
 
 
