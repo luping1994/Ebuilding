@@ -31,6 +31,7 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.Ameter3Entity;
 import net.suntrans.ebuilding.chart.DayAxisValueFormatter;
 import net.suntrans.ebuilding.chart.MyAxisValueFormatter;
+import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.views.CompatDatePickerDialog;
 import net.suntrans.ebuilding.views.SegmentedGroup;
 
@@ -190,14 +191,14 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTfLight);
-        rightAxis.setLabelCount(8, false);
-        rightAxis.setValueFormatter(custom);
-        rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+//
+//        YAxis rightAxis = mChart.getAxisRight();
+//        rightAxis.setDrawGridLines(false);
+//        rightAxis.setTypeface(mTfLight);
+//        rightAxis.setLabelCount(8, false);
+//        rightAxis.setValueFormatter(custom);
+//        rightAxis.setSpaceTop(15f);
+//        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
 
         Legend l = mChart.getLegend();
@@ -261,8 +262,9 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
                 for (int i = 0; i <= 23; i++) {
                     float val = 0;
                     for (int j = 0; j < dayDatas.size(); j++) {
-                        if (dayDatas.get(j).getX() == i) {
+                        if ((dayDatas.get(j).getX()) == i) {
                             val = Float.parseFloat(dayDatas.get(j).getY());
+                            LogUtil.i(i+":"+dayDatas.get(j).getY()+"");
                         }
                     }
                     yVals1.add(new BarEntry(i, val));
@@ -315,7 +317,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
             BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
             data.setValueTypeface(mTfLight);
-            data.setBarWidth(0.9f);
+            data.setBarWidth(0.8f);
 
             mChart.setData(data);
         }
@@ -439,6 +441,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
     }
 
     private void getData(String sno, String date) {
+        LogUtil.i(sno);
         showLoadingState();
         addSubscription(RetrofitHelper.getApi().getAmmeter3Data(sno, date), new Subscriber<Ameter3Entity>() {
             @Override
