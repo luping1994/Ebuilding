@@ -36,7 +36,7 @@ import static net.suntrans.ebuilding.R.id.recyclerView;
  */
 
 public class YichangActivity extends BasedActivity {
-    private List<YichangEntity.DataBean.ListsBean> datas;
+    private List<YichangEntity.DataBeanX.ListsBean.DataBean> datas;
     private MyAdapter adapter;
     private StateView stateView;
     private RecyclerView recyclerView;
@@ -49,7 +49,7 @@ public class YichangActivity extends BasedActivity {
         stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
             @Override
             public void onRetryClick() {
-                getdata();
+                getdata(fristLoad);
             }
         });
         initToolBar();
@@ -61,7 +61,7 @@ public class YichangActivity extends BasedActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         adapter = new MyAdapter(R.layout.item_yicahng, datas);
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        final ItemTouchHelper touchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
         touchHelper.attachToRecyclerView(recyclerView);
         adapter.enableSwipeItem();
         adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
@@ -77,7 +77,7 @@ public class YichangActivity extends BasedActivity {
 
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-                delete(datas.get(pos).getLog_id());
+                delete(datas.get(pos).log_id);
             }
 
             @Override
@@ -85,6 +85,16 @@ public class YichangActivity extends BasedActivity {
 
             }
         });
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                if (currentPage>totalPage){
+                    adapter.loadMoreEnd();
+                    return;
+                }
+                getdata(loadMore);
+            }
+        }, recyclerView);
         recyclerView.setAdapter(adapter);
 
     }
@@ -104,9 +114,9 @@ public class YichangActivity extends BasedActivity {
 
             @Override
             public void onNext(SampleResult o) {
-                if (o.getCode()==200){
+                if (o.getCode() == 200) {
                     UiUtils.showToast("删除成功!");
-                }else {
+                } else {
                     UiUtils.showToast("删除失败");
                 }
             }
@@ -122,29 +132,36 @@ public class YichangActivity extends BasedActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
     }
 
-    class MyAdapter extends BaseItemDraggableAdapter<YichangEntity.DataBean.ListsBean, BaseViewHolder> {
+    class MyAdapter extends BaseItemDraggableAdapter<YichangEntity.DataBeanX.ListsBean.DataBean, BaseViewHolder> {
 
-        public MyAdapter(@LayoutRes int layoutResId, @Nullable List<YichangEntity.DataBean.ListsBean> data) {
+        public MyAdapter(@LayoutRes int layoutResId, @Nullable List<YichangEntity.DataBeanX.ListsBean.DataBean> data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, YichangEntity.DataBean.ListsBean item) {
-            helper.setText(R.id.msg, "" + item.getName() + ",异常类型:" + item.getMessage())
-                    .setText(R.id.time, item.getUpdated_at());
+        protected void convert(BaseViewHolder helper, YichangEntity.DataBeanX.ListsBean.DataBean item) {
+            helper.setText(R.id.msg, "" + item.name + ",异常类型:" + item.message)
+                    .setText(R.id.time, item.updated_at);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getdata();
+        getdata(fristLoad);
     }
 
-    private void getdata() {
-        recyclerView.setVisibility(View.INVISIBLE);
-        stateView.showLoading();
-        addSubscription(RetrofitHelper.getApi().getYichang(), new Subscriber<YichangEntity>() {
+    private int currentPage = 1;
+    private int fristLoad = 0;
+    private int loadMore = 2;
+
+    private int totalPage=0;
+    private void getdata(final int loadtype) {
+        if (loadtype == fristLoad){
+            recyclerView.setVisibility(View.INVISIBLE);
+            stateView.showLoading();
+        }
+        addSubscription(RetrofitHelper.getApi().getYichang(currentPage + ""), new Subscriber<YichangEntity>() {
             @Override
             public void onCompleted() {
 
@@ -154,22 +171,33 @@ public class YichangActivity extends BasedActivity {
             public void onError(Throwable e) {
                 e.printStackTrace();
                 UiUtils.showToast("服务器错误");
-                recyclerView.setVisibility(View.INVISIBLE);
-                stateView.showRetry();
+
+                if (loadtype == loadMore)
+                    adapter.loadMoreFail();
+                else{
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    stateView.showRetry();
+                }
             }
 
             @Override
             public void onNext(YichangEntity o) {
-                if (o.getCode() == 200) {
-                    List<YichangEntity.DataBean.ListsBean> lists = o.getData().getLists();
+                if (o.code == 200) {
+                    List<YichangEntity.DataBeanX.ListsBean.DataBean> lists = o.data.lists.data;
                     if (lists == null || lists.size() == 0) {
                         stateView.showEmpty();
                         recyclerView.setVisibility(View.INVISIBLE);
-
+                        adapter.loadMoreFail();
                     } else {
+                        if (loadtype == loadMore) {
+                            adapter.loadMoreComplete();
+                        } else {
+
+                        }
+                        totalPage  =o.data.lists.total/o.data.lists.per_page+1;
+                        currentPage++;
                         stateView.showContent();
                         recyclerView.setVisibility(View.VISIBLE);
-                        datas.clear();
                         datas.addAll(lists);
                         adapter.notifyDataSetChanged();
                     }

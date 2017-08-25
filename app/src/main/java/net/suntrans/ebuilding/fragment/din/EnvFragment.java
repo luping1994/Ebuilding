@@ -57,7 +57,7 @@ public class EnvFragment extends BasedFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                getData(1);
 
             }
         });
@@ -111,19 +111,22 @@ public class EnvFragment extends BasedFragment {
 
     @Override
     protected void onFragmentFirstVisible() {
-        getData();
+        getData(0);
         super.onFragmentFirstVisible();
     }
 
     @Override
     public void onRetryClick() {
-        getData();
+        getData(0);
         super.onRetryClick();
     }
 
 
-    private void getData() {
-        stateView.showLoading();
+    private void getData(final int refreshType) {
+        if (refreshType == 0){
+            stateView.showLoading();
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
         if (getDataOb == null)
             getDataOb = RetrofitHelper.getApi().getHomeSceneNew()
                     .compose(this.<SensusEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -144,7 +147,11 @@ public class EnvFragment extends BasedFragment {
                         refreshLayout.setRefreshing(false);
                 }
                 e.printStackTrace();
-                stateView.showRetry();
+
+                if (refreshType == 0){
+                    stateView.showRetry();
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -157,6 +164,8 @@ public class EnvFragment extends BasedFragment {
                     return;
                 }
                 stateView.showContent();
+                recyclerView.setVisibility(View.VISIBLE);
+
                 if (data.code == 200) {
                     for (SensusEntity.SixInfo ds : data.data.lists) {
                         ds.sub.setEva();

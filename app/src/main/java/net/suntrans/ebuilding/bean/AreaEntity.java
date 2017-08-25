@@ -49,6 +49,7 @@ public class AreaEntity {
         public String channel_id;
         public String id;
         public String name;
+        public String permission;
         public boolean isChecked = false;
 
         public boolean isChecked() {

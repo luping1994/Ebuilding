@@ -62,7 +62,7 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
     private ImageView avatar;
     private TextView bagde;
     private RequestManager glideRequest;
-    private List<YichangEntity.DataBean.ListsBean> lists;
+//    private List<YichangEntity.DataBean.ListsBean> lists;
 
     @Nullable
     @Override
@@ -308,32 +308,32 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
     }
 
     private void getBadgeCount() {
-        ((MainActivity) getActivity()).   addSubscription(RetrofitHelper.getApi().getYichang(), new Subscriber<YichangEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(YichangEntity o) {
-                if (o.getCode()==200){
-                    lists = o.getData().getLists();
-                    int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
-//                    if (lists.size()!=yichangCount){
-//                        bagde.setVisibility(View.VISIBLE);
-//                    }else {
-//                        bagde.setVisibility(View.INVISIBLE);
-//                    }
-                    App.getSharedPreferences().edit().putInt("yichangCount",lists.size()).commit();
-                }else {
-                }
-            }
-        });
+//        ((MainActivity) getActivity()).   addSubscription(RetrofitHelper.getApi().getYichang(), new Subscriber<YichangEntity>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onNext(YichangEntity o) {
+//                if (o.getCode()==200){
+//                    lists = o.getData().getLists();
+//                    int yichangCount = App.getSharedPreferences().getInt("yichangCount", 0);
+////                    if (lists.size()!=yichangCount){
+////                        bagde.setVisibility(View.VISIBLE);
+////                    }else {
+////                        bagde.setVisibility(View.INVISIBLE);
+////                    }
+//                    App.getSharedPreferences().edit().putInt("yichangCount",lists.size()).commit();
+//                }else {
+//                }
+//            }
+//        });
     }
 
     @Override

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         android:layout_width="155dp"
@@ -21,6 +21,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_weight="1"
                 android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -40,6 +41,7 @@
             </View>
 
             <TextView
+                android:layout_weight="1"
                 android:id="@+id/addChannel"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -48,7 +50,6 @@
                 android:text="添加设备"
                 android:textColor="@color/black"
                 android:textSize="18sp">
-
             </TextView>
         </LinearLayout>
     </android.support.v7.widget.CardView>

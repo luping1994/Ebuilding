@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static java.lang.System.in;
 import static java.lang.System.load;
 import static net.suntrans.ebuilding.utils.UiUtils.getContext;
 
@@ -108,9 +110,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 finish();
             }
         });
-        System.out.println(imgurl);
         Glide.with(this)
                 .load(imgurl)
+                .crossFade()
                 .override(UiUtils.getDisplaySize(this)[0], UiUtils.dip2px(217))
                 .into(banner);
 
@@ -438,10 +440,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     }).setNegativeButton("取消", null).create().show();
                 }
             });
-            mPopupWindow = new PopupWindow(getContext());
-            mPopupWindow.setContentView(view);
-            mPopupWindow.setHeight(UiUtils.dip2px(120));
-            mPopupWindow.setWidth(UiUtils.dip2px(155));
+            mPopupWindow = new PopupWindow(view,UiUtils.dip2px(120),UiUtils.dip2px(155));
+            mPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+            mPopupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setAnimationStyle(R.style.TRM_ANIM_STYLE);
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);

@@ -75,7 +75,7 @@ public class EnergyConFragment2 extends RxFragment {
         stateView.setOnRetryClickListener(new StateView.OnRetryClickListener() {
             @Override
             public void onRetryClick() {
-                getData();
+                getData(0);
             }
         });
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
@@ -95,7 +95,7 @@ public class EnergyConFragment2 extends RxFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                getData(0);
             }
         });
 //        layoutManger = (CardSliderLayoutManager) recyclerView.getLayoutManager();
@@ -105,12 +105,15 @@ public class EnergyConFragment2 extends RxFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+        getData(0);
     }
 
-    private void getData() {
-        stateView.showLoading();
-        recyclerView.setVisibility(View.INVISIBLE);
+    private void getData(final int refreshType) {
+        if (refreshType==0){
+            stateView.showLoading();
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
+
         RetrofitHelper.getApi().getEnergyIndex()
                 .compose(this.<EnergyEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
@@ -132,8 +135,10 @@ public class EnergyConFragment2 extends RxFragment {
                     @Override
                     public void onNext(EnergyEntity energyEntity) {
                         if (energyEntity.data.lists==null||energyEntity.data.lists.size()==0){
-                            stateView.showEmpty();
-                            recyclerView.setVisibility(View.INVISIBLE);
+                            if (refreshType==0){
+                                stateView.showEmpty();
+                                recyclerView.setVisibility(View.INVISIBLE);
+                            }
 
                         }else {
                             stateView.showContent();

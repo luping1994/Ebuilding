@@ -248,6 +248,11 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
 
             public void setData(int position) {
                 name.setText(datas.get(position).name);
+//                if (datas.get(position).permission.equals("1")){
+//                    checkbox.setEnabled(true);
+//                }else {
+//                    checkbox.setEnabled(false);
+//                }
                 checkbox.setCheckedImmediately(datas.get(position).status.equals("1") ? true : false);
 //                checkbox.setChecked();
 //                area.setText("暂无数据");
@@ -308,9 +313,10 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                             datas.get(i).status = String.valueOf(data.data.status);
                         }
                     }
-                } else {
+                } else if(data.code == 102){
+                    UiUtils.showToast("您没有控制权限");
+                }else {
                     UiUtils.showToast("服务器错误");
-
                 }
                 adapter.notifyDataSetChanged();
 

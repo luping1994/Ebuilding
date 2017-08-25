@@ -7,12 +7,14 @@ import android.widget.BaseExpandableListAdapter;
 
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.bean.AreaEntity;
+import net.suntrans.ebuilding.utils.UiUtils;
 
 import java.util.List;
 
 import android.content.Context;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -123,11 +125,17 @@ public class ParentAdapter extends BaseExpandableListAdapter {
                 public void onClick(View v) {
                     if (state.isChecked()) {
                         for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
+                            if (datas.get(groupPosition).lists.get(i).permission.equals("0")){
+                                continue;
+                            }
                             datas.get(groupPosition).lists.get(i).setChecked(true);
                         }
                         datas.get(groupPosition).setChecked(true);
                     } else {
                         for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
+                            if (datas.get(groupPosition).lists.get(i).permission.equals("0")){
+                                continue;
+                            }
                             datas.get(groupPosition).lists.get(i).setChecked(false);
                         }
                         datas.get(groupPosition).setChecked(false);
@@ -142,10 +150,12 @@ public class ParentAdapter extends BaseExpandableListAdapter {
     public class ChildHolder {
         TextView mText;
         CheckBox state;
+        RelativeLayout root;
 
         public ChildHolder(View view) {
             mText = (TextView) view.findViewById(R.id.name);
             state = (CheckBox) view.findViewById(R.id.checkbox);
+            root = (RelativeLayout) view.findViewById(R.id.root);
 
         }
 
@@ -153,10 +163,16 @@ public class ParentAdapter extends BaseExpandableListAdapter {
             mText.setText(datas.get(groupPosition).lists.get(childPosition).name);
             state.setChecked(datas.get(groupPosition).lists.get(childPosition).isChecked());
 
-            state.setOnClickListener(new View.OnClickListener() {
+            root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    datas.get(groupPosition).lists.get(childPosition).setChecked(state.isChecked());
+                    if (datas.get(groupPosition).lists.get(childPosition).permission.equals("0")){
+                        UiUtils.showToast("您没有该设备的管理权限");
+                        System.out.println(datas.get(groupPosition).lists.get(childPosition).permission);
+                        datas.get(groupPosition).lists.get(childPosition).setChecked(state.isChecked());
+                    }else {
+                        datas.get(groupPosition).lists.get(childPosition).setChecked(!state.isChecked());
+                    }
                     int checkedCount = 0;
                     for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
                         if (datas.get(groupPosition).lists.get(i).isChecked())
@@ -166,7 +182,6 @@ public class ParentAdapter extends BaseExpandableListAdapter {
                         datas.get(groupPosition).setChecked(true);
                     } else {
                         datas.get(groupPosition).setChecked(false);
-
                     }
                     notifyDataSetChanged();
                 }

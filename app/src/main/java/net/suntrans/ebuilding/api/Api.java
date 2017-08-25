@@ -204,8 +204,9 @@ public interface Api {
     Observable<UpLoadImageMessage> upload(
             @Part MultipartBody.Part image);
 
+    @FormUrlEncoded
     @POST("device/abnormal")
-    Observable<YichangEntity> getYichang();
+    Observable<YichangEntity> getYichang(@Field("page") String page);
 
     @FormUrlEncoded
     @POST("house/delete")

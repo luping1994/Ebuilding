@@ -42,20 +42,19 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_marginLeft="28dp"
-                android:layout_marginTop="17dp"
-                />
+                android:layout_marginTop="17dp" />
 
             <TextView
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:maxLength="8"
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="33dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/img"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLength="8"
+                android:maxLines="1"
                 android:text="TIT餐厅"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -70,6 +69,45 @@
             android:layout_marginTop="124dp"
             android:background="@drawable/content"
             android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/RLtishi"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:src="@drawable/ic_user_tishi" />
+
+                <TextView
+                    android:id="@+id/tishi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="53dp"
+                    android:text="异常提示"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/bagde"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/tishi"
+                    android:background="@drawable/bagde"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/devisionColor" />
 
             <RelativeLayout
                 android:id="@+id/RLQues"
@@ -202,44 +240,7 @@
                     android:textSize="16sp" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/devisionColor" />
 
-            <RelativeLayout
-                android:id="@+id/RLtishi"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="18dp"
-                    android:src="@drawable/ic_user_tishi" />
-
-                <TextView
-                    android:id="@+id/tishi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="53dp"
-                    android:text="异常提示"
-                    android:textColor="@color/textColor"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:visibility="invisible"
-                    android:id="@+id/bagde"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@+id/tishi"
-                    android:background="@drawable/bagde" />
-            </RelativeLayout>
         </LinearLayout>
 
         <RelativeLayout

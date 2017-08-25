@@ -273,7 +273,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
             case 2:
                 if (monthDatas == null)
                     break;
-                for (int i = 1; i <= 30; i++) {
+                for (int i = 1; i <= 31; i++) {
                     float val = 0;
                     for (int j = 0; j < monthDatas.size(); j++) {
                         if (monthDatas.get(j).getX() == i) {

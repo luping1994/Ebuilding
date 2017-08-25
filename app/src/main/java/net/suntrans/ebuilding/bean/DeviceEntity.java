@@ -29,6 +29,7 @@ public class DeviceEntity {
         public String din;
         public String channel_type;
         public String area_name;
+        public String permission;
 
     }
 }
