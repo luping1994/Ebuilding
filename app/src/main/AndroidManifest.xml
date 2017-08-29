@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="PGYER_APPID"
-            android:value=" a173a0ab75faa5162d9991df3ed25aee" />
+            android:value="a173a0ab75faa5162d9991df3ed25aee" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

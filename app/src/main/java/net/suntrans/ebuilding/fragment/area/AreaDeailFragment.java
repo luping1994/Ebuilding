@@ -279,7 +279,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
         dialog.show();
 
         conOb = null;
-        conOb = RetrofitHelper.getApi().switchChannel(datas.get(position).id, datas.get(position).datapoint,
+        conOb = RetrofitHelper.getApi().switchChannel(datas.get(position).channel_id, datas.get(position).datapoint,
                 datas.get(position).din, datas.get(position).status.equals("1") ? "0" : "1")
                 .compose(this.<ControlEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -309,7 +309,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                 if (data.code == 200) {
                     LogUtil.i(data.data.toString());
                     for (int i = 0; i < datas.size(); i++) {
-                        if (datas.get(i).id.equals(data.data.id)) {
+                        if (datas.get(i).channel_id.equals(data.data.id)) {
                             datas.get(i).status = String.valueOf(data.data.status);
                         }
                     }
