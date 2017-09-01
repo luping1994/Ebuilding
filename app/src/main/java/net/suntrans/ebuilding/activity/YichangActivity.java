@@ -185,9 +185,14 @@ public class YichangActivity extends BasedActivity {
                 if (o.code == 200) {
                     List<YichangEntity.DataBeanX.ListsBean.DataBean> lists = o.data.lists.data;
                     if (lists == null || lists.size() == 0) {
-                        stateView.showEmpty();
-                        recyclerView.setVisibility(View.INVISIBLE);
-                        adapter.loadMoreFail();
+                        if (loadtype==fristLoad){
+                            stateView.showEmpty();
+                            recyclerView.setVisibility(View.INVISIBLE);
+                        }else {
+                            adapter.loadMoreFail();
+
+                        }
+
                     } else {
                         if (loadtype == loadMore) {
                             adapter.loadMoreComplete();
