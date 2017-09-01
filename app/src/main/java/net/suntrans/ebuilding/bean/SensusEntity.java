@@ -82,27 +82,27 @@ public class SensusEntity {
         public void setEva() {
             if (getPm25() != null) {
 
-                float pm1F = 0;
+                float pm25f = 0;
                 try {
-                    pm1F = Float.valueOf(getPm25());
+                    pm25f = Float.valueOf(getPm25());
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-                if (pm1F <= 35) {
+                if (pm25f <= 35) {
                     this.pm25Eva = "优";
-                    pm25Pro = (int) (pm1F / 35 / 6 * 100);
-                } else if (pm1F <= 75) {
+                    pm25Pro = (int) (pm25f / 35 / 6 * 100);
+                } else if (pm25f <= 75) {
                     this.pm25Eva = "良";
-                    pm25Pro = (int) ((pm1F - 35) / 240 * 100 + 100 / 6);
-                } else if (pm1F <= 115) {
+                    pm25Pro = (int) ((pm25f - 35) / 240 * 100 + 100 / 6);
+                } else if (pm25f <= 115) {
                     this.pm25Eva = "轻度污染";
-                    pm25Pro = (int) ((pm1F - 75) / 240 * 100 + 200 / 6);
-                } else if (pm1F <= 150) {
+                    pm25Pro = (int) ((pm25f - 75) / 240 * 100 + 200 / 6);
+                } else if (pm25f <= 150) {
                     this.pm25Eva = "中度污染";
-                    pm25Pro = (int) ((pm1F - 115) / 35 / 6 * 100 + 300 / 6);
-                } else if (pm1F <= 250) {
+                    pm25Pro = (int) ((pm25f - 115) / 35 / 6 * 100 + 300 / 6);
+                } else if (pm25f <= 250) {
                     this.pm25Eva = "重度污染";
-                    pm25Pro = (int) ((pm1F - 150) / 6 + 400 / 6);
+                    pm25Pro = (int) ((pm25f - 150) / 6 + 400 / 6);
 
                 } else {
                     this.pm25Eva = "严重污染";

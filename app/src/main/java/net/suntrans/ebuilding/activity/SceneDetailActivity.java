@@ -332,16 +332,22 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                         datas.clear();
                         datas.addAll(result.data.lists);
                         adapter1.notifyDataSetChanged();
-
-                        LogUtil.i("场景动作的数量：" + datas.size());
-                        if (datas.size() != 0) {
-                            recyclerView.setVisibility(View.VISIBLE);
-                            tips.setVisibility(View.GONE);
-
-                        } else {
-                            tips.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.INVISIBLE);
+                        if (result.code==500){
+                            UiUtils.showToast("该场景已经删除!");
+                           finish();
                         }
+                        if (result.code==200){
+                            LogUtil.i("场景动作的数量：" + datas.size());
+                            if (datas.size() != 0) {
+                                recyclerView.setVisibility(View.VISIBLE);
+                                tips.setVisibility(View.GONE);
+
+                            } else {
+                                tips.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
                     }
                 });
     }
@@ -401,9 +407,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                 if (data.code == 200) {
                     UiUtils.showToast("成功!");
-                } else {
-                    UiUtils.showToast("执行失败,请稍后再试");
-
+                } else if(data.code == 500) {
+                    UiUtils.showToast(data.msg);
+                    finish();
                 }
             }
         });

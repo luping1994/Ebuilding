@@ -96,7 +96,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
         time = (TextView) findViewById(R.id.time);
-        time.setText(mYear + "-" + pad(mMonth) + "-" + mDay);
+        time.setText(mYear + "-" + pad(mMonth) + "-" + pad(mDay));
         mChartDes.setText(mYear + "年" + mMonth + "月" + mDay + "日各小时用电量柱形图(单位:度)");
 
         group = (SegmentedGroup) findViewById(R.id.segmented_group);

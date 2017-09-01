@@ -164,11 +164,15 @@ public class SceneFragment extends RxFragment {
                     recyclerView.setVisibility(View.INVISIBLE);
                     return;
                 }
-                recyclerView.setVisibility(View.VISIBLE);
-                stateView.showContent();
-                datas.clear();
-                datas.addAll(result.data.lists);
-                adapter.notifyDataSetChanged();
+
+                if (result.code==200){
+                    recyclerView.setVisibility(View.VISIBLE);
+                    stateView.showContent();
+                    datas.clear();
+                    datas.addAll(result.data.lists);
+                    adapter.notifyDataSetChanged();
+                }
+
             }
         });
     }
