@@ -86,7 +86,7 @@ public class SceneFragment extends RxFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SceneAdapter(R.layout.item_scene, datas);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        adapter.addFooterView(getFooterView());
+        adapter.setFooterView(getFooterView());
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

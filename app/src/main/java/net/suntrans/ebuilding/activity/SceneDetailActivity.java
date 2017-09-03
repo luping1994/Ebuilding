@@ -34,7 +34,7 @@ import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.SceneChannelResult;
 import net.suntrans.ebuilding.bean.SceneEdit;
-import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
+import net.suntrans.ebuilding.fragment.din.ChangSceneNameDialogFragment;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -61,7 +61,7 @@ import static net.suntrans.ebuilding.utils.UiUtils.getContext;
  * Created by Looney on 2017/7/21.
  */
 
-public class SceneDetailActivity extends BasedActivity implements View.OnClickListener, DialogInterface.OnDismissListener, ChangeNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
+public class SceneDetailActivity extends BasedActivity implements View.OnClickListener, DialogInterface.OnDismissListener, ChangSceneNameDialogFragment.ChangeNameListener, UpLoadImageFragment.onUpLoadListener {
     private RecyclerView recyclerView;
     private String title;
     private String imgurl;
@@ -79,7 +79,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     private TextView txTitle;
     private String img_url1;
     private UpLoadImageFragment fragment;
-    private ChangeNameDialogFragment fragment2;
+    private ChangSceneNameDialogFragment fragment2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,23 +222,23 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
     }
 
     private void showChangedNameDialog() {
-        fragment2 = (ChangeNameDialogFragment) getSupportFragmentManager().findFragmentByTag("ChangeNameDialogFragment");
+        fragment2 = (ChangSceneNameDialogFragment) getSupportFragmentManager().findFragmentByTag("ChangSceneNameDialogFragment");
         if (fragment2 == null) {
-            fragment2 = ChangeNameDialogFragment.newInstance("更改场景名称");
+            fragment2 = ChangSceneNameDialogFragment.newInstance("更改场景名称");
             fragment2.setCancelable(true);
             fragment2.setListener(this);
         }
-        fragment2.show(getSupportFragmentManager(), "ChangeNameDialogFragment");
+        fragment2.show(getSupportFragmentManager(), "ChangSceneNameDialogFragment");
     }
 
     @Override
-    public void changeName(String name) {
+    public void changeName(String name, String nameEn) {
         if (dialog == null) {
             dialog = new LoadingDialog(this);
             dialog.setWaitText("请稍后");
         }
         dialog.show();
-        upDate(name, null);
+        upDate(name, null, nameEn);
     }
 
     @Override
@@ -250,10 +250,10 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         LogUtil.i("path=" + path);
         LogUtil.i("path=");
         dialog.show();
-        upDate(null, path);
+        upDate(null, path, null);
     }
 
-    private void upDate(String name, String path) {
+    private void upDate(String name, String path, String nameEn) {
         Map<String, String> map = new HashMap<>();
         map.put("id", id);
         if (!TextUtils.isEmpty(name)) {
@@ -261,6 +261,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         }
         if (!TextUtils.isEmpty(path)) {
             map.put("img_url", path);
+        }
+        if (!TextUtils.isEmpty(nameEn)) {
+            map.put("name_en", nameEn);
         }
         addSubscription(RetrofitHelper.getApi().updateScene(map), new Subscriber<SampleResult>() {
             @Override
@@ -328,15 +331,24 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(SceneChannelResult result) {
-//                        System.out.println(result.data.total);
-                        datas.clear();
-                        datas.addAll(result.data.lists);
-                        adapter1.notifyDataSetChanged();
-                        if (result.code==500){
-                            UiUtils.showToast("该场景已经删除!");
-                           finish();
+                        System.out.println(result.code);
+
+                        if (result.code == 500) {
+                            new AlertDialog.Builder(SceneDetailActivity.this)
+                                    .setMessage("该场景已经被删除")
+                                    .setCancelable(false)
+                                    .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    }).create().show();
+                            return;
                         }
-                        if (result.code==200){
+                        if (result.code == 200) {
+                            datas.clear();
+                            datas.addAll(result.data.lists);
+                            adapter1.notifyDataSetChanged();
                             LogUtil.i("场景动作的数量：" + datas.size());
                             if (datas.size() != 0) {
                                 recyclerView.setVisibility(View.VISIBLE);
@@ -407,7 +419,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                 if (data.code == 200) {
                     UiUtils.showToast("成功!");
-                } else if(data.code == 500) {
+                } else if (data.code == 500) {
                     UiUtils.showToast(data.msg);
                     finish();
                 }
@@ -446,7 +458,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     }).setNegativeButton("取消", null).create().show();
                 }
             });
-            mPopupWindow = new PopupWindow(view,UiUtils.dip2px(120),UiUtils.dip2px(155));
+            mPopupWindow = new PopupWindow(view, UiUtils.dip2px(120), UiUtils.dip2px(155));
             mPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setAnimationStyle(R.style.TRM_ANIM_STYLE);

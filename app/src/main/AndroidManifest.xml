@@ -44,6 +44,7 @@
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".activity.SceneDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.translate" />
