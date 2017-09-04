@@ -97,6 +97,7 @@
             android:background="@color/devisionColor" />
 
         <net.suntrans.ebuilding.views.EditView
+            android:digits="@string/abcd123"
             android:maxLength="18"
             android:id="@+id/newPass"
             android:layout_width="match_parent"
@@ -117,6 +118,7 @@
 
         <net.suntrans.ebuilding.views.EditView
             android:maxLength="18"
+            android:digits="@string/abcd123"
             android:id="@+id/repassword"
             android:layout_width="match_parent"
             android:layout_height="48dp"

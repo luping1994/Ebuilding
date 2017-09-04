@@ -111,7 +111,7 @@ public class EnvDetailActivity extends BasedActivity {
         switch (position) {
             case 2:
                 nameTx.setText("温度");
-                standard.setImageResource(R.drawable.standard_tem);
+                standard.setImageResource(R.drawable.ic_wendu_progress);
                 if (data != null) {
                     valueTx.setText(data.getWendu() + "℃");
                     evaluateTx.setText(data.wenduEva);
@@ -119,7 +119,7 @@ public class EnvDetailActivity extends BasedActivity {
                 }
                 break;
             case 3:
-                standard.setImageResource(R.drawable.standard_humidity);
+                standard.setImageResource(R.drawable.ic_shidu_progress);
                 nameTx.setText("湿度");
                 if (data != null) {
                     valueTx.setText(data.getShidu() + "%RH");
@@ -129,7 +129,7 @@ public class EnvDetailActivity extends BasedActivity {
                 break;
             case 4:
                 nameTx.setText("大气压");
-                standard.setImageResource(R.drawable.standard_humidity);
+                standard.setImageResource(R.drawable.ic_daqiya_progress);
                 if (data != null) {
                     valueTx.setText(data.getDaqiya() + "kPa");
                     evaluateTx.setText(data.daqiYaEva);
@@ -146,7 +146,7 @@ public class EnvDetailActivity extends BasedActivity {
 //                break;
             case 5:
                 nameTx.setText("光照强度");
-                standard.setImageResource(R.drawable.standard_light);
+                standard.setImageResource(R.drawable.ic_guanzhao_progress);
                 if (data != null) {
                     valueTx.setText(data.getLight() + "");
                     evaluateTx.setText(data.guanzhaoEva);
@@ -155,7 +155,7 @@ public class EnvDetailActivity extends BasedActivity {
                 break;
             case 7:
                 nameTx.setText("烟雾");
-                standard.setImageResource(R.drawable.standard_smoke);
+                standard.setImageResource(R.drawable.ic_pm_progress);
                 if (data != null) {
                     valueTx.setText(data.getYanwu() + "ppm");
                     evaluateTx.setText(data.yanwuEva);
@@ -164,7 +164,7 @@ public class EnvDetailActivity extends BasedActivity {
                 break;
             case 8:
                 nameTx.setText("甲醛");
-                standard.setImageResource(R.drawable.standard_smoke);
+                standard.setImageResource(R.drawable.ic_pm_progress);
                 if (data != null) {
                     valueTx.setText(data.getJiaquan() + "ppm");
                     evaluateTx.setText(data.jiaquanEva);
@@ -173,7 +173,7 @@ public class EnvDetailActivity extends BasedActivity {
                 break;
             case 9:
                 nameTx.setText("PM1");
-                standard.setImageResource(R.drawable.bg_standard);
+                standard.setImageResource(R.drawable.ic_pm_progress);
                 if (data != null) {
                     valueTx.setText(data.getPM1() + "ppm");
                     evaluateTx.setText(data.pm1Eva);
@@ -182,7 +182,7 @@ public class EnvDetailActivity extends BasedActivity {
                 break;
             case 10:
                 nameTx.setText("PM2.5");
-                standard.setImageResource(R.drawable.bg_standard);
+                standard.setImageResource(R.drawable.ic_pm_progress);
                 if (data != null) {
                     valueTx.setText(data.getPm25() + "ppm");
                     evaluateTx.setText(data.pm25Eva);
@@ -191,7 +191,7 @@ public class EnvDetailActivity extends BasedActivity {
                 break;
             case 11:
                 nameTx.setText("PM10");
-                standard.setImageResource(R.drawable.bg_standard);
+                standard.setImageResource(R.drawable.ic_pm_progress);
                 if (data != null) {
                     valueTx.setText(data.getPm10() + "ppm");
                     evaluateTx.setText(data.pm10Eva);
