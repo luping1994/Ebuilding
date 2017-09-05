@@ -90,13 +90,14 @@ public class ChangSceneNameDialogFragment extends BottomSheetDialogFragment impl
     }
     private void update() {
         String name1 =name.getText().toString();
-        if (TextUtils.isEmpty(name1)){
-            UiUtils.showToast("请输入场景名字");
-            return;
-        }
+
         LogUtil.i(name1);
         String nameEn1 = nameen.getText().toString();
 
+        if (TextUtils.isEmpty(name1)&&TextUtils.isEmpty(nameEn1)){
+            UiUtils.showToast("请至少选择一项");
+            return;
+        }
         if (listener!=null){
             listener.changeName(name1,nameEn1);
         }

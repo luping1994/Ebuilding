@@ -416,13 +416,14 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
             public void onNext(ControlEntity data) {
                 canExcute = true;
                 dialog.dismiss();
-
+                UiUtils.showToast(data.msg);
                 if (data.code == 200) {
-                    UiUtils.showToast("成功!");
                 } else if (data.code == 500) {
-                    UiUtils.showToast(data.msg);
                     finish();
+                } else if (data.code == 101) {
+
                 }
+
             }
         });
         canExcute = false;

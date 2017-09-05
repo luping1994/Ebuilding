@@ -73,6 +73,7 @@
             android:layout_marginTop="6dp">
 
             <TextView
+                android:textSize="16sp"
                 android:id="@+id/appName"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -91,7 +92,6 @@
                 android:text="当前版本 1.0.0" />
 
             <TextView
-
                 android:id="@+id/guangwang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,8 +99,8 @@
                 android:layout_marginBottom="4dp"
                 android:autoLink="phone"
                 android:gravity="center"
-                android:text="服务热线137-1052-2185"
-                android:textColor="@color/colorPrimary"
+                android:text="服务热线:137-1052-2185"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <TextView

@@ -198,7 +198,7 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
             File file = new File(getContext().getCacheDir(), destinationFileName);
             upLoad(file);
         } else {
-
+            UiUtils.showToast("裁剪图片失败");
         }
     }
 
@@ -245,6 +245,9 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
                                 UiUtils.showToast(getString(R.string.tips_upload_failed));
 
                             }
+                        }else {
+                            UiUtils.showToast(getString(R.string.tips_upload_failed));
+
                         }
                     }
                 });

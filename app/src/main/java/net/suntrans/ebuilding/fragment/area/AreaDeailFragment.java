@@ -316,7 +316,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                 } else if(data.code == 102){
                     UiUtils.showToast("您没有控制权限");
                 }else {
-                    UiUtils.showToast("服务器错误");
+                    UiUtils.showToast(data.msg);
                 }
                 adapter.notifyDataSetChanged();
 

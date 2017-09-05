@@ -97,13 +97,13 @@ public class AmmeterParameterActivity extends BasedActivity {
         dictionary.put("ReactivePowerBU", "kvar");
         dictionary.put("ReactivePowerC", "C相无功功率");
         dictionary.put("ReactivePowerCU", "kvar");
-        dictionary.put("PowerFactor", "功率因素");
+        dictionary.put("PowerFactor", "功率因数");
         dictionary.put("PowerFactorU", "");
-        dictionary.put("PowerFactorA", "A相功率因素");
+        dictionary.put("PowerFactorA", "A相功率因数");
         dictionary.put("PowerFactorAU", "");
-        dictionary.put("PowerFactorB", "B相功率因素");
+        dictionary.put("PowerFactorB", "B相功率因数");
         dictionary.put("PowerFactorBU", "");
-        dictionary.put("PowerFactorC", "C相功率因素");
+        dictionary.put("PowerFactorC", "C相功率因数");
         dictionary.put("PowerFactorCU", "");
         dictionary.put("EletricityValue", "用电量");
         dictionary.put("EletricityValueU", "kWh");
