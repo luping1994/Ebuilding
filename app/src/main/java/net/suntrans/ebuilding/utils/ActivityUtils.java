@@ -21,6 +21,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import net.suntrans.ebuilding.fragment.AlertDialogFragment;
+
+import static android.R.attr.fragment;
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 /**
@@ -40,6 +43,16 @@ public class ActivityUtils {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
         transaction.commit();
+    }
+
+    public static void showLoginOutDialogFragmentToActivity(@NonNull FragmentManager fragmentManager,String tag){
+        checkNotNull(fragmentManager);
+        checkNotNull(tag);
+        AlertDialogFragment fragment = (AlertDialogFragment) fragmentManager.findFragmentByTag(tag);
+        if (fragment==null){
+            fragment = new AlertDialogFragment();
+        }
+        fragment.show(fragmentManager,tag);
     }
 
 }

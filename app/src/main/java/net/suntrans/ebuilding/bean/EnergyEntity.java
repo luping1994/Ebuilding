@@ -6,10 +6,7 @@ import java.util.List;
  * Created by Looney on 2017/5/20.
  */
 
-public class EnergyEntity {
-    public int code;
-    public Data data;
-    public String msg;
+public class EnergyEntity extends RespondBody<EnergyEntity.Data>{
 
     public static class Data {
         public int total;

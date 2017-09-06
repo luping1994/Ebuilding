@@ -62,7 +62,7 @@ public class SceneFragment extends RxFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scene, container, false);
-        stateView = StateView.inject(view,false);
+        stateView = StateView.inject(view, false);
         return view;
     }
 
@@ -101,7 +101,7 @@ public class SceneFragment extends RxFragment {
     }
 
     private View getFooterView() {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.footer,null,false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.footer, null, false);
         return view;
     }
 
@@ -114,8 +114,8 @@ public class SceneFragment extends RxFragment {
 
         @Override
         protected void convert(BaseViewHolder helper, SceneEntity.Scene item) {
-            helper.setText(R.id.sceneName,item.name)
-                    .setText(R.id.sceneNameEn,item.name_en);
+            helper.setText(R.id.sceneName, item.name)
+                    .setText(R.id.sceneNameEn, item.name_en);
             ImageView imageView = helper.getView(R.id.sceneBg);
             Glide.with(getActivity())
                     .load(item.img_url)
@@ -132,7 +132,7 @@ public class SceneFragment extends RxFragment {
     }
 
     private void getSceneData(int type) {
-        if (type==0){
+        if (type == 0) {
             stateView.showLoading();
             recyclerView.setVisibility(View.INVISIBLE);
         }
@@ -159,13 +159,13 @@ public class SceneFragment extends RxFragment {
             @Override
             public void onNext(SceneEntity result) {
                 refreshLayout.setRefreshing(false);
-                if (result.data.lists==null||result.data.lists.size()==0){
+                if (result.data.lists == null || result.data.lists.size() == 0) {
                     stateView.showEmpty();
                     recyclerView.setVisibility(View.INVISIBLE);
                     return;
                 }
 
-                if (result.code==200){
+                if (result.code == 200) {
                     recyclerView.setVisibility(View.VISIBLE);
                     stateView.showContent();
                     datas.clear();
@@ -176,8 +176,6 @@ public class SceneFragment extends RxFragment {
             }
         });
     }
-
-
 
 
 }

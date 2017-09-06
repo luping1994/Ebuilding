@@ -13,10 +13,9 @@ import static net.suntrans.ebuilding.R.id.wendu;
  * Created by Looney on 2017/5/20.
  */
 
-public class SensusEntity {
+public class SensusEntity extends RespondBody<SensusEntity.Data>{
     public int code;
-    public Data data;
-    public String msg;
+//    public Data data;
 
     public static class Data {
         public int total;

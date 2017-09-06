@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SceneEntity {
     public int code;
+    public String msg;
     public Result data;
 
     public static class Result {

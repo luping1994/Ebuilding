@@ -6,9 +6,8 @@ import java.util.List;
  * Created by Looney on 2017/7/13.
  */
 
-public class Ammeter3Eneity {
-    public int code;
-    public Data data;
+public class Ammeter3Eneity extends RespondBody<Ammeter3Eneity.Data>{
+
     public  static class Data{
         public int id;
         public String sno;

@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2017/8/16.
  */
 
-public class SceneEdit {
+public class SceneEdit extends RespondBody<SceneEdit.DataBean>{
 
     /**
      * code : 200
@@ -14,9 +14,9 @@ public class SceneEdit {
      * msg : ok
      */
 
-    private int code;
-    private DataBean data;
-    private String msg;
+//    private int code;
+//    private DataBean data;
+//    private String msg;
 
     public int getCode() {
         return code;

@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Looney on 2017/4/20.
  */
 
-public class UserInfo {
+public class UserInfo extends RespondBody<UserInfo.User>{
 
     public static class User   {
         public String id;
@@ -24,7 +24,7 @@ public class UserInfo {
      *
      * new api
      */
-    public User data;
-    public int code;
+//    public User data;
+//    public int code;
 
 }

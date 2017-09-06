@@ -36,6 +36,7 @@ import static net.suntrans.ebuilding.R.id.recyclerView;
  */
 
 public class YichangActivity extends BasedActivity {
+
     private List<YichangEntity.DataBeanX.ListsBean.DataBean> datas;
     private MyAdapter adapter;
     private StateView stateView;

@@ -6,10 +6,8 @@ import java.util.List;
  * Created by Looney on 2017/7/8.
  */
 
-public class AreaEntity {
-    public int code;
-    public AreaData data;
-    public String msg;
+public class AreaEntity extends RespondBody<AreaEntity.AreaData>{
+
     public static class AreaData{
         public int total;
         public List<AreaFloor> lists;

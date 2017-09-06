@@ -1,6 +1,8 @@
 package net.suntrans.ebuilding.api;
 
 
+import android.util.Log;
+
 import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.utils.LogUtil;
 
@@ -51,12 +53,13 @@ public class RetrofitHelper {
                     .build();
              api = retrofit.create(Api.class);
         }
-
         return api;
     }
 
 
     private static void initOkHttpClient() {
+
+
         Interceptor netInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {

@@ -2,10 +2,12 @@ package net.suntrans.ebuilding.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.MainActivity;
@@ -29,7 +31,7 @@ import rx.schedulers.Schedulers;
  * Created by Looney on 2017/7/21.
  */
 
-public class LoginActivity extends BasedActivity implements View.OnClickListener {
+public class LoginActivity extends RxAppCompatActivity implements View.OnClickListener {
     private EditView account;
     private EditView password;
     private LoadingDialog dialog;

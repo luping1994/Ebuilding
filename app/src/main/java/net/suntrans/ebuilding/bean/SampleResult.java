@@ -4,7 +4,7 @@ package net.suntrans.ebuilding.bean;
  * Created by Administrator on 2017/8/15.
  */
 
-public class SampleResult {
+public class SampleResult extends RespondBody<String>{
 
     /**
      * code : 200
@@ -12,8 +12,8 @@ public class SampleResult {
      * msg : ok
      */
 
-    private int code;
-    private String msg;
+//    private int code;
+//    private String msg;
 
     public int getCode() {
         return code;

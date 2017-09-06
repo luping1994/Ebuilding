@@ -4,11 +4,9 @@ package net.suntrans.ebuilding.bean;
  * Created by Looney on 2017/7/8.
  */
 
-public class ControlEntity {
-    public int code;
-    public Data data;
-    public String msg;
-    public static class Data{
+public class ControlEntity extends RespondBody<ControlEntity.Data> {
+
+    public static class Data {
         public String id;
         public int status;
 

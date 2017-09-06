@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2017/8/17.
  */
 
-public class Ameter3Entity {
+public class Ameter3Entity extends RespondBody<Ameter3Entity.DataBean>{
 
     /**
      * code : 200
@@ -14,9 +14,6 @@ public class Ameter3Entity {
      * msg : ok
      */
 
-    private int code;
-    private DataBean data;
-    private String msg;
 
     public int getCode() {
         return code;

@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Looney on 2017/8/17.
  */
 
-public class YichangEntity {
+public class YichangEntity extends RespondBody<YichangEntity.DataBeanX>{
 
     /**
      * code : 200
@@ -14,9 +14,9 @@ public class YichangEntity {
      * msg : ok
      */
 
-    public int code;
-    public DataBeanX data;
-    public String msg;
+//    public int code;
+//    public DataBeanX data;
+//    public String msg;
 
     public static class DataBeanX {
         /**

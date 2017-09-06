@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2017/8/16.
  */
 
-public class FreshChannelEntity {
+public class FreshChannelEntity extends RespondBody<FreshChannelEntity.DataBean>{
 
     /**
      * code : 200
@@ -14,15 +14,15 @@ public class FreshChannelEntity {
      * msg : ok
      */
 
-    private String code;
-    private DataBean data;
-    private String msg;
+//    private String code;
+//    private DataBean data;
+//    private String msg;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

@@ -6,10 +6,8 @@ import java.util.List;
  * Created by Looney on 2017/6/16.
  */
 
-public class SceneChannelResult {
-    public int code;
-    public Data data;
-    public String msg;
+public class SceneChannelResult extends RespondBody<SceneChannelResult.Data>{
+
     public static class Data {
         public int total;
         public String img_banner;
