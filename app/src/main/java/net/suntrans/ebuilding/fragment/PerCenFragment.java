@@ -36,6 +36,7 @@ import net.suntrans.ebuilding.fragment.base.BasedFragment;
 import net.suntrans.ebuilding.fragment.base.LazyLoadFragment;
 import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
 import net.suntrans.ebuilding.fragment.din.UpLoadImageFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.ebuilding.utils.UiUtils;
@@ -193,7 +194,7 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
                 .compose(this.<UserInfo>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserInfo>() {
+                .subscribe(new BaseSubscriber<UserInfo>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -201,6 +202,8 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
+
                         e.printStackTrace();
                     }
 
@@ -217,7 +220,7 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
                                 LogUtil.i("http://tit.suntrans-cloud.com" + info.data.avatar_url);
                                 glideRequest
                                         .load("http://tit.suntrans-cloud.com" + info.data.avatar_url)
-                                        .transform(new GlideRoundTransform(getActivity(),UiUtils.dip2px(16)))
+                                        .transform(new GlideRoundTransform(getActivity(), UiUtils.dip2px(16)))
                                         .override(UiUtils.dip2px(33), UiUtils.dip2px(33))
                                         .placeholder(R.drawable.user_white)
                                         .into(avatar);
@@ -281,7 +284,7 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
             map.put("avatar_url", path);
         }
         LogUtil.i("percenfragment:" + path);
-        ((MainActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new Subscriber<SampleResult>() {
+        ((MainActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new BaseSubscriber<SampleResult>(getActivity()) {
             @Override
             public void onCompleted() {
 
@@ -289,9 +292,9 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
 
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 e.printStackTrace();
                 dialog.dismiss();
-                UiUtils.showToast(e.getMessage());
             }
 
             @Override

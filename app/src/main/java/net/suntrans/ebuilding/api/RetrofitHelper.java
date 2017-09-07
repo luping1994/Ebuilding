@@ -4,6 +4,7 @@ package net.suntrans.ebuilding.api;
 import android.util.Log;
 
 import net.suntrans.ebuilding.App;
+import net.suntrans.ebuilding.converter.MyGsonConverterFactory;
 import net.suntrans.ebuilding.utils.LogUtil;
 
 import java.io.IOException;
@@ -44,16 +45,28 @@ public class RetrofitHelper {
     }
 
     public static Api getApi() {
-        if (api==null){
+        if (api == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(mOkHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(MyGsonConverterFactory.create())
+
+//                    .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
-             api = retrofit.create(Api.class);
+            api = retrofit.create(Api.class);
         }
         return api;
+    }
+
+    public static Api getApi2() {
+
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build().create(Api.class);
     }
 
 

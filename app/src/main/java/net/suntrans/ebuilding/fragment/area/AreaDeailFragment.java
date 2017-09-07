@@ -5,12 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +15,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
-import net.suntrans.ebuilding.MainActivity;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.AreaDetailActivity;
-import net.suntrans.ebuilding.activity.SceneDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
 import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.DeviceEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -49,8 +44,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static net.suntrans.ebuilding.R.id.recyclerView;
 
 /**
  * Created by Looney on 2017/7/21.
@@ -126,7 +119,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                     .observeOn(AndroidSchedulers.mainThread());
         }
 
-        getDataObv.subscribe(new Subscriber<AreaDetailEntity>() {
+        getDataObv.subscribe(new BaseSubscriber<AreaDetailEntity>(getActivity()) {
             @Override
             public void onCompleted() {
 
@@ -134,19 +127,8 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
 
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (e.getMessage() != null) {
-                        if (e.getMessage().equals("HTTP 401 Unauthorized")) {
-                            UiUtils.showToast("您的身份信息已失效,请重新登录");
-                        }
-                    } else {
-                        UiUtils.showToast("服务器错误");
-                    }
-                }
-                if (e instanceof SocketTimeoutException) {
-                    UiUtils.showToast("连接超时");
-                }
                 if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }
@@ -158,16 +140,20 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                     refreshLayout.setRefreshing(false);
                 }
                 if (result != null) {
-                    datas.clear();
+                    if (result.code == 200) {
+                        datas.clear();
+                        for (int i = 0; i < result.data.lists.size(); i++) {
+                            if (result.data.lists.get(i).channel_type.equals(channelType)) {
+                                datas.add(result.data.lists.get(i));
+                            }
 
-                    for (int i = 0; i < result.data.lists.size(); i++) {
-                        if (result.data.lists.get(i).channel_type.equals(channelType)) {
-                            datas.add(result.data.lists.get(i));
                         }
-
+                        adapter.notifyDataSetChanged();
+                    } else if (result.code == 401) {
+                        ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(), "Alert");
+                    } else {
+                        UiUtils.showToast(result.msg);
                     }
-                    adapter.notifyDataSetChanged();
-
                 }
                 if (datas.size() == 0) {
                     tips.setVisibility(View.VISIBLE);
@@ -287,41 +273,72 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
 
         String order = datas.get(position).status.equals("1") ? "关" : "开";
         LogUtil.i("发出命令:" + order);
-        conOb.subscribe(new Subscriber<ControlEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                UiUtils.showToast("服务器错误");
-                dialog.dismiss();
-                adapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onNext(ControlEntity data) {
-                dialog.dismiss();
-
-                if (data.code == 200) {
-                    LogUtil.i(data.data.toString());
-                    for (int i = 0; i < datas.size(); i++) {
-                        if (datas.get(i).channel_id.equals(data.data.id)) {
-                            datas.get(i).status = String.valueOf(data.data.status);
-                        }
+        conOb
+                .subscribe(new BaseSubscriber<ControlEntity>(getActivity()) {
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
+                        adapter.notifyDataSetChanged();
                     }
-                } else if(data.code == 102){
-                    UiUtils.showToast("您没有控制权限");
-                }else {
-                    UiUtils.showToast(data.msg);
-                }
-                adapter.notifyDataSetChanged();
 
-            }
-        });
+                    @Override
+                    public void onNext(ControlEntity data) {
+                        dialog.dismiss();
+                        if (data.code == 200) {
+                            LogUtil.i(data.data.toString());
+                            for (int i = 0; i < datas.size(); i++) {
+                                if (datas.get(i).channel_id.equals(data.data.id)) {
+                                    datas.get(i).status = String.valueOf(data.data.status);
+                                }
+                            }
+                        } else if (data.code == 102) {
+                            UiUtils.showToast("您没有控制权限");
+                        } else {
+                            UiUtils.showToast(data.msg);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+//                .subscribe(new Subscriber<ControlEntity>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//                UiUtils.showToast("服务器错误");
+//                dialog.dismiss();
+//                adapter.notifyDataSetChanged();
+//
+//            }
+//
+//            @Override
+//            public void onNext(ControlEntity data) {
+//                dialog.dismiss();
+//
+//                if (data.code == 200) {
+//                    LogUtil.i(data.data.toString());
+//                    for (int i = 0; i < datas.size(); i++) {
+//                        if (datas.get(i).channel_id.equals(data.data.id)) {
+//                            datas.get(i).status = String.valueOf(data.data.status);
+//                        }
+//                    }
+//                    adapter.notifyDataSetChanged();
+//
+//                } else if (data.code == 102) {
+//                    UiUtils.showToast("您没有控制权限");
+//                } else if (data.code == 401) {
+//                    ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(), "Alert");
+//                } else {
+//                    UiUtils.showToast(data.msg);
+//                }
+//
+//
+//            }
+//        });
     }
 
 
@@ -346,7 +363,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                 .compose(this.<SampleResult>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -355,7 +372,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+                        super.onError(e);
                     }
 
                     @Override
@@ -364,7 +381,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                             UiUtils.showToast("删除成功");
                             getData();
                         } else {
-                            UiUtils.showToast("删除失败");
+                            UiUtils.showToast(result.msg);
                         }
                     }
                 });
@@ -384,7 +401,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
         fragment2.show(getChildFragmentManager(), "ChangeNameDialogFragment");
     }
 
-    private String[] items = {"移除设备","更改名称"};
+    private String[] items = {"移除设备", "更改名称"};
 
     @Override
     public void changeName(String name) {
@@ -400,8 +417,8 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
         Map<String, String> map = new HashMap<>();
         map.put("channel_id", id);
         map.put("name", name);
-        LogUtil.i(id+","+name);
-        ((AreaDetailActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateChannel(map), new Subscriber<SampleResult>() {
+        LogUtil.i(id + "," + name);
+        ((AreaDetailActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateChannel(map), new BaseSubscriber<SampleResult>(getActivity()) {
             @Override
             public void onCompleted() {
 
@@ -411,7 +428,8 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
             public void onError(Throwable e) {
                 e.printStackTrace();
                 dialog.dismiss();
-                UiUtils.showToast(e.getMessage());
+                super.onError(e);
+
             }
 
             @Override

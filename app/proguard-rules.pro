@@ -115,7 +115,11 @@
 }
 #我的
     -keep class net.suntrans.ebuilding.bean.**{*;}
+    -keep class net.suntrans.ebuilding.converter.**{*;}
     -dontwarn android.support.**
+    -keep class **.R$* {
+     *;
+    }
 
 #ucrop
 -dontwarn com.yalantis.ucrop**

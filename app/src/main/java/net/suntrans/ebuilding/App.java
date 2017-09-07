@@ -2,6 +2,7 @@ package net.suntrans.ebuilding;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.MessageQueue;
@@ -30,6 +31,7 @@ public class App extends MultiDexApplication {
     public static Application getApplication() {
         return application;
     }
+    private int count;
 
     public static SharedPreferences getSharedPreferences() {
         if (sharedPreferences == null) {
@@ -52,6 +54,7 @@ public class App extends MultiDexApplication {
         }
         LeakCanary.install(this);
         application = this;
+        startService(new Intent(this,MyService.class));
 //        SpeechUtility.createUtility(App.this, "appid=" + getString(R.string.app_id));
 
 //        new Thread(){//copy assets目录下的开关信息数据库

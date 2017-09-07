@@ -23,6 +23,7 @@ import net.suntrans.ebuilding.adapter.EnergyFragAdapter;
 import net.suntrans.ebuilding.adapter.EnergyFragAdapter2;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.EnergyEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.stateview.StateView;
 
@@ -118,7 +119,7 @@ public class EnergyConFragment2 extends RxFragment {
                 .compose(this.<EnergyEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<EnergyEntity>() {
+                .subscribe(new BaseSubscriber<EnergyEntity>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -126,6 +127,8 @@ public class EnergyConFragment2 extends RxFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
+
                         stateView.showRetry();
                         refreshLayout.setRefreshing(false);
                         recyclerView.setVisibility(View.INVISIBLE);

@@ -139,6 +139,7 @@ public class AddSenceDevGrpAdapter extends BaseExpandableListAdapter {
         }
 
         public void setData(final int groupPosition, final int childPosition) {
+
             adapter =  new ParentAdapter(datas.get(groupPosition).sub, mContext);
             listView.setAdapter(adapter);
             listView. setGroupIndicator(null);

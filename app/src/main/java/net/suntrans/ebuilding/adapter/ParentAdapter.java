@@ -124,21 +124,37 @@ public class ParentAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     if (state.isChecked()) {
+                        boolean hasPerssion = true;
                         for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
-                            if (datas.get(groupPosition).lists.get(i).permission.equals("0")){
+                            if (datas.get(groupPosition).lists.get(i).permission.equals("0")) {
+                                hasPerssion = false;
                                 continue;
                             }
                             datas.get(groupPosition).lists.get(i).setChecked(true);
                         }
-                        datas.get(groupPosition).setChecked(true);
+                        if (!hasPerssion) {
+                            UiUtils.showToast("该区域下部分设备无管理权限无法全选");
+                            datas.get(groupPosition).setChecked(false);
+                        } else {
+
+                            datas.get(groupPosition).setChecked(true);
+                        }
                     } else {
+                        boolean hasPerssion = true;
                         for (int i = 0; i < datas.get(groupPosition).lists.size(); i++) {
-                            if (datas.get(groupPosition).lists.get(i).permission.equals("0")){
+                            if (datas.get(groupPosition).lists.get(i).permission.equals("0")) {
+                                hasPerssion = false;
                                 continue;
                             }
                             datas.get(groupPosition).lists.get(i).setChecked(false);
                         }
-                        datas.get(groupPosition).setChecked(false);
+                        if (!hasPerssion) {
+                            UiUtils.showToast("该区域下部分设备无管理权限无法全选");
+                            datas.get(groupPosition).setChecked(true);
+                        } else {
+
+                            datas.get(groupPosition).setChecked(false);
+                        }
                     }
                     notifyDataSetChanged();
                 }
@@ -166,11 +182,11 @@ public class ParentAdapter extends BaseExpandableListAdapter {
             root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (datas.get(groupPosition).lists.get(childPosition).permission.equals("0")){
+                    if (datas.get(groupPosition).lists.get(childPosition).permission.equals("0")) {
                         UiUtils.showToast("您没有该设备的管理权限");
-                        System.out.println(datas.get(groupPosition).lists.get(childPosition).permission);
+//                        System.out.println(datas.get(groupPosition).lists.get(childPosition).permission);
                         datas.get(groupPosition).lists.get(childPosition).setChecked(state.isChecked());
-                    }else {
+                    } else {
                         datas.get(groupPosition).lists.get(childPosition).setChecked(!state.isChecked());
                     }
                     int checkedCount = 0;

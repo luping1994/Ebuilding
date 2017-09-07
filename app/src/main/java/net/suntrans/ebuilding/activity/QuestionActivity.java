@@ -16,6 +16,7 @@ import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.ChangedPasswordEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.EditView;
 import net.suntrans.ebuilding.views.GlideRoundTransform;
@@ -90,7 +91,7 @@ public class QuestionActivity extends BasedActivity {
                 .compose(this.<ChangedPasswordEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ChangedPasswordEntity>() {
+                .subscribe(new BaseSubscriber<ChangedPasswordEntity>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -98,10 +99,11 @@ public class QuestionActivity extends BasedActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        super.onError(e);
+//                        e.printStackTrace();
                         dialog.dismiss();
-                        if (e != null)
-                            UiUtils.showToast(e.getMessage());
+//                        if (e != null)
+//                            UiUtils.showToast(e.getMessage());
                     }
 
                     @Override

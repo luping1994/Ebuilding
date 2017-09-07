@@ -33,6 +33,7 @@ import net.suntrans.ebuilding.bean.UserInfo;
 import net.suntrans.ebuilding.fragment.din.ChangeNameDialogFragment;
 import net.suntrans.ebuilding.fragment.din.SceneFragment;
 import net.suntrans.ebuilding.fragment.din.UpLoadImageFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
 import net.suntrans.ebuilding.utils.UiUtils;
@@ -178,7 +179,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                 .compose(this.<UserInfo>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserInfo>() {
+                .subscribe(new BaseSubscriber<UserInfo>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -187,6 +188,8 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        super.onError(e);
+
                     }
 
                     @Override
@@ -264,7 +267,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
             map.put("img_url", path);
         }
         LogUtil.i("percenfragment:" + path);
-        ((MainActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new Subscriber<SampleResult>() {
+        ((MainActivity) getActivity()).addSubscription(RetrofitHelper.getApi().updateProfile(map), new BaseSubscriber<SampleResult>(getActivity()) {
             @Override
             public void onCompleted() {
 
@@ -272,9 +275,8 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
                 dialog.dismiss();
-                UiUtils.showToast(e.getMessage());
+               super.onError(e);
             }
 
             @Override

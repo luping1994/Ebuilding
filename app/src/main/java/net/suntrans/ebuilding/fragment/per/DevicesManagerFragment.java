@@ -28,6 +28,7 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.DeviceInfoResult;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 
@@ -57,7 +58,7 @@ public class DevicesManagerFragment extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View view =  inflater.inflate(R.layout.fragment_devicesmanager, container, false);
+        View view = inflater.inflate(R.layout.fragment_devicesmanager, container, false);
         setHasOptionsMenu(true);
 
 
@@ -87,8 +88,6 @@ public class DevicesManagerFragment extends RxFragment {
 
 
     }
-
-
 
 
     @Override
@@ -131,6 +130,7 @@ public class DevicesManagerFragment extends RxFragment {
             TextView title;
             TextView name;
             CardView root;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 imageView = (ImageView) itemView.findViewById(R.id.imageView);
@@ -149,11 +149,11 @@ public class DevicesManagerFragment extends RxFragment {
             public void setData(int position) {
 
                 name.setText(datas.get(position).device_name);
-                if (datas.get(position).is_online.equals("1")){
+                if (datas.get(position).is_online.equals("1")) {
                     title.setText("(在线)");
                     title.setTextColor(Color.GREEN);
 
-                }else {
+                } else {
                     title.setText("(不在线)");
                     title.setTextColor(Color.RED);
                 }
@@ -166,23 +166,17 @@ public class DevicesManagerFragment extends RxFragment {
                 .compose(this.<DeviceInfoResult>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<DeviceInfoResult>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
+                .subscribe(new BaseSubscriber<DeviceInfoResult>(getActivity()) {
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        UiUtils.showToast("服务器错误!");
-                        if (refreshLayout!=null)
+                        super.onError(e);
+                        if (refreshLayout != null)
                             refreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onNext(DeviceInfoResult deviceInfoResult) {
-                        if (refreshLayout!=null)
+                        if (refreshLayout != null)
                             refreshLayout.setRefreshing(false);
                         if (deviceInfoResult != null) {
                             datas.clear();
@@ -191,11 +185,30 @@ public class DevicesManagerFragment extends RxFragment {
                                 adapter.notifyDataSetChanged();
                             }
                         }
-                        if (datas.size()==0){
+                        if (datas.size() == 0) {
                             UiUtils.showToast("暂无数据");
                         }
                     }
                 });
+//                .subscribe(new Subscriber<DeviceInfoResult>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                        UiUtils.showToast("服务器错误!");
+//                        if (refreshLayout!=null)
+//                            refreshLayout.setRefreshing(false);
+//                    }
+//
+//                    @Override
+//                    public void onNext(DeviceInfoResult deviceInfoResult) {
+//
+//                    }
+//                });
     }
 
 

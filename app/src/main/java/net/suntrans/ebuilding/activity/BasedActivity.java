@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import net.suntrans.ebuilding.R;
+import net.suntrans.ebuilding.rx.RxBus;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;

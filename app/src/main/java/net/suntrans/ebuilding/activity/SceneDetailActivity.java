@@ -35,6 +35,9 @@ import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.SceneChannelResult;
 import net.suntrans.ebuilding.bean.SceneEdit;
 import net.suntrans.ebuilding.fragment.din.ChangSceneNameDialogFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
+import net.suntrans.ebuilding.utils.ExceptionUtils;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -159,7 +162,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 .compose(this.<SampleResult>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -167,8 +170,8 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
                     }
 
                     @Override
@@ -265,7 +268,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(nameEn)) {
             map.put("name_en", nameEn);
         }
-        addSubscription(RetrofitHelper.getApi().updateScene(map), new Subscriber<SampleResult>() {
+        addSubscription(RetrofitHelper.getApi().updateScene(map), new BaseSubscriber<SampleResult>(this) {
             @Override
             public void onCompleted() {
 
@@ -273,9 +276,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 e.printStackTrace();
                 dialog.dismiss();
-                UiUtils.showToast(e.getMessage());
             }
 
             @Override
@@ -318,33 +321,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 .compose(this.<SceneChannelResult>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SceneChannelResult>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
+                .subscribe(new BaseSubscriber<SceneChannelResult>(this) {
                     @Override
                     public void onNext(SceneChannelResult result) {
-                        System.out.println(result.code);
-
-                        if (result.code == 500) {
-                            new AlertDialog.Builder(SceneDetailActivity.this)
-                                    .setMessage("该场景已经被删除")
-                                    .setCancelable(false)
-                                    .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                        }
-                                    }).create().show();
-                            return;
-                        }
                         if (result.code == 200) {
                             datas.clear();
                             datas.addAll(result.data.lists);
@@ -358,10 +337,66 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                                 tips.setVisibility(View.VISIBLE);
                                 recyclerView.setVisibility(View.INVISIBLE);
                             }
+                        } else if (result.code == 500) {
+                            new AlertDialog.Builder(SceneDetailActivity.this)
+                                    .setMessage("该场景已经被删除")
+                                    .setCancelable(false)
+                                    .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    }).create().show();
+                        }else {
+                            UiUtils.showToast(result.msg);
                         }
 
                     }
                 });
+//                .subscribe(new Subscriber<SceneChannelResult>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(SceneChannelResult result) {
+//                        if (result.code == 200) {
+//                            datas.clear();
+//                            datas.addAll(result.data.lists);
+//                            adapter1.notifyDataSetChanged();
+//                            LogUtil.i("场景动作的数量：" + datas.size());
+//                            if (datas.size() != 0) {
+//                                recyclerView.setVisibility(View.VISIBLE);
+//                                tips.setVisibility(View.GONE);
+//
+//                            } else {
+//                                tips.setVisibility(View.VISIBLE);
+//                                recyclerView.setVisibility(View.INVISIBLE);
+//                            }
+//                        } else if (result.code == 500) {
+//                            new AlertDialog.Builder(SceneDetailActivity.this)
+//                                    .setMessage("该场景已经被删除")
+//                                    .setCancelable(false)
+//                                    .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            finish();
+//                                        }
+//                                    }).create().show();
+//                        } else if (result.code == 401) {
+//                            ActivityUtils.showLoginOutDialogFragmentToActivity(getSupportFragmentManager(), "Alert");
+//                        } else {
+//                            UiUtils.showToast(result.msg);
+//                        }
+//
+//                    }
+//                });
     }
 
 
@@ -384,7 +419,32 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     .compose(this.<ControlEntity>bindUntilEvent(ActivityEvent.DESTROY))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io());
+        conOb.subscribe(new BaseSubscriber<ControlEntity>(this){
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                canExcute = true;
+                dialog.dismiss();
 
+            }
+
+            @Override
+            public void onNext(ControlEntity data) {
+                canExcute = true;
+                dialog.dismiss();
+                if (data.code == 200) {
+                    UiUtils.showToast(data.msg);
+                } else if (data.code == 500) {
+                    UiUtils.showToast(data.msg);
+                    finish();
+                } else if (data.code == 101) {
+                    UiUtils.showToast(data.msg);
+                }  else {
+                    UiUtils.showToast(data.msg);
+                }
+
+            }
+        });
         conOb.subscribe(new Subscriber<ControlEntity>() {
             @Override
             public void onCompleted() {
@@ -395,33 +455,24 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
             public void onError(Throwable e) {
                 canExcute = true;
                 dialog.dismiss();
-                if (e instanceof HttpException) {
-                    if (e.getMessage() != null) {
-                        if (e.getMessage().equals("HTTP 401 Unauthorized")) {
-                            UiUtils.showToast("您的登录状态已失效,请重新登录");
-                        } else {
-                            UiUtils.showToast("服务器错误");
-
-                        }
-                    } else {
-                        UiUtils.showToast("服务器错误");
-                    }
-                }
-                if (e instanceof SocketTimeoutException) {
-                    UiUtils.showToast("连接超时");
-                }
+                ExceptionUtils.handleException(e);
             }
 
             @Override
             public void onNext(ControlEntity data) {
                 canExcute = true;
                 dialog.dismiss();
-                UiUtils.showToast(data.msg);
                 if (data.code == 200) {
+                    UiUtils.showToast(data.msg);
                 } else if (data.code == 500) {
+                    UiUtils.showToast(data.msg);
                     finish();
                 } else if (data.code == 101) {
-
+                    UiUtils.showToast(data.msg);
+                } else if (data.code == 401) {
+                    ActivityUtils.showLoginOutDialogFragmentToActivity(getSupportFragmentManager(), "Alert");
+                } else {
+                    UiUtils.showToast(data.msg);
                 }
 
             }
@@ -494,7 +545,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 .compose(this.<SampleResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -502,12 +553,12 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         dialog.dismiss();
                         e.printStackTrace();
-                        UiUtils.showToast("连接服务器失败");
+
 
                     }
-
                     @Override
                     public void onNext(SampleResult addResult) {
                         dialog.dismiss();
@@ -555,7 +606,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 .compose(this.<SampleResult>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -563,8 +614,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+//                        UiUtils.showToast(e.getMessage());
                     }
 
                     @Override
@@ -585,7 +637,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                 .compose(this.<SceneEdit>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SceneEdit>() {
+                .subscribe(new BaseSubscriber<SceneEdit>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -593,6 +645,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         e.printStackTrace();
                     }
 
@@ -600,7 +653,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     public void onNext(SceneEdit info) {
                         txTitle.setText(info.getData().getRow().get(0).getName());
                         img_url1 = info.getData().getRow().get(0).getImg_url();
-                        System.out.println(img_url1);
+//                        System.out.println(img_url1);
                         Glide.with(SceneDetailActivity.this)
                                 .load(img_url1)
                                 .override(UiUtils.getDisplaySize(SceneDetailActivity.this)[0], UiUtils.dip2px(217))

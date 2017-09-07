@@ -1,7 +1,6 @@
 package net.suntrans.ebuilding.fragment.din;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,12 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -23,10 +19,11 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.ControlEntity;
 import net.suntrans.ebuilding.bean.DeviceEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
-import net.suntrans.ebuilding.views.OffsetDecoration;
 import net.suntrans.ebuilding.views.SwitchButton;
 
 import java.util.ArrayList;
@@ -36,6 +33,8 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.R.attr.data;
 
 /**
  * Created by Looney on 2017/7/20.
@@ -55,7 +54,7 @@ public class LightFragment extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_light,container,false);
+        View view = inflater.inflate(R.layout.fragment_light, container, false);
         return view;
     }
 
@@ -68,7 +67,7 @@ public class LightFragment extends RxFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LightAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshlayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -77,12 +76,13 @@ public class LightFragment extends RxFragment {
             }
         });
     }
-    private class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder>{
+
+    private class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> {
 
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_light,parent,false));
+            return new ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_light, parent, false));
         }
 
         @Override
@@ -92,18 +92,20 @@ public class LightFragment extends RxFragment {
 
         @Override
         public int getItemCount() {
-            return datas==null?0:datas.size();
+            return datas == null ? 0 : datas.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder{
+        class ViewHolder extends RecyclerView.ViewHolder {
             TextView name;
             TextView area;
             SwitchButton button;
-            public void setData(int position){
-                button.setCheckedImmediately(datas.get(position).status.equals("1")?true:false);
+
+            public void setData(int position) {
+                button.setCheckedImmediately(datas.get(position).status.equals("1") ? true : false);
                 name.setText(datas.get(position).name);
                 area.setText(datas.get(position).area_name);
             }
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 button = (SwitchButton) itemView.findViewById(R.id.checkbox);
@@ -120,9 +122,8 @@ public class LightFragment extends RxFragment {
     }
 
 
-
     private void sendCmd(int position) {
-        if (position==-1){
+        if (position == -1) {
             UiUtils.showToast("请不要频繁操作！");
             return;
         }
@@ -143,29 +144,22 @@ public class LightFragment extends RxFragment {
 
         String order = datas.get(position).status.equals("1") ? "关" : "开";
         LogUtil.i("发出命令:" + order);
-        conOb.subscribe(new Subscriber<ControlEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        conOb.subscribe(new BaseSubscriber<ControlEntity>(getActivity()) {
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                UiUtils.showToast("服务器错误");
+                super.onError(e);
                 dialog.dismiss();
-
                 adapter.notifyDataSetChanged();
-                if (refreshLayout!=null){
+                if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }
-
             }
 
             @Override
             public void onNext(ControlEntity data) {
                 dialog.dismiss();
-                if (refreshLayout!=null){
+                if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }
                 if (data.code == 200) {
@@ -175,14 +169,60 @@ public class LightFragment extends RxFragment {
                             datas.get(i).status = String.valueOf(data.data.status);
                         }
                     }
+                } else if (data.code == 401) {
+                    ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(), "Alert");
+
                 } else {
-                    UiUtils.showToast("服务器错误");
+                    UiUtils.showToast(data.msg);
                 }
 
                 adapter.notifyDataSetChanged();
-
             }
         });
+
+//                .subscribe(new Subscriber<ControlEntity>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//                UiUtils.showToast("服务器错误");
+//                dialog.dismiss();
+//
+//                adapter.notifyDataSetChanged();
+//                if (refreshLayout!=null){
+//                    refreshLayout.setRefreshing(false);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNext(ControlEntity data) {
+//                dialog.dismiss();
+//                if (refreshLayout!=null){
+//                    refreshLayout.setRefreshing(false);
+//                }
+//                if (data.code == 200) {
+//                    LogUtil.i(data.data.toString());
+//                    for (int i = 0; i < datas.size(); i++) {
+//                        if (datas.get(i).id.equals(data.data.id)) {
+//                            datas.get(i).status = String.valueOf(data.data.status);
+//                        }
+//                    }
+//                } else if (data.code==401){
+//                    ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(), "Alert");
+//
+//                }else {
+//                    UiUtils.showToast(data.msg);
+//                }
+//
+//                adapter.notifyDataSetChanged();
+//
+//            }
+//        });
     }
 
     @Override
@@ -199,16 +239,10 @@ public class LightFragment extends RxFragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
-
-        getDataObj.subscribe(new Subscriber<DeviceEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
+        getDataObj.subscribe(new BaseSubscriber<DeviceEntity>(getActivity()) {
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                super.onError(e);
                 if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }
@@ -219,21 +253,68 @@ public class LightFragment extends RxFragment {
                 if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }
-                if (result != null) {
-                    datas.clear();
-                    datas.addAll(result.data.lists);
-                    adapter.notifyDataSetChanged();
-                }
-                if (datas.size()!=0){
-                    recyclerView.setVisibility(View.VISIBLE);
-                    tips.setVisibility(View.GONE);
+                if (result.code == 200) {
+                    if (result != null) {
+                        datas.clear();
+                        datas.addAll(result.data.lists);
+                        adapter.notifyDataSetChanged();
+                    }
+                    if (datas.size() != 0) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tips.setVisibility(View.GONE);
 
-                }else {
-                    tips.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.INVISIBLE);
+                    } else {
+                        tips.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    UiUtils.showToast(result.msg);
                 }
+
             }
         });
+//        getDataObj.subscribe(new Subscriber<DeviceEntity>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//                if (refreshLayout != null) {
+//                    refreshLayout.setRefreshing(false);
+//                }
+//            }
+//
+//            @Override
+//            public void onNext(DeviceEntity result) {
+//                if (refreshLayout != null) {
+//                    refreshLayout.setRefreshing(false);
+//                }
+//                if (result.code == 200) {
+//                    if (result != null) {
+//                        datas.clear();
+//                        datas.addAll(result.data.lists);
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                    if (datas.size() != 0) {
+//                        recyclerView.setVisibility(View.VISIBLE);
+//                        tips.setVisibility(View.GONE);
+//
+//                    } else {
+//                        tips.setVisibility(View.VISIBLE);
+//                        recyclerView.setVisibility(View.INVISIBLE);
+//                    }
+//                } else if (result.code == 401) {
+//                    ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(), "Alert");
+//
+//                } else {
+//                    UiUtils.showToast(result.msg);
+//                }
+
+//            }
+//        });
 
     }
 

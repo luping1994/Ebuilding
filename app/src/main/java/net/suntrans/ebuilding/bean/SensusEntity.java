@@ -14,7 +14,7 @@ import static net.suntrans.ebuilding.R.id.wendu;
  */
 
 public class SensusEntity extends RespondBody<SensusEntity.Data>{
-    public int code;
+//    public int code;
 //    public Data data;
 
     public static class Data {

@@ -23,6 +23,8 @@ import android.support.v4.app.FragmentTransaction;
 
 import net.suntrans.ebuilding.fragment.AlertDialogFragment;
 
+import java.security.PublicKey;
+
 import static android.R.attr.fragment;
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
@@ -30,6 +32,7 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
  * This provides methods to help Activities load their UI.
  */
 public class ActivityUtils {
+
 
     /**
      * The {@code fragment} is added to the container view with id {@code frameId}. The operation is

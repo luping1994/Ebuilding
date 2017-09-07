@@ -21,6 +21,8 @@ import net.suntrans.ebuilding.api.RetrofitHelper
 import net.suntrans.ebuilding.bean.AreaEntity
 import net.suntrans.ebuilding.bean.SampleResult
 import net.suntrans.ebuilding.fragment.base.BasedFragment
+import net.suntrans.ebuilding.rx.BaseSubscriber
+import net.suntrans.ebuilding.utils.ActivityUtils
 import net.suntrans.ebuilding.utils.LogUtil
 import net.suntrans.ebuilding.utils.StatusBarCompat
 import net.suntrans.ebuilding.utils.UiUtils
@@ -98,13 +100,13 @@ class AreaFragment : BasedFragment() {
                 .compose(this.bindUntilEvent<AreaEntity>(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Subscriber<AreaEntity>() {
+                .subscribe(object : BaseSubscriber<AreaEntity>(activity) {
                     override fun onCompleted() {
 
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        super.onError(e)
                         stateView.showRetry()
                         refreshLayout?.isRefreshing = false
 
@@ -125,7 +127,11 @@ class AreaFragment : BasedFragment() {
                                 expandableListView!!.expandGroup(0, true)
                                 if (a == 0)
                                     stateView.showContent()
-                            } else {
+                            } else if (homeSceneResult.code==401){
+                                ActivityUtils.showLoginOutDialogFragmentToActivity(childFragmentManager, "Alert")
+
+                            }else{
+                                UiUtils.showToast(homeSceneResult.msg)
                                 stateView.showRetry()
                             }
                         }
@@ -197,14 +203,14 @@ class AreaFragment : BasedFragment() {
                 .compose(this.bindToLifecycle<SampleResult>())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Subscriber<SampleResult>() {
+                .subscribe(object : BaseSubscriber<SampleResult>(activity) {
                     override fun onCompleted() {
 
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
-                        UiUtils.showToast(e.message)
+                        super.onError(e)
                     }
 
                     override fun onNext(result: SampleResult) {
@@ -214,7 +220,7 @@ class AreaFragment : BasedFragment() {
                                     .create().show()
 
                         } else {
-                            UiUtils.showToast("删除失败")
+                            UiUtils.showToast(result.getMsg())
                         }
                     }
                 })

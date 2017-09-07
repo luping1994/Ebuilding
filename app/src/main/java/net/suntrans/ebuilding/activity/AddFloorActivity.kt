@@ -10,6 +10,7 @@ import com.trello.rxlifecycle.android.ActivityEvent
 import net.suntrans.ebuilding.R
 import net.suntrans.ebuilding.api.RetrofitHelper
 import net.suntrans.ebuilding.bean.SampleResult
+import net.suntrans.ebuilding.rx.BaseSubscriber
 import net.suntrans.ebuilding.utils.UiUtils
 import net.suntrans.ebuilding.views.LoadingDialog
 import rx.Subscriber
@@ -67,12 +68,13 @@ class AddFloorActivity : BasedActivity(), DialogInterface.OnDismissListener {
                 .compose(this.bindUntilEvent<SampleResult>(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(object : Subscriber<SampleResult>() {
+                .subscribe(object : BaseSubscriber<SampleResult>(this) {
                     override fun onCompleted() {
 
                     }
 
                     override fun onError(e: Throwable) {
+                        super.onError(e)
                         dialog?.dismiss()
                         e.printStackTrace()
                     }

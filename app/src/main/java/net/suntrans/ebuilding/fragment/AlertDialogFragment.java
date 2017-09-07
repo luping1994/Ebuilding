@@ -21,6 +21,7 @@ public class AlertDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setMessage("您的账号已从别处登录")
+                .setCancelable(false)
                 .setNegativeButton("重新登录", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

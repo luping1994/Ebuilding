@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".App"
@@ -44,10 +46,10 @@
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:windowSoftInputMode="adjustPan"
             android:name=".activity.SceneDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.translate" />
+            android:theme="@style/AppTheme.translate"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.AreaDetailActivity"
             android:screenOrientation="portrait" />
@@ -89,6 +91,7 @@
             android:name=".activity.AddFloorActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:launchMode="standard"
             android:name=".activity.AddAreaActivity"
             android:screenOrientation="portrait"></activity>
         <activity
@@ -98,7 +101,15 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.YichangActivity" />
+        <activity
+            android:name=".activity.YichangActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:theme="@style/TranslucentTheme"
+            android:name=".activity.AlertActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".MyService" />
     </application>
 
 </manifest>

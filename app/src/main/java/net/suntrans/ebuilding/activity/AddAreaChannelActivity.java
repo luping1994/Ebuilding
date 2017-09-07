@@ -19,6 +19,7 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AddSceneChannelResult;
 import net.suntrans.ebuilding.bean.FreshChannelEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -30,6 +31,8 @@ import java.util.List;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static net.suntrans.ebuilding.R.id.count;
 
 /**
  * Created by Administrator on 2017/8/16.
@@ -154,7 +157,7 @@ public class AddAreaChannelActivity extends BasedActivity {
         }
         dialog.show();
         LogUtil.i("区域id=" + area_id + ",channelid=" + channel_id);
-        RetrofitHelper.getApi().addAreaChannel(area_id, channel_id, show_sort)
+        RetrofitHelper.getApi2().addAreaChannel(area_id, channel_id, show_sort)
                 .compose(this.<AddSceneChannelResult>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -168,23 +171,29 @@ public class AddAreaChannelActivity extends BasedActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         dialog.dismiss();
-                        UiUtils.showToast(e.getMessage());
+                        UiUtils.showToast("服务器错误");
                     }
 
                     @Override
                     public void onNext(AddSceneChannelResult result) {
                         dialog.dismiss();
                         if (result.getMsg() != null) {
-                            int count = 0;
-                            for (String s :
-                                    result.getMsg()) {
-                                if (s.equals("ok"))
-                                    count++;
+                            if (result.getCode() == 200) {
+                                int count = 0;
+                                for (String s :
+                                        result.getMsg()) {
+                                    if (s.equals("ok"))
+                                        count++;
+                                }
+                                UiUtils.showToast("添加" + count + "个设备成功");
+                                finish();
+                            } else if (result.getCode() == 102){
+                                UiUtils.showToast("您没有权限进行该操作");
+                            } else {
+                                UiUtils.showToast("服务器错误");
                             }
-                            UiUtils.showToast("添加" + count + "个设备成功");
-                            finish();
                         } else {
-                            UiUtils.showToast("添加失败");
+                            UiUtils.showToast("服务器错误");
                         }
                     }
                 });
@@ -203,7 +212,7 @@ public class AddAreaChannelActivity extends BasedActivity {
                 .compose(this.<FreshChannelEntity>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<FreshChannelEntity>() {
+                .subscribe(new BaseSubscriber<FreshChannelEntity>(this) {
 
 
                     @Override
@@ -214,13 +223,13 @@ public class AddAreaChannelActivity extends BasedActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+                        super.onError(e);
                         showError();
                     }
 
                     @Override
                     public void onNext(FreshChannelEntity result) {
-                        if (result.getCode().equals("200")) {
+                        if (result.getCode() == 200) {
                             if (result.getData() != null) {
                                 if (result.getData().getLists().size() != 0) {
                                     showContent();
@@ -232,7 +241,6 @@ public class AddAreaChannelActivity extends BasedActivity {
                                 }
                             } else {
                                 showError();
-
                             }
                         } else {
                             showError();
@@ -241,9 +249,6 @@ public class AddAreaChannelActivity extends BasedActivity {
                     }
                 });
     }
-
-
-
 
 
     private void showError() {

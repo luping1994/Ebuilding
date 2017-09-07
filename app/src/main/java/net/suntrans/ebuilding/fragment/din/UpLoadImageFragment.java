@@ -28,6 +28,7 @@ import com.yalantis.ucrop.UCrop;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.UpLoadImageMessage;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.PhotoUtils;
 import net.suntrans.ebuilding.utils.UiUtils;
@@ -219,7 +220,7 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
         subscribe = RetrofitHelper.getApi().upload(imageBodyPart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UpLoadImageMessage>() {
+                .subscribe(new BaseSubscriber<UpLoadImageMessage>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -227,8 +228,7 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+                       super.onError(e);
                         dialog.dismiss();
                     }
 

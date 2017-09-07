@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputConnection;
 
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -21,6 +22,7 @@ import net.suntrans.ebuilding.views.LoadingDialog;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
@@ -42,6 +44,11 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_login);
         account = (EditView) findViewById(R.id.account);
         password = (EditView) findViewById(R.id.password);
+        String usernames = App.getSharedPreferences().getString("account","");
+        String passwords = App.getSharedPreferences().getString("password","");
+
+        account.setText(usernames);
+        password.setText(passwords);
         findViewById(R.id.login).setOnClickListener(this);
     }
 
@@ -71,6 +78,8 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
         dialog.show();
         accounts = accounts.replace(" ","");
         passwords =passwords.replace(" ","");
+        final String finalAccounts = accounts;
+        final String finalPasswords = passwords;
         RetrofitHelper.getLoginApi().login("password", "2", "559eb687a4fcafdabe991c320172fcc9", accounts, passwords)
                 .compose(this.<LoginResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -93,10 +102,14 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
                             } else {
                                 UiUtils.showToast("登录失败,请检查网络连接");
                             }
-                        }
-                        if (e instanceof SocketTimeoutException){
+                        }else if (e instanceof SocketTimeoutException){
                             UiUtils.showToast("连接超时");
+                        }else if (e instanceof UnknownHostException){
+                            UiUtils.showToast("当前网络不可用");
+                        }else {
+                            UiUtils.showToast("连接服务器失败,请稍后再试");
                         }
+
                     }
 
                     @Override
@@ -106,6 +119,8 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
                             LogUtil.i(loginResult.toString());
                             if (loginResult.access_token != null) {
                                 App.getSharedPreferences().edit().putString("access_token", loginResult.access_token)
+                                        .putString("account", finalAccounts)
+                                        .putString("password", finalPasswords)
                                         .putString("expires_in", loginResult.expires_in)
                                         .putLong("firsttime", System.currentTimeMillis())
                                         .commit();

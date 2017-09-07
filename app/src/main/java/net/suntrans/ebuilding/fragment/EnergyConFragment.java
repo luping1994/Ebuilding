@@ -22,6 +22,7 @@ import net.suntrans.ebuilding.activity.Ammeter3Activity;
 import net.suntrans.ebuilding.adapter.EnergyFragAdapter;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.EnergyEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.StatusBarCompat;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class EnergyConFragment extends RxFragment {
                 .compose(this.<EnergyEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<EnergyEntity>() {
+                .subscribe(new BaseSubscriber<EnergyEntity>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -102,6 +103,8 @@ public class EnergyConFragment extends RxFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
+
                         refreshLayout.setRefreshing(false);
                     }
 

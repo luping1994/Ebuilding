@@ -24,6 +24,7 @@ import com.trello.rxlifecycle.android.ActivityEvent;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,7 +79,7 @@ public class Ammeter3Activity extends BasedActivity implements OnChartValueSelec
                 .compose(this.<Ammeter3Eneity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Ammeter3Eneity>() {
+                .subscribe(new BaseSubscriber<Ammeter3Eneity>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -86,7 +87,7 @@ public class Ammeter3Activity extends BasedActivity implements OnChartValueSelec
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
 
                     @Override

@@ -17,6 +17,7 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.DeviceInfoResult;
 import net.suntrans.ebuilding.bean.EnvDetailEntity;
 import net.suntrans.ebuilding.bean.SensusEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 
@@ -220,7 +221,7 @@ public class EnvDetailActivity extends BasedActivity {
                 standard.setVisibility(View.GONE);
                 nameTx.setText("建筑姿态");
                 if (data != null) {
-                    valueTx.setText(data.getOffset()+"°");
+                    valueTx.setText(data.getOffset() + "°");
                     evaluateTx.setText(data.zEva);
                 }
                 break;
@@ -261,21 +262,11 @@ public class EnvDetailActivity extends BasedActivity {
                 .compose(this.<EnvDetailEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<EnvDetailEntity>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
+                .subscribe(new BaseSubscriber<EnvDetailEntity>(this) {
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        if (e!=null){
-                            UiUtils.showToast(e.getMessage());
-                        }else {
-                            UiUtils.showToast("服务器错误");
-                        }
-                        if (refreshLayout!=null)
+                        super.onError(e);
+                        if (refreshLayout != null)
                             refreshLayout.setRefreshing(false);
                     }
 
@@ -283,9 +274,32 @@ public class EnvDetailActivity extends BasedActivity {
                     public void onNext(EnvDetailEntity info) {
                         info.data.setEva();
                         initView(info.data);
-                        if (refreshLayout!=null)
+                        if (refreshLayout != null)
                             refreshLayout.setRefreshing(false);
                     }
                 });
+//                .subscribe(new Subscriber<EnvDetailEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                        if (e!=null){
+//                            UiUtils.showToast(e.getMessage());
+//                        }else {
+//                            UiUtils.showToast("服务器错误");
+//                        }
+//                        if (refreshLayout!=null)
+//                            refreshLayout.setRefreshing(false);
+//                    }
+//
+//                    @Override
+//                    public void onNext(EnvDetailEntity info) {
+
+//                    }
+//                });
     }
 }

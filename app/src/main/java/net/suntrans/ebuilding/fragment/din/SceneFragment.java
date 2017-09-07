@@ -27,6 +27,8 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.SceneEntity;
 import net.suntrans.ebuilding.bean.UserInfo;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -142,39 +144,71 @@ public class SceneFragment extends RxFragment {
                     .compose(this.<SceneEntity>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-        getDataOb.subscribe(new Subscriber<SceneEntity>() {
-            @Override
-            public void onCompleted() {
+        getDataOb
+                .subscribe(new BaseSubscriber<SceneEntity>(getActivity()) {
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        e.printStackTrace();
+                        stateView.showRetry();
+                        refreshLayout.setRefreshing(false);
+                        recyclerView.setVisibility(View.INVISIBLE);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                stateView.showRetry();
-                refreshLayout.setRefreshing(false);
-                recyclerView.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onNext(SceneEntity result) {
-                refreshLayout.setRefreshing(false);
-                if (result.data.lists == null || result.data.lists.size() == 0) {
-                    stateView.showEmpty();
-                    recyclerView.setVisibility(View.INVISIBLE);
-                    return;
-                }
-
-                if (result.code == 200) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    stateView.showContent();
-                    datas.clear();
-                    datas.addAll(result.data.lists);
-                    adapter.notifyDataSetChanged();
-                }
-
-            }
-        });
+                    @Override
+                    public void onNext(SceneEntity result) {
+                        refreshLayout.setRefreshing(false);
+                        if (result.code == 200) {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            stateView.showContent();
+                            datas.clear();
+                            datas.addAll(result.data.lists);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            UiUtils.showToast(result.msg);
+                            if (result.data.lists == null || result.data.lists.size() == 0) {
+                                stateView.showEmpty();
+                                recyclerView.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
+                });
+//                .subscribe(new Subscriber<SceneEntity>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//                stateView.showRetry();
+//                refreshLayout.setRefreshing(false);
+//                recyclerView.setVisibility(View.INVISIBLE);
+//            }
+//
+//            @Override
+//            public void onNext(SceneEntity result) {
+//                refreshLayout.setRefreshing(false);
+//                if (result.code == 200) {
+//                    recyclerView.setVisibility(View.VISIBLE);
+//                    stateView.showContent();
+//                    datas.clear();
+//                    datas.addAll(result.data.lists);
+//                    adapter.notifyDataSetChanged();
+//                }else if (result.code==401){
+//                    ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(),"Alert");
+//                }else {
+//                    UiUtils.showToast(result.msg);
+//                    if (result.data.lists == null || result.data.lists.size() == 0) {
+//                        stateView.showEmpty();
+//                        recyclerView.setVisibility(View.INVISIBLE);
+//                    }
+//                }
+//
+//            }
+//        });
     }
 
 

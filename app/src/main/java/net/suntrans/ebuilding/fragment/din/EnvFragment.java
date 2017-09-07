@@ -22,6 +22,7 @@ import net.suntrans.ebuilding.activity.EnvDetailActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.fragment.base.BasedFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 
 import java.net.ConnectException;
@@ -133,7 +134,7 @@ public class EnvFragment extends BasedFragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-        getDataOb.subscribe(new Subscriber<SensusEntity>() {
+        getDataOb.subscribe(new BaseSubscriber<SensusEntity>(getActivity()) {
             @Override
             public void onCompleted() {
 
@@ -141,13 +142,9 @@ public class EnvFragment extends BasedFragment {
 
             @Override
             public void onError(Throwable e) {
-                if (e instanceof ConnectException) {
-                    UiUtils.showToast("网络连接失败");
-                    if (refreshLayout != null)
-                        refreshLayout.setRefreshing(false);
-                }
-                e.printStackTrace();
-
+                super.onError(e);
+                if (refreshLayout != null)
+                    refreshLayout.setRefreshing(false);
                 if (refreshType == 0){
                     stateView.showRetry();
                     recyclerView.setVisibility(View.INVISIBLE);

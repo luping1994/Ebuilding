@@ -1,5 +1,6 @@
 package net.suntrans.ebuilding.activity;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -21,6 +22,8 @@ import net.suntrans.ebuilding.api.Api;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.YichangEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.stateview.StateView;
 
@@ -102,7 +105,7 @@ public class YichangActivity extends BasedActivity {
 
     private void delete(int id) {
 //        UiUtils.showToast("已经删除的条目id="+id);
-        addSubscription(RetrofitHelper.getApi().deleteLog(id + ""), new Subscriber<SampleResult>() {
+        addSubscription(RetrofitHelper.getApi().deleteLog(id + ""), new BaseSubscriber<SampleResult>(this) {
             @Override
             public void onCompleted() {
 
@@ -110,6 +113,7 @@ public class YichangActivity extends BasedActivity {
 
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 e.printStackTrace();
             }
 
@@ -117,7 +121,9 @@ public class YichangActivity extends BasedActivity {
             public void onNext(SampleResult o) {
                 if (o.getCode() == 200) {
                     UiUtils.showToast("删除成功!");
-                } else {
+                } else if (o.getCode()==401){
+                    ActivityUtils.showLoginOutDialogFragmentToActivity(getSupportFragmentManager(),"Alert");
+                }else {
                     UiUtils.showToast("删除失败");
                 }
             }
@@ -162,7 +168,7 @@ public class YichangActivity extends BasedActivity {
             recyclerView.setVisibility(View.INVISIBLE);
             stateView.showLoading();
         }
-        addSubscription(RetrofitHelper.getApi().getYichang(currentPage + ""), new Subscriber<YichangEntity>() {
+        addSubscription(RetrofitHelper.getApi().getYichang(currentPage + ""), new BaseSubscriber<YichangEntity>(this) {
             @Override
             public void onCompleted() {
 
@@ -171,7 +177,8 @@ public class YichangActivity extends BasedActivity {
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                UiUtils.showToast("服务器错误");
+                super.onError(e);
+
 
                 if (loadtype == loadMore)
                     adapter.loadMoreFail();

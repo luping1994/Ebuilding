@@ -24,6 +24,7 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.fragment.area.AreaDeailFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
 
@@ -205,7 +206,7 @@ public class AreaDetailActivity extends BasedActivity implements View.OnClickLis
                 .compose(this.<SampleResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -215,7 +216,7 @@ public class AreaDetailActivity extends BasedActivity implements View.OnClickLis
                     public void onError(Throwable e) {
                         dialog.dismiss();
                         e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+                        super.onError(e);
 
                     }
 
@@ -233,7 +234,7 @@ public class AreaDetailActivity extends BasedActivity implements View.OnClickLis
                                         }
                                     }).create().show();
                         } else {
-                            UiUtils.showToast("删除失败");
+                            UiUtils.showToast(addResult.getMsg());
                         }
 
                     }

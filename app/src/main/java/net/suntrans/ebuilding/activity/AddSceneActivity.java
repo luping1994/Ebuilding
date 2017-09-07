@@ -12,6 +12,7 @@ import com.trello.rxlifecycle.android.ActivityEvent;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.EditView;
 import net.suntrans.ebuilding.views.LoadingDialog;
@@ -75,7 +76,7 @@ public class AddSceneActivity extends BasedActivity implements DialogInterface.O
                 .compose(this.<SampleResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -83,6 +84,8 @@ public class AddSceneActivity extends BasedActivity implements DialogInterface.O
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
+
                         dialog.dismiss();
                         e.printStackTrace();
                     }

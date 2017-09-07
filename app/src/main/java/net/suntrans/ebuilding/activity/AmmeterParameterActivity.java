@@ -15,6 +15,7 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.Ameter3;
 import net.suntrans.ebuilding.bean.AmmeterInfos;
 import net.suntrans.ebuilding.bean.EnergyEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.OffsetDecoration;
 
@@ -119,7 +120,7 @@ public class AmmeterParameterActivity extends BasedActivity {
 
     private void getData() {
         System.out.println(sno);
-        addSubscription(RetrofitHelper.getApi().getAmmeterInfo(sno), new Subscriber<AmmeterInfos>() {
+        addSubscription(RetrofitHelper.getApi().getAmmeterInfo(sno), new BaseSubscriber<AmmeterInfos>(this) {
             @Override
             public void onCompleted() {
 
@@ -127,7 +128,8 @@ public class AmmeterParameterActivity extends BasedActivity {
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                super.onError(e);
+
                 if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }

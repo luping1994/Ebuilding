@@ -17,6 +17,8 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AreaEntity;
 import net.suntrans.ebuilding.bean.SampleResult;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
 
@@ -30,6 +32,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.R.attr.data;
 import static net.suntrans.ebuilding.R.id.nameEn;
 
 /**
@@ -43,9 +46,10 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
     private List<String> floorNames;
     private ArrayAdapter adapter;
     private TextView name;
-    private  LoadingDialog dialog;
+    private LoadingDialog dialog;
     private Subscription subscribe;
     private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +57,16 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
         initToolBar();
         spinner = (Spinner) findViewById(R.id.spinner);
         floorNames = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(this, R.layout.item_spinner,R.id.name,floorNames);
+        adapter = new ArrayAdapter<String>(this, R.layout.item_spinner, R.id.name, floorNames);
         name = (TextView) findViewById(R.id.name);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long ids) {
-                if (position==0){
-                    id=null;
+                if (position == 0) {
+                    id = null;
                     return;
                 }
-                id = floor.get(position-1).id+"";
+                id = floor.get(position - 1).id + "";
             }
 
             @Override
@@ -94,7 +98,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                 .compose(this.<AreaEntity>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AreaEntity>() {
+                .subscribe(new BaseSubscriber<AreaEntity>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -102,46 +106,54 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+                        super.onError(e);
+//                        e.printStackTrace();
+//                        UiUtils.showToast(e.getMessage());
                     }
 
                     @Override
                     public void onNext(AreaEntity result) {
-                        floor = result.data.lists;
-                        floorNames.clear();
-                        floorNames.add("-----请选择楼层-----");
-                        for (AreaEntity.AreaFloor e :
-                                result.data.lists ) {
-                            floorNames.add(e.name);
+                        if (result.code == 200) {
+                            floor = result.data.lists;
+                            floorNames.clear();
+                            floorNames.add("-----请选择楼层-----");
+                            for (AreaEntity.AreaFloor e :
+                                    result.data.lists) {
+                                floorNames.add(e.name);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else if (result.code == 401) {
+                            ActivityUtils.showLoginOutDialogFragmentToActivity(getSupportFragmentManager(), "Alert");
+                        }else {
+                            UiUtils.showToast(result.msg);
                         }
-                        adapter.notifyDataSetChanged();
+
                     }
                 });
     }
 
     public void addArea(View view) {
-        String name1  = name.getText().toString();
-        if (TextUtils.isEmpty(name1)){
+        String name1 = name.getText().toString();
+        if (TextUtils.isEmpty(name1)) {
             UiUtils.showToast("请输入名称");
             return;
         }
 
-        if (TextUtils.isEmpty(id)){
+        if (TextUtils.isEmpty(id)) {
             UiUtils.showToast("请选择楼层");
             return;
         }
 
-        if (dialog==null){
+        if (dialog == null) {
             dialog = new LoadingDialog(this);
             dialog.setWaitText("请稍后");
             dialog.setOnDismissListener(this);
         }
         dialog.show();
-        Map<String,String> map = new HashMap<>();
-        map.put("name",name1);
-        map.put("show_sort","1");
-        map.put("house_id",id);
+        Map<String, String> map = new HashMap<>();
+        map.put("name", name1);
+        map.put("show_sort", "1");
+        map.put("house_id", id);
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey().toString();
@@ -153,7 +165,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                 .compose(this.<SampleResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SampleResult>() {
+                .subscribe(new BaseSubscriber<SampleResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -162,8 +174,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                     @Override
                     public void onError(Throwable e) {
                         dialog.dismiss();
-                        e.printStackTrace();
-                        UiUtils.showToast(e.getMessage());
+                        super.onError(e);
                     }
 
                     @Override

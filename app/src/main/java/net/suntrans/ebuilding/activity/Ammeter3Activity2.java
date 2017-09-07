@@ -31,6 +31,7 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.Ameter3Entity;
 import net.suntrans.ebuilding.chart.DayAxisValueFormatter;
 import net.suntrans.ebuilding.chart.MyAxisValueFormatter;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.views.CompatDatePickerDialog;
 import net.suntrans.ebuilding.views.SegmentedGroup;
@@ -443,7 +444,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
     private void getData(String sno, String date) {
         LogUtil.i(sno);
         showLoadingState();
-        addSubscription(RetrofitHelper.getApi().getAmmeter3Data(sno, date), new Subscriber<Ameter3Entity>() {
+        addSubscription(RetrofitHelper.getApi().getAmmeter3Data(sno, date), new BaseSubscriber<Ameter3Entity>(this) {
             @Override
             public void onCompleted() {
 
@@ -451,7 +452,7 @@ public class Ammeter3Activity2 extends BasedActivity implements OnChartValueSele
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                super.onError(e);
                 showErrorState();
             }
 

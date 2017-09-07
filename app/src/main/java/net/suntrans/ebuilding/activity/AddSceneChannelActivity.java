@@ -12,6 +12,7 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AddSceneChannelResult;
 import net.suntrans.ebuilding.bean.AreaEntity;
 import net.suntrans.ebuilding.fragment.din.AddSceneChannelFragment;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.LoadingDialog;
 
@@ -122,7 +123,7 @@ public class AddSceneChannelActivity extends BasedActivity implements DialogInte
             dialog.setOnDismissListener(this);
         }
         dialog.show();
-        subscribe = RetrofitHelper.getApi().addChannel(id, channel_id, cmd)
+        subscribe = RetrofitHelper.getApi2().addChannel(id, channel_id, cmd)
                 .compose(this.<AddSceneChannelResult>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,7 +137,7 @@ public class AddSceneChannelActivity extends BasedActivity implements DialogInte
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         dialog.dismiss();
-                        UiUtils.showToast(e.getMessage());
+                        UiUtils.showToast("服务器错误");
                     }
 
                     @Override

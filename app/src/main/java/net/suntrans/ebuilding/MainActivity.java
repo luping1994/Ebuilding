@@ -1,8 +1,12 @@
 package net.suntrans.ebuilding;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -33,11 +37,9 @@ import net.suntrans.ebuilding.views.IViewPager;
 import static android.support.design.widget.TabLayout.GRAVITY_FILL;
 import static android.support.design.widget.TabLayout.MODE_FIXED;
 import static net.suntrans.ebuilding.BuildConfig.DEBUG;
-
+import android.content.Context;
 public class MainActivity extends BasedActivity {
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
+
     private final int[] TAB_TITLES = new int[]{R.string.nav_tit, R.string.nav_area, R.string.nav_env, R.string.nav_power, R.string.nav_user};
     private final int[] TAB_IMGS = new int[]{R.drawable.select_home, R.drawable.select_area, R.drawable.select_env, R.drawable.select_power, R.drawable.select_user};
     private TabLayout tabLayout;
@@ -48,6 +50,16 @@ public class MainActivity extends BasedActivity {
     private PerCenFragment fragment4;
     private EnvHomeFragment fragment5;
 
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            LogUtil.i("绑定服务成功");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +69,10 @@ public class MainActivity extends BasedActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
+        Intent intent = new Intent();
+        intent.setClass(this,MyService.class);
+        bindService(intent,connection,Context.BIND_AUTO_CREATE);
+
         if (!DEBUG)
             PgyUpdateManager.register(this, "net.suntrans.ebuilding.fileProvider");
         init();
@@ -65,12 +81,11 @@ public class MainActivity extends BasedActivity {
     private Fragment[] fragments;
 
     private void init() {
-        fragment1 = (DiningRoomFragment) getSupportFragmentManager().findFragmentByTag("0");
-        fragment2 = (AreaFragment) getSupportFragmentManager().findFragmentByTag("1");
-        fragment3 = (EnergyConFragment2) getSupportFragmentManager().findFragmentByTag("2");
-        fragment4 = (PerCenFragment) getSupportFragmentManager().findFragmentByTag("3");
-        fragment5 = (EnvHomeFragment) getSupportFragmentManager().findFragmentByTag("4");
-
+//        fragment1 = (DiningRoomFragment) getSupportFragmentManager().findFragmentByTag("0");
+//        fragment2 = (AreaFragment) getSupportFragmentManager().findFragmentByTag("1");
+//        fragment3 = (EnergyConFragment2) getSupportFragmentManager().findFragmentByTag("2");
+//        fragment4 = (PerCenFragment) getSupportFragmentManager().findFragmentByTag("3");
+//        fragment5 = (EnvHomeFragment) getSupportFragmentManager().findFragmentByTag("4");
 
         if (fragment1 == null)
             fragment1 = new DiningRoomFragment();
@@ -98,6 +113,7 @@ public class MainActivity extends BasedActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                System.out.println(tab.getPosition()+"");
                 changFragment(tab.getPosition(), tab.getPosition() + "");
             }
 
@@ -150,8 +166,8 @@ public class MainActivity extends BasedActivity {
             System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
             mHits[mHits.length - 1] = SystemClock.uptimeMillis();
             if (mHits[0] >= (SystemClock.uptimeMillis() - 2000)) {
-                finish();
-//                android.os.Process.killProcess(android.os.Process.myPid());
+//                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
             } else {
                 Toast.makeText(this.getApplicationContext(), "再按一次返回键退出", Toast.LENGTH_SHORT).show();
             }
@@ -166,7 +182,7 @@ public class MainActivity extends BasedActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[currentIndex]);
         if (!fragments[index].isAdded()) {
-            transaction.add(R.id.content, fragments[index], tag);
+            transaction.add(R.id.content, fragments[index]);
         }
         transaction.show(fragments[index]).commit();
         currentIndex = index;

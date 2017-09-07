@@ -13,6 +13,8 @@ import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.adapter.AddSenceDevGrpAdapter;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.AreaEntity;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
+import net.suntrans.ebuilding.utils.ActivityUtils;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.stateview.StateView;
 
@@ -45,7 +47,7 @@ public class AddSceneChannelFragment extends RxFragment implements StateView.OnR
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_addchannel,container,false);
+        View view = inflater.inflate(R.layout.fragment_addchannel, container, false);
         return view;
     }
 
@@ -71,7 +73,7 @@ public class AddSceneChannelFragment extends RxFragment implements StateView.OnR
                 .compose(this.<AreaEntity>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AreaEntity>() {
+                .subscribe(new BaseSubscriber<AreaEntity>(getActivity()) {
                     @Override
                     public void onCompleted() {
 
@@ -79,17 +81,26 @@ public class AddSceneChannelFragment extends RxFragment implements StateView.OnR
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         e.printStackTrace();
-                       UiUtils.showToast(e.getMessage());
+//                        UiUtils.showToast(e.getMessage());
                         stateView.showRetry();
                     }
 
                     @Override
                     public void onNext(AreaEntity areaEntity) {
-                        datas.clear();
-                        datas.addAll(areaEntity.data.lists);
-                        adapter.notifyDataSetChanged();
-                        stateView.showContent();
+                        if (areaEntity.code == 200) {
+                            datas.clear();
+                            datas.addAll(areaEntity.data.lists);
+                            adapter.notifyDataSetChanged();
+                            stateView.showContent();
+                        } else if (areaEntity.code == 401) {
+                            ActivityUtils.showLoginOutDialogFragmentToActivity(getChildFragmentManager(), "Alert");
+                        } else {
+                            UiUtils.showToast(areaEntity.msg);
+                        }
+
+
                     }
                 });
     }

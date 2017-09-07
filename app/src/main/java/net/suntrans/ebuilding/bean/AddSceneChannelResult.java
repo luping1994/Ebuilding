@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2017/8/15.
  */
 
-public class AddSceneChannelResult {
+public class AddSceneChannelResult{
 
     /**
      * code : 200
