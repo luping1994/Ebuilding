@@ -37,7 +37,9 @@ import net.suntrans.ebuilding.views.IViewPager;
 import static android.support.design.widget.TabLayout.GRAVITY_FILL;
 import static android.support.design.widget.TabLayout.MODE_FIXED;
 import static net.suntrans.ebuilding.BuildConfig.DEBUG;
+
 import android.content.Context;
+
 public class MainActivity extends BasedActivity {
 
     private final int[] TAB_TITLES = new int[]{R.string.nav_tit, R.string.nav_area, R.string.nav_env, R.string.nav_power, R.string.nav_user};
@@ -70,8 +72,8 @@ public class MainActivity extends BasedActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
         Intent intent = new Intent();
-        intent.setClass(this,MyService.class);
-        bindService(intent,connection,Context.BIND_AUTO_CREATE);
+        intent.setClass(this, MyService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
         if (!DEBUG)
             PgyUpdateManager.register(this, "net.suntrans.ebuilding.fileProvider");
@@ -113,7 +115,7 @@ public class MainActivity extends BasedActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println(tab.getPosition()+"");
+                System.out.println(tab.getPosition() + "");
                 changFragment(tab.getPosition(), tab.getPosition() + "");
             }
 
@@ -153,6 +155,9 @@ public class MainActivity extends BasedActivity {
     protected void onDestroy() {
         if (!DEBUG)
             PgyUpdateManager.unregister();
+
+        if (connection != null)
+            unbindService(connection);
         super.onDestroy();
     }
 
@@ -187,5 +192,6 @@ public class MainActivity extends BasedActivity {
         transaction.show(fragments[index]).commit();
         currentIndex = index;
     }
+
 
 }

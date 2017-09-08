@@ -58,7 +58,7 @@ public class MyService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
