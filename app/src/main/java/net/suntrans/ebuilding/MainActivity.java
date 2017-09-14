@@ -105,7 +105,7 @@ public class MainActivity extends BasedActivity {
             fragment5 = new EnvHomeFragment();
 
         fragments = new Fragment[]{fragment1, fragment2, fragment5, fragment3, fragment4};
-        changFragment(0, "0");
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment1).commit();
 
         tabLayout = (TabLayout) findViewById(R.id.main_tabLayout);
         tabLayout.setTabMode(MODE_FIXED);
@@ -184,6 +184,9 @@ public class MainActivity extends BasedActivity {
     int currentIndex = 0;
 
     private void changFragment(int index, String tag) {
+        if (currentIndex == index) {
+            return;
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[currentIndex]);
         if (!fragments[index].isAdded()) {

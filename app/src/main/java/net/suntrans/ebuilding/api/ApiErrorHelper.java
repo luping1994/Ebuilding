@@ -51,6 +51,8 @@ public class ApiErrorHelper {
 //                }
             } else if (code == ApiErrorCode.ERROR_NO_INTERNET) {
                 UiUtils.showToast("网络连接不可用");
+            }else {
+                UiUtils.showToast("服务器错误");
             }
         } else {
             UiUtils.showToast("服务器错误");

@@ -69,9 +69,9 @@ class AreaFragment : BasedFragment() {
         add = view!!.findViewById(R.id.add) as ImageView
         add!!.setOnClickListener { v -> showPopupMenu() }
         expandableListView!!.setOnItemLongClickListener { parent, view, position, id ->
-            if (view.getTag(R.id.name) is AreaAdapter.GroupHolder){
+            if (view.getTag(R.id.name) is AreaAdapter.GroupHolder) {
 
-                println("我被长按了,"+view.getTag(R.id.root))
+                println("我被长按了," + view.getTag(R.id.root))
                 deleteFloor(datas!!.get(view.getTag(R.id.root) as Int).id)
             }
 
@@ -94,8 +94,10 @@ class AreaFragment : BasedFragment() {
 
 
     private fun getAreaData(a: Int) {
-        if (a == 0)
+        if (a == 0) {
             stateView.showLoading()
+            refreshLayout?.visibility = View.INVISIBLE
+        }
         RetrofitHelper.getApi().homeHouse
                 .compose(this.bindUntilEvent<AreaEntity>(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
@@ -107,7 +109,9 @@ class AreaFragment : BasedFragment() {
 
                     override fun onError(e: Throwable) {
                         super.onError(e)
-                        stateView.showRetry()
+                        if (a == 0) {
+                            stateView.showRetry()
+                        }
                         refreshLayout?.isRefreshing = false
 
                     }
@@ -125,12 +129,14 @@ class AreaFragment : BasedFragment() {
                                 datas!!.addAll(homeSceneResult.data.lists)
                                 adapter!!.notifyDataSetChanged()
                                 expandableListView!!.expandGroup(0, true)
-                                if (a == 0)
+                                if (a == 0) {
+                                    refreshLayout?.visibility = View.VISIBLE;
                                     stateView.showContent()
-                            } else if (homeSceneResult.code==401){
+                                }
+                            } else if (homeSceneResult.code == 401) {
                                 ActivityUtils.showLoginOutDialogFragmentToActivity(childFragmentManager, "Alert")
 
-                            }else{
+                            } else {
                                 UiUtils.showToast(homeSceneResult.msg)
                                 stateView.showRetry()
                             }

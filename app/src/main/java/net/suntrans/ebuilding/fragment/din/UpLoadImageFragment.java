@@ -168,7 +168,11 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
                 }
             } else if (requestCode == UCrop.REQUEST_CROP) {
                 handleCropResult(data);
+            }else {
+                UiUtils.showToast("服务器错误");
             }
+        }else {
+            UiUtils.showToast("发生了意料之外的错误");
         }
 
     }
@@ -195,7 +199,7 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
     private void handleCropResult(@NonNull Intent result) {
         final Uri resultUri = UCrop.getOutput(result);
         if (resultUri != null) {
-            System.out.println(resultUri.toString());
+//            System.out.println(resultUri.toString());
             File file = new File(getContext().getCacheDir(), destinationFileName);
             upLoad(file);
         } else {
@@ -228,8 +232,9 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
 
                     @Override
                     public void onError(Throwable e) {
-                       super.onError(e);
+//                       super.onError(e);
                         dialog.dismiss();
+                        UiUtils.showToast("上传图片失败!");
                     }
 
                     @Override
@@ -243,11 +248,9 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
                                 dismiss();
                             } else {
                                 UiUtils.showToast(getString(R.string.tips_upload_failed));
-
                             }
                         }else {
                             UiUtils.showToast(getString(R.string.tips_upload_failed));
-
                         }
                     }
                 });

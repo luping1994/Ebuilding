@@ -2,6 +2,7 @@ package net.suntrans.ebuilding.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.trello.rxlifecycle.android.ActivityEvent;
 
 import net.suntrans.ebuilding.App;
@@ -52,18 +55,23 @@ public class QuestionActivity extends BasedActivity {
                 finish();
             }
         });
-        ImageView touxiang  = (ImageView) findViewById(R.id.img);
+        final ImageView touxiang  = (ImageView) findViewById(R.id.img);
         TextView name = (TextView) findViewById(R.id.name);
         String name1 = App.getSharedPreferences().getString("nikename","TIT餐厅");
         name.setText(name1);
         String imgurl = App.getSharedPreferences().getString("touxiang","-1");
         Glide.with(this)
                 .load("http://tit.suntrans-cloud.com"+imgurl)
-                .transform(new GlideRoundTransform(this,UiUtils.dip2px(16)))
-                .crossFade()
-                .override(UiUtils.dip2px(35),UiUtils.dip2px(35))
+                .asBitmap()
+                .override(UiUtils.dip2px(33), UiUtils.dip2px(33))
                 .placeholder(R.drawable.user_white)
-                .into(touxiang);
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        touxiang.setImageBitmap(resource);
+
+                    }
+                });
     }
 
     public void changePass(View view) {

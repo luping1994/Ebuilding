@@ -119,7 +119,7 @@ public class AmmeterParameterActivity extends BasedActivity {
     }
 
     private void getData() {
-        System.out.println(sno);
+//        System.out.println(sno);
         addSubscription(RetrofitHelper.getApi().getAmmeterInfo(sno), new BaseSubscriber<AmmeterInfos>(this) {
             @Override
             public void onCompleted() {
@@ -137,7 +137,7 @@ public class AmmeterParameterActivity extends BasedActivity {
 
             @Override
             public void onNext(AmmeterInfos data) {
-                System.out.println(data.msg);
+//                System.out.println(data.msg);
                 if (refreshLayout != null) {
                     refreshLayout.setRefreshing(false);
                 }

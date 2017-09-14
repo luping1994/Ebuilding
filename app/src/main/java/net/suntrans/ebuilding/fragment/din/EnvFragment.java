@@ -166,7 +166,7 @@ public class EnvFragment extends BasedFragment {
                 if (data.code == 200) {
                     for (SensusEntity.SixInfo ds : data.data.lists) {
                         ds.sub.setEva();
-                        System.out.println(ds.name);
+//                        System.out.println(ds.name);
                     }
                     datas.clear();
                     datas.addAll(data.data.lists);

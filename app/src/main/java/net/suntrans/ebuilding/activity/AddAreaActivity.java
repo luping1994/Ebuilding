@@ -158,7 +158,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey().toString();
             String value = entry.getValue().toString();
-            System.out.println(key + ":" + value);
+//            System.out.println(key + ":" + value);
         }
 
         subscribe = RetrofitHelper.getApi().addArea(map)
