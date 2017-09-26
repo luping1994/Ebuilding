@@ -4,6 +4,7 @@ import net.suntrans.ebuilding.bean.AddSceneChannelResult;
 import net.suntrans.ebuilding.bean.Ameter3Entity;
 import net.suntrans.ebuilding.bean.AmmeterInfos;
 import net.suntrans.ebuilding.bean.FreshChannelEntity;
+import net.suntrans.ebuilding.bean.RespondBody;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
 import net.suntrans.ebuilding.bean.AreaDetailEntity;
@@ -19,11 +20,13 @@ import net.suntrans.ebuilding.bean.LoginResult;
 import net.suntrans.ebuilding.bean.SceneChannelResult;
 import net.suntrans.ebuilding.bean.SceneEdit;
 import net.suntrans.ebuilding.bean.SceneEntity;
+import net.suntrans.ebuilding.bean.SceneTimeResult;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.bean.UpLoadImageMessage;
 import net.suntrans.ebuilding.bean.UserInfo;
 import net.suntrans.ebuilding.bean.YichangEntity;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -215,5 +218,13 @@ public interface Api {
     @FormUrlEncoded
     @POST("device/abnormal_delete")
     Observable<SampleResult> deleteLog(@Field("log_id") String log_id);
+
+    @FormUrlEncoded
+    @POST("scene/settimer")
+    Observable<RespondBody> setSceneTiming(@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("scene/gettimer")
+    Observable<RespondBody<SceneTimeResult>> getSceneTiming(@Field("scene_id") String scene_id);
 
 }

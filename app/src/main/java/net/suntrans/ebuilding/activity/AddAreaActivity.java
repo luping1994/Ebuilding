@@ -79,7 +79,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
 
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("添加区域");
+        toolbar.setTitle(R.string.activity_title_add_area);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -116,7 +116,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                         if (result.code == 200) {
                             floor = result.data.lists;
                             floorNames.clear();
-                            floorNames.add("-----请选择楼层-----");
+                            floorNames.add(getString(R.string.tx_choose_floor));
                             for (AreaEntity.AreaFloor e :
                                     result.data.lists) {
                                 floorNames.add(e.name);
@@ -135,18 +135,18 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
     public void addArea(View view) {
         String name1 = name.getText().toString();
         if (TextUtils.isEmpty(name1)) {
-            UiUtils.showToast("请输入名称");
+            UiUtils.showToast(getString(R.string.tips_please_enter_name));
             return;
         }
 
         if (TextUtils.isEmpty(id)) {
-            UiUtils.showToast("请选择楼层");
+            UiUtils.showToast(getString(R.string.tips_please_choose_floor));
             return;
         }
 
         if (dialog == null) {
             dialog = new LoadingDialog(this);
-            dialog.setWaitText("请稍后");
+            dialog.setWaitText(getString(R.string.tips_please_waiting));
             dialog.setOnDismissListener(this);
         }
         dialog.show();
@@ -181,7 +181,7 @@ public class AddAreaActivity extends BasedActivity implements DialogInterface.On
                     public void onNext(SampleResult addResult) {
                         dialog.dismiss();
                         if (addResult.getCode() == 200) {
-                            UiUtils.showToast("添加成功");
+                            UiUtils.showToast(getString(R.string.tips_add_success));
                             finish();
                         } else {
                             UiUtils.showToast(addResult.getMsg());

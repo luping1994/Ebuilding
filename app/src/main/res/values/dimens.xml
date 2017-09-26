@@ -4,4 +4,5 @@
     <dimen name="textNormalSize">16sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="eleitem_textmargin">40dp</dimen>
+    <dimen name="pouopwindon_offset">134dp</dimen>
 </resources>

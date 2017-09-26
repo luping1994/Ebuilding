@@ -56,6 +56,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.pgyersdk.views.b.p;
 import static java.lang.System.in;
 import static java.lang.System.load;
 import static net.suntrans.ebuilding.utils.UiUtils.getContext;
@@ -510,7 +511,16 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     }).setNegativeButton("取消", null).create().show();
                 }
             });
-            mPopupWindow = new PopupWindow(view, UiUtils.dip2px(120), UiUtils.dip2px(155));
+            view.findViewById(R.id.setTime).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindow.dismiss();
+                    Intent intent = new Intent(SceneDetailActivity.this, SceneTimingActivity.class);
+                    intent.putExtra("scene_id", id);
+                    startActivity(intent);
+                }
+            });
+            mPopupWindow = new PopupWindow(view);
             mPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setAnimationStyle(R.style.TRM_ANIM_STYLE);
@@ -527,7 +537,9 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
         if (!mPopupWindow.isShowing()) {
             int width = UiUtils.getDisplaySize(getContext())[0];
-            mPopupWindow.showAtLocation(recyclerView, Gravity.NO_GRAVITY, width, UiUtils.dip2px(24));
+            int offset = UiUtils.dip2px(38);
+            System.out.println(width);
+            mPopupWindow.showAtLocation(recyclerView, Gravity.NO_GRAVITY, width-(int) getResources().getDimension(R.dimen.pouopwindon_offset),offset);
 //            mPopupWindow.showAsDropDown(menu);
 //            setBackgroundAlpha(1f, 0.75f, 240);
         }

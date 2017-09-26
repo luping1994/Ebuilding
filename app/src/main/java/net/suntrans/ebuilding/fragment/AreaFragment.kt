@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import com.trello.rxlifecycle.android.FragmentEvent
 import net.suntrans.ebuilding.R
@@ -178,8 +179,8 @@ class AreaFragment : BasedFragment() {
             }
             mPopupWindow = PopupWindow(context)
             mPopupWindow!!.contentView = view
-            mPopupWindow!!.height = UiUtils.dip2px(120)
-            mPopupWindow!!.width = UiUtils.dip2px(155)
+            mPopupWindow!!.height = WindowManager.LayoutParams.WRAP_CONTENT
+            mPopupWindow!!.width = WindowManager.LayoutParams.WRAP_CONTENT
             mPopupWindow!!.animationStyle = R.style.TRM_ANIM_STYLE
             mPopupWindow!!.isFocusable = true
             mPopupWindow!!.isOutsideTouchable = true
@@ -191,7 +192,8 @@ class AreaFragment : BasedFragment() {
 
         if (!mPopupWindow!!.isShowing) {
             val width = UiUtils.getDisplaySize(context)[0]
-            mPopupWindow!!.showAtLocation(add, Gravity.NO_GRAVITY, width, UiUtils.dip2px(24))
+            val offset = UiUtils.dip2px(38)
+            mPopupWindow!!.showAtLocation(add, Gravity.NO_GRAVITY, (width - context.resources.getDimension(R.dimen.pouopwindon_offset)).toInt(), offset)
 
         }
 

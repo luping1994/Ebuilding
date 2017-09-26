@@ -64,7 +64,7 @@ public class AddAreaChannelActivity extends BasedActivity {
 
     private void setUpToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("选择要添加的设备");
+        toolbar.setTitle(R.string.activity_title_choose_device);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -126,14 +126,14 @@ public class AddAreaChannelActivity extends BasedActivity {
                 }
             }
             if (count < 1) {
-                UiUtils.showToast("请选择一个设备");
+                UiUtils.showToast(getString(R.string.tips_please_choose_one));
                 return true;
             }
             final String area_id = channel.substring(0, channel.length() - 1);
             final String show_sort = sort.substring(0, sort.length() - 1);
 
             new AlertDialog.Builder(this)
-                    .setMessage("是否添加" + count + "个设备")
+                    .setMessage(String.format(getString(R.string.tips_is_add_count),count))
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

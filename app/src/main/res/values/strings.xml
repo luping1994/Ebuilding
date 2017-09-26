@@ -28,5 +28,20 @@
     <string name="permission_title_rationale">请求权限</string>
     <string name="label_select_picture">选择图片</string>
     <string name="footer_tx">----------------没有更多了----------------</string>
+    <string name="scene_time_workday">周一至周五</string>
+    <string name="scene_time_everyday">每天执行</string>
+    <string name="activity_title_dingshi">定时</string>
+    <string name="tx_version_code">版本号:</string>
+    <string name="tx_share_app">分享智能配电</string>
+    <string name="tx_share_app_des">智能配电app下载地址:https://www.pgyer.com/5xcP</string>
+    <string name="activity_title_add_area">添加区域</string>
+    <string name="tx_choose_floor">-----请选择楼层-----</string>
+    <string name="tips_please_enter_name">请输入名称</string>
+    <string name="tips_please_choose_floor">请选择楼层</string>
+    <string name="tips_please_waiting">请稍后</string>
+    <string name="tips_add_success">添加成功</string>
+    <string name="activity_title_choose_device">选择要添加的设备</string>
+    <string name="tips_please_choose_one">请选择一个设备</string>
+    <string name="tips_is_add_count">是否添加%1$d个设备</string>
 
 </resources>

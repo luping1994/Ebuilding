@@ -27,9 +27,9 @@ public class AlertActivity extends BasedActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         App.getSharedPreferences().edit()
-                                .putString("access_token","-1")
-                                .putString("expires_in","-1")
-                                .putLong("firsttime",-1l)
+                                .putString("access_token", "-1")
+                                .putString("expires_in", "-1")
+                                .putLong("firsttime", -1l)
                                 .commit();
                         RxBus.getInstance().post("允许弹框");
                         killAll();
@@ -39,9 +39,9 @@ public class AlertActivity extends BasedActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         App.getSharedPreferences().edit()
-                                .putString("access_token","-1")
-                                .putString("expires_in","-1")
-                                .putLong("firsttime",-1l)
+                                .putString("access_token", "-1")
+                                .putString("expires_in", "-1")
+                                .putLong("firsttime", -1l)
                                 .commit();
                         RxBus.getInstance().post("允许弹框");
                         Intent intent = new Intent(AlertActivity.this, LoginActivity.class);

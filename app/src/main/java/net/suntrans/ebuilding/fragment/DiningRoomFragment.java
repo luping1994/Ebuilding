@@ -55,6 +55,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
     private RelativeLayout menu;
     private ImageView banner;
     private String[] items2 = {"更换背景"};
+    private View root;
 
     @Nullable
     @Override
@@ -91,6 +92,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
 //        viewPager.setAdapter();
 //        tabLayout.setupWithViewPager(viewPager);
         menu = (RelativeLayout) view.findViewById(R.id.menu);
+        root = view.findViewById(R.id.root);
         menu.setOnClickListener(this);
 //        banner = (ImageView) view.findViewById(R.id.banner);
 //        banner.setOnClickListener(this);
@@ -124,8 +126,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
     private void showPopupMenu() {
         if (mPopupWindow == null) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dining_menu, null);
-            RelativeLayout ll = (RelativeLayout) view.findViewById(R.id.content);
-            ViewCompat.setElevation(ll, 20);
+
             view.findViewById(R.id.name).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -133,10 +134,9 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                     mPopupWindow.dismiss();
                 }
             });
-            mPopupWindow = new PopupWindow(getContext());
-            mPopupWindow.setContentView(view);
-            mPopupWindow.setHeight(UiUtils.dip2px(60));
-            mPopupWindow.setWidth(UiUtils.dip2px(155));
+            mPopupWindow = new PopupWindow(view);
+            mPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+            mPopupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setAnimationStyle(R.style.TRM_ANIM_STYLE);
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
@@ -151,7 +151,10 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
 
         if (!mPopupWindow.isShowing()) {
             int width = UiUtils.getDisplaySize(getContext())[0];
-            mPopupWindow.showAtLocation(menu, Gravity.NO_GRAVITY, width, UiUtils.dip2px(24));
+            int offset = UiUtils.dip2px(38);
+
+            mPopupWindow.showAtLocation(root, Gravity.NO_GRAVITY, width-(int)getContext(). getResources().getDimension(R.dimen.pouopwindon_offset),offset);
+//            mPopupWindow.showAtLocation(root, Gravity.NO_GRAVITY, 100,offset);
 //            mPopupWindow.showAsDropDown(menu);
 //            setBackgroundAlpha(1f, 0.75f, 240);
         }

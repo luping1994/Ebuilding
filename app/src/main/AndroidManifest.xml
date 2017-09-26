@@ -91,9 +91,10 @@
             android:name=".activity.AddFloorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:launchMode="standard"
             android:name=".activity.AddAreaActivity"
-            android:screenOrientation="portrait"></activity>
+            android:launchMode="standard"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".activity.AddAreaChannelActivity"
             android:screenOrientation="portrait" />
@@ -105,9 +106,11 @@
             android:name=".activity.YichangActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:theme="@style/TranslucentTheme"
             android:name=".activity.AlertActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme" />
+        <activity android:name=".activity.SceneTimingActivity" />
+        <activity android:name=".activity.AddSceneTimeActivity" />
 
         <service android:name=".MyService" />
     </application>

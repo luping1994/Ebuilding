@@ -28,11 +28,11 @@ public class AboutActivity extends BasedActivity {
             }
         });
         TextView textView = (TextView)findViewById(R.id.version);
-        textView .setText("版本号:"+ BuildConfig.VERSION_NAME);
+        textView .setText(getString(R.string.tx_version_code)+ BuildConfig.VERSION_NAME);
         findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                share("分享智能配电");
+                share(getString(R.string.tx_share_app));
             }
         });
     }
@@ -47,7 +47,7 @@ public class AboutActivity extends BasedActivity {
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT,"");
-        shareIntent.putExtra(Intent.EXTRA_TEXT,  "智能配电app下载地址:https://www.pgyer.com/5xcP");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,  getString(R.string.tx_share_app_des));
         shareIntent.setType("text/plain");
        startActivity(Intent.createChooser(shareIntent, desc));
     }

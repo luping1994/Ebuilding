@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/time"
+            android:textColor="@color/textColor"
+            android:gravity="bottom"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="08:00"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="工作日"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingRight="8dp">
+
+        <net.suntrans.ebuilding.views.SwitchButton
+            android:id="@+id/checkbox"
+            style="@style/SwitchButtonStyleMD"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="8dp"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:kswBackDrawable="@drawable/switch_bottom_white"
+            app:kswTextOff="OFF"
+            app:kswTextOn="ON"
+            app:kswThumbDrawable="@drawable/thumb" />
+    </RelativeLayout>
+</LinearLayout>
