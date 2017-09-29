@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.google.gson.JsonSyntaxException;
 
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
@@ -133,7 +134,7 @@ public class AddAreaChannelActivity extends BasedActivity {
             final String show_sort = sort.substring(0, sort.length() - 1);
 
             new AlertDialog.Builder(this)
-                    .setMessage(String.format(getString(R.string.tips_is_add_count),count))
+                    .setMessage(String.format(getString(R.string.tips_is_add_count), count))
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -171,7 +172,12 @@ public class AddAreaChannelActivity extends BasedActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         dialog.dismiss();
-                        UiUtils.showToast("服务器错误");
+                        if (e instanceof JsonSyntaxException) {
+                            UiUtils.showToast("数据格式错误");
+                        } else {
+
+                            UiUtils.showToast("服务器错误");
+                        }
                     }
 
                     @Override
@@ -187,7 +193,7 @@ public class AddAreaChannelActivity extends BasedActivity {
                                 }
                                 UiUtils.showToast("添加" + count + "个设备成功");
                                 finish();
-                            } else if (result.getCode() == 102){
+                            } else if (result.getCode() == 102) {
                                 UiUtils.showToast("您没有权限进行该操作");
                             } else {
                                 UiUtils.showToast("服务器错误");

@@ -86,7 +86,7 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 timer = UiUtils.pad(hourOfDay) + ":" + UiUtils.pad(minute);
-                System.out.println(timer);
+//                System.out.println(timer);
             }
         });
     }
@@ -120,9 +120,9 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
         map.put("status", status);
         map.put("timer", timer);
         map.put("type", type);
-        for (Map.Entry<String,String> entry:map.entrySet()){
-            System.out.println(entry.getKey()+":"+entry.getValue());
-        }
+//        for (Map.Entry<String,String> entry:map.entrySet()){
+//            System.out.println(entry.getKey()+":"+entry.getValue());
+//        }
         addSubscription(RetrofitHelper.getApi().setSceneTiming(map)
                 , new BaseSubscriber<RespondBody>(this) {
                     @Override

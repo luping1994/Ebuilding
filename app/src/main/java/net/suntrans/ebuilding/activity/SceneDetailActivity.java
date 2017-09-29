@@ -177,11 +177,10 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(SampleResult result) {
+                        UiUtils.showToast(result.getMsg());
                         if (result.getCode() == 200) {
-                            UiUtils.showToast("修改成功");
                             getData();
                         } else {
-                            UiUtils.showToast("服务器错误修改失败");
                         }
                     }
                 });
@@ -348,7 +347,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                                             finish();
                                         }
                                     }).create().show();
-                        }else {
+                        } else {
                             UiUtils.showToast(result.msg);
                         }
 
@@ -420,7 +419,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     .compose(this.<ControlEntity>bindUntilEvent(ActivityEvent.DESTROY))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io());
-        conOb.subscribe(new BaseSubscriber<ControlEntity>(this){
+        conOb.subscribe(new BaseSubscriber<ControlEntity>(this) {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
@@ -440,7 +439,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                     finish();
                 } else if (data.code == 101) {
                     UiUtils.showToast(data.msg);
-                }  else {
+                } else {
                     UiUtils.showToast(data.msg);
                 }
 
@@ -538,8 +537,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
         if (!mPopupWindow.isShowing()) {
             int width = UiUtils.getDisplaySize(getContext())[0];
             int offset = UiUtils.dip2px(38);
-            System.out.println(width);
-            mPopupWindow.showAtLocation(recyclerView, Gravity.NO_GRAVITY, width-(int) getResources().getDimension(R.dimen.pouopwindon_offset),offset);
+            mPopupWindow.showAtLocation(recyclerView, Gravity.NO_GRAVITY, width - (int) getResources().getDimension(R.dimen.pouopwindon_offset), offset);
 //            mPopupWindow.showAsDropDown(menu);
 //            setBackgroundAlpha(1f, 0.75f, 240);
         }
@@ -571,6 +569,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
 
                     }
+
                     @Override
                     public void onNext(SampleResult addResult) {
                         dialog.dismiss();
@@ -585,7 +584,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
                                         }
                                     }).create().show();
                         } else {
-                            UiUtils.showToast("删除失败");
+                            UiUtils.showToast(addResult.getMsg());
                         }
 
                     }
@@ -633,11 +632,10 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(SampleResult result) {
+                        UiUtils.showToast(result.getMsg());
                         if (result.getCode() == 200) {
-                            UiUtils.showToast("删除成功");
                             getData();
                         } else {
-                            UiUtils.showToast("删除失败");
                         }
                     }
                 });

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -169,8 +170,8 @@ public class AreaDetailActivity extends BasedActivity implements View.OnClickLis
             });
             mPopupWindow = new PopupWindow(getContext());
             mPopupWindow.setContentView(view);
-            mPopupWindow.setHeight(UiUtils.dip2px(120));
-            mPopupWindow.setWidth(UiUtils.dip2px(155));
+            mPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+            mPopupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setAnimationStyle(R.style.TRM_ANIM_STYLE);
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
@@ -185,7 +186,8 @@ public class AreaDetailActivity extends BasedActivity implements View.OnClickLis
 
         if (!mPopupWindow.isShowing()) {
             int width = UiUtils.getDisplaySize(getContext())[0];
-            mPopupWindow.showAtLocation(viewPager, Gravity.NO_GRAVITY, width, UiUtils.dip2px(24));
+            int offset = UiUtils.dip2px(38);
+            mPopupWindow.showAtLocation(viewPager, Gravity.NO_GRAVITY, width - (int) getResources().getDimension(R.dimen.pouopwindon_offset), offset);
 //            mPopupWindow.showAsDropDown(menu);
 //            setBackgroundAlpha(1f, 0.75f, 240);
         }

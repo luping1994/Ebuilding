@@ -115,7 +115,7 @@ public class MainActivity extends BasedActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println(tab.getPosition() + "");
+//                System.out.println(tab.getPosition() + "");
                 changFragment(tab.getPosition(), tab.getPosition() + "");
             }
 
