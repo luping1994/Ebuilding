@@ -199,9 +199,10 @@ public class SceneTimingActivity extends BasedActivity {
                     public void onNext(RespondBody respondBody) {
                         super.onNext(respondBody);
                         UiUtils.showToast(respondBody.msg);
-                        if (respondBody.code == 200) {
-                            getTimeer(scene_id);
-                        }
+                        getTimeer(scene_id);
+//                        if (respondBody.code == 200) {
+//
+//                        }
                     }
                 });
     }
