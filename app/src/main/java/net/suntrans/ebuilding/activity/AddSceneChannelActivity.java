@@ -144,15 +144,28 @@ public class AddSceneChannelActivity extends BasedActivity implements DialogInte
                     public void onNext(AddSceneChannelResult result) {
                         dialog.dismiss();
                         if (result.getMsg() != null) {
-                            int count = 0;
-                            for (String s :
-                                    result.getMsg()) {
-                                if (s.equals("ok"))
-                                    count++;
+                            if (result.getCode() == 200) {
+                                int count = 0;
+                                for (String s :
+                                        result.getMsg()) {
+                                    if (s.equals("ok"))
+                                        count++;
+                                }
+                                UiUtils.showToast("添加" + count + "个设备成功");
+                                finish();
+                            } else if (result.getCode() == 102) {
+                                UiUtils.showToast("您没有权限进行该操作");
+                            } else if (result.getCode() == 250){
+                                int count = 0;
+                                for (String s :
+                                        result.getMsg()) {
+                                    if (s.equals("ok"))
+                                        count++;
+                                }
+                                UiUtils.showToast("添加" + count + "个设备成功");
                             }
-                            UiUtils.showToast("添加" + count + "个设备成功");
                         } else {
-                            UiUtils.showToast("添加失败");
+                            UiUtils.showToast("服务器错误");
                         }
                     }
                 });

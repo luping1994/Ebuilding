@@ -142,4 +142,14 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
                     }
                 });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog!=null){
+            dialog.dismiss();
+            dialog=null;
+        }
+
+    }
 }

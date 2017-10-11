@@ -18,16 +18,14 @@ import net.suntrans.ebuilding.bean.SceneTimeResult;
 import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.pgyersdk.c.a.n;
 
 /**
  * Created by Looney on 2017/9/26.
@@ -83,11 +81,10 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
         if (result != null) {
             if (result.type != null) {
                 try {
-                    if (result.user_defined != null){
+                    if (result.user_defined != null) {
                         weeks = new ArrayList<>(Arrays.asList(result.user_defined.split(",")));
                         updateRepetText(Arrays.asList(result.user_defined.split(",")));
-                    }
-                    else
+                    } else
                         typeName.setText("无");
 
                 } catch (Exception e) {
@@ -105,9 +102,17 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
                 }
 
             }
+            picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    timer = UiUtils.pad(hourOfDay) + ":" + UiUtils.pad(minute);
+//                System.out.println(timer);
+                }
+            });
             if (result.timer != null) {
                 picker.setCurrentHour(Integer.valueOf(result.timer.split(":")[0]));
                 picker.setCurrentMinute(Integer.valueOf(result.timer.split(":")[1]));
+                timer = result.timer;
             }
             if (result.status != null) {
                 status = result.status;
@@ -116,38 +121,37 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
         }
 
         Button button = (Button) findViewById(R.id.delete);
-        if (commitType.equals("add")){
+        if (commitType.equals("add")) {
             button.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             button.setVisibility(View.VISIBLE);
         }
 
-        picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                timer = UiUtils.pad(hourOfDay) + ":" + UiUtils.pad(minute);
-//                System.out.println(timer);
-            }
-        });
+
     }
 
     private void updateRepetText(List<String> weeks) {
         if (weeks == null || weeks.size() == 0) {
             typeName.setText("无");
+            user_defined = "";
             return;
         }
+        System.out.println(weeks);
+        Collections.sort(weeks);
         StringBuilder user_defined1 = new StringBuilder();
         StringBuilder sb = new StringBuilder();
         for (String s : weeks) {
             user_defined1.append(s)
                     .append(",");
 
-            sb.append(getString(R.string.week))
-                    .append(s)
-                    .append(",");
+            sb.append(getString(R.string.week));
+            if (s.equals("7"))
+                sb.append("日");
+            else
+                sb.append(s);
+            sb.append(",");
         }
         user_defined = user_defined1.substring(0, user_defined1.length() - 1);
-        System.out.println("user_defined =" + user_defined);
         typeName.setText(sb.substring(0, sb.length() - 1));
     }
 
@@ -182,9 +186,12 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
         map.put("id", id);
         map.put("status", status);
         map.put("timer", timer);
-        if (user_defined != null) {
+        if (user_defined != null && user_defined.length() != 0) {
             map.put("user_defined", user_defined);
+        } else {
+            map.put("user_defined", "");
         }
+
 //        map.put("type", type);
 //        for (Map.Entry<String,String> entry:map.entrySet()){
 //            System.out.println(entry.getKey()+":"+entry.getValue());
@@ -218,11 +225,16 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
                     .setMultiChoiceItems(R.array.weekItem, itemStatus, new DialogInterface.OnMultiChoiceClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                            int index = which + 1;
 
                             if (isChecked) {
-                                weeks.add(which + 1 + "");
+                                System.out.println("add:" + index);
+
+                                weeks.add(index + "");
                             } else {
-                                weeks.remove(which + 1 + "");
+                                weeks.remove(index + "");
+                                System.out.println("remove:" + index);
+
                             }
                         }
                     })
@@ -285,7 +297,7 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
                         delete();
 
                     }
-                }).setNegativeButton(R.string.qvxiao,null).create().show();
+                }).setNegativeButton(R.string.qvxiao, null).create().show();
     }
 
     private void delete() {

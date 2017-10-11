@@ -193,19 +193,28 @@ public class SceneTimingActivity extends BasedActivity {
                 time.setText(datas.get(postion).timer);
                 StringBuilder sb = new StringBuilder();
 
-                if (datas.get(postion).user_defined != null) {
+                String user_defined = datas.get(postion).user_defined;
+                if (user_defined != null) {
                     try {
-                        String[] split = datas.get(postion).user_defined.split(",");
+                        String[] split = user_defined.split(",");
 //                        sb.append(getString(R.string.week));
                         for (String s : split) {
-                            sb.append(getString(R.string.week))
-                                    .append(s)
-                                    .append(",");
+                            sb.append(getString(R.string.week));
+
+                            if (s.equals("7")) {
+                                sb.append("日");
+                            }else {
+                                sb.append(s);
+                            }
+                            sb.append(",");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     type.setText(sb.substring(0, sb.length() - 1));
+                } else {
+                    type.setText("无");
+
                 }
                 switchButton.setCheckedImmediately(datas.get(postion).status.equals("1"));
 
