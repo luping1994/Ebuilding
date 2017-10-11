@@ -23,8 +23,12 @@ public class SceneTimeResult implements Parcelable {
     public String status;
     public String type;
     public String timer;
+    public String user_defined;
     public String created_at;
     public String updated_at;
+
+    public SceneTimeResult() {
+    }
 
     @Override
     public int describeContents() {
@@ -38,11 +42,9 @@ public class SceneTimeResult implements Parcelable {
         dest.writeString(this.status);
         dest.writeString(this.type);
         dest.writeString(this.timer);
+        dest.writeString(this.user_defined);
         dest.writeString(this.created_at);
         dest.writeString(this.updated_at);
-    }
-
-    public SceneTimeResult() {
     }
 
     protected SceneTimeResult(Parcel in) {
@@ -51,11 +53,12 @@ public class SceneTimeResult implements Parcelable {
         this.status = in.readString();
         this.type = in.readString();
         this.timer = in.readString();
+        this.user_defined = in.readString();
         this.created_at = in.readString();
         this.updated_at = in.readString();
     }
 
-    public static final Parcelable.Creator<SceneTimeResult> CREATOR = new Parcelable.Creator<SceneTimeResult>() {
+    public static final Creator<SceneTimeResult> CREATOR = new Creator<SceneTimeResult>() {
         @Override
         public SceneTimeResult createFromParcel(Parcel source) {
             return new SceneTimeResult(source);

@@ -43,5 +43,7 @@
     <string name="activity_title_choose_device">选择要添加的设备</string>
     <string name="tips_please_choose_one">请选择一个设备</string>
     <string name="tips_is_add_count">是否添加%1$d个设备</string>
+    <string name="week">星期</string>
+    <string name="tips_delete_timmer">是否删除该定时设置?</string>
 
 </resources>

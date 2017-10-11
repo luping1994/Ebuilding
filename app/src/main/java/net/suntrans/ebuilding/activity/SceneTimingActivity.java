@@ -19,7 +19,6 @@ import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.RespondBody;
 import net.suntrans.ebuilding.bean.SceneTimeResult;
 import net.suntrans.ebuilding.rx.BaseSubscriber;
-import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.SwitchButton;
 
@@ -66,7 +65,7 @@ public class SceneTimingActivity extends BasedActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         adapter = new SceneTimeAdater();
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -88,8 +87,6 @@ public class SceneTimingActivity extends BasedActivity {
             Intent intent = new Intent(SceneTimingActivity.this, AddSceneTimeActivity.class);
             intent.putExtra("scene_id", scene_id);
             intent.putExtra("commitType", "add");
-            if (datas != null && datas.size() != 0)
-                intent.putExtra("data", datas.get(0));
             startActivity(intent);
             return true;
         }
@@ -104,7 +101,7 @@ public class SceneTimingActivity extends BasedActivity {
 
     private void getTimeer(String scene_id) {
         addSubscription(RetrofitHelper.getApi().getSceneTiming(scene_id)
-                , new BaseSubscriber<RespondBody<SceneTimeResult>>(this) {
+                , new BaseSubscriber<RespondBody<List<SceneTimeResult>>>(this) {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
@@ -114,7 +111,7 @@ public class SceneTimingActivity extends BasedActivity {
                     }
 
                     @Override
-                    public void onNext(RespondBody<SceneTimeResult> result) {
+                    public void onNext(RespondBody<List<SceneTimeResult>> result) {
                         super.onNext(result);
                         if (refreshLayout != null)
                             refreshLayout.setRefreshing(false);
@@ -122,10 +119,17 @@ public class SceneTimingActivity extends BasedActivity {
                             tips.setVisibility(View.VISIBLE);
                             return;
                         }
-                        tips.setVisibility(View.GONE);
                         datas.clear();
-                        datas.add(result.data);
+                        datas.addAll(result.data);
+                        if (datas.size() == 0) {
+                            tips.setVisibility(View.VISIBLE);
+
+                        } else {
+                            tips.setVisibility(View.GONE);
+
+                        }
                         adapter.notifyDataSetChanged();
+
                     }
                 });
     }
@@ -165,28 +169,56 @@ public class SceneTimingActivity extends BasedActivity {
                 switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        setTimmer(scene_id, datas.get(getAdapterPosition()).status.equals("1") ? "0" : "1"
+                        update(datas.get(getAdapterPosition()).id, datas.get(getAdapterPosition()).status.equals("1") ? "0" : "1"
                                 , datas.get(getAdapterPosition()).timer, datas.get(getAdapterPosition()).type);
                     }
                 });
+
+                itemView.findViewById(R.id.root)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(SceneTimingActivity.this, AddSceneTimeActivity.class);
+                                intent.putExtra("scene_id", scene_id);
+                                intent.putExtra("id", datas.get(getAdapterPosition()).id);
+                                intent.putExtra("commitType", "set");
+                                if (datas != null && datas.size() != 0)
+                                    intent.putExtra("data", datas.get(getAdapterPosition()));
+                                startActivity(intent);
+                            }
+                        });
             }
 
             public void setData(int postion) {
                 time.setText(datas.get(postion).timer);
-                type.setText(datas.get(postion).type.equals("0") ? getString(R.string.scene_time_workday) : getString(R.string.scene_time_everyday));
-                LogUtil.i(datas.get(postion).status);
+                StringBuilder sb = new StringBuilder();
+
+                if (datas.get(postion).user_defined != null) {
+                    try {
+                        String[] split = datas.get(postion).user_defined.split(",");
+//                        sb.append(getString(R.string.week));
+                        for (String s : split) {
+                            sb.append(getString(R.string.week))
+                                    .append(s)
+                                    .append(",");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    type.setText(sb.substring(0, sb.length() - 1));
+                }
                 switchButton.setCheckedImmediately(datas.get(postion).status.equals("1"));
 
             }
         }
     }
 
-    private void setTimmer(final String scene_id, String status, String timer, String type) {
+    private void update(final String id, String status, String timer, String type) {
         Map<String, String> map = new HashMap<>();
-        map.put("scene_id", scene_id);
+        map.put("id", id);
         map.put("status", status);
-        map.put("timer", timer);
-        map.put("type", type);
+//        map.put("timer", timer);
+//        map.put("type", type);
         addSubscription(RetrofitHelper.getApi().setSceneTiming(map)
                 , new BaseSubscriber<RespondBody>(this) {
                     @Override

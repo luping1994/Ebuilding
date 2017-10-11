@@ -220,11 +220,19 @@ public interface Api {
     Observable<SampleResult> deleteLog(@Field("log_id") String log_id);
 
     @FormUrlEncoded
-    @POST("scene/settimer")
+    @POST("scene/updatetimer")
     Observable<RespondBody> setSceneTiming(@FieldMap Map<String, String> map);
 
     @FormUrlEncoded
     @POST("scene/gettimer")
-    Observable<RespondBody<SceneTimeResult>> getSceneTiming(@Field("scene_id") String scene_id);
+    Observable<RespondBody<List<SceneTimeResult>>> getSceneTiming(@Field("scene_id") String scene_id);
+
+    @FormUrlEncoded
+    @POST("scene/deletetimer")
+    Observable<RespondBody> deleteTimmer(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("scene/addtimer")
+    Observable<RespondBody> addTimmer(@FieldMap Map<String, String> map);
 
 }

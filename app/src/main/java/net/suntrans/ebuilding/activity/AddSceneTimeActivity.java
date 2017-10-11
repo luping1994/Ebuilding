@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -17,11 +18,16 @@ import net.suntrans.ebuilding.bean.SceneTimeResult;
 import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.UiUtils;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.pgyersdk.c.a.n;
 
 /**
  * Created by Looney on 2017/9/26.
@@ -30,8 +36,12 @@ import java.util.Map;
 public class AddSceneTimeActivity extends BasedActivity implements View.OnClickListener {
 
     private String commitType;
+    private String user_defined;
     private TimePicker picker;
     private TextView typeName;
+    private boolean[] itemStatus = new boolean[]{false, false, false, false, false, false, false};
+    ;
+    private SceneTimeResult result;
 
 
     @Override
@@ -46,7 +56,11 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
 
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("设置定时");
+        if (getIntent().getStringExtra("commitType").equals("set"))
+            toolbar.setTitle("设置定时");
+        else
+            toolbar.setTitle("添加定时");
+
         toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -63,13 +77,33 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
         timer = format.format(new Date());
 
         scene_id = getIntent().getStringExtra("scene_id");
+        id = getIntent().getStringExtra("id");
         commitType = getIntent().getStringExtra("commitType");
-        SceneTimeResult result = getIntent().getParcelableExtra("data");
+        result = getIntent().getParcelableExtra("data");
         if (result != null) {
             if (result.type != null) {
-                typeName.setText(result.type.equals("1") ? "每天执行" : "周一至周五");
-                currentIndex = result.type.equals("0") ? 0 : 1;
-                type = result.type;
+                try {
+                    if (result.user_defined != null){
+                        weeks = new ArrayList<>(Arrays.asList(result.user_defined.split(",")));
+                        updateRepetText(Arrays.asList(result.user_defined.split(",")));
+                    }
+                    else
+                        typeName.setText("无");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (result.user_defined != null) {
+
+                    itemStatus = new boolean[]{result.user_defined.contains("1"),
+                            result.user_defined.contains("2"),
+                            result.user_defined.contains("3"),
+                            result.user_defined.contains("4"),
+                            result.user_defined.contains("5"),
+                            result.user_defined.contains("6"),
+                            result.user_defined.contains("7")};
+                }
+
             }
             if (result.timer != null) {
                 picker.setCurrentHour(Integer.valueOf(result.timer.split(":")[0]));
@@ -81,6 +115,12 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
 
         }
 
+        Button button = (Button) findViewById(R.id.delete);
+        if (commitType.equals("add")){
+            button.setVisibility(View.INVISIBLE);
+        }else {
+            button.setVisibility(View.VISIBLE);
+        }
 
         picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -89,6 +129,26 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
 //                System.out.println(timer);
             }
         });
+    }
+
+    private void updateRepetText(List<String> weeks) {
+        if (weeks == null || weeks.size() == 0) {
+            typeName.setText("无");
+            return;
+        }
+        StringBuilder user_defined1 = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+        for (String s : weeks) {
+            user_defined1.append(s)
+                    .append(",");
+
+            sb.append(getString(R.string.week))
+                    .append(s)
+                    .append(",");
+        }
+        user_defined = user_defined1.substring(0, user_defined1.length() - 1);
+        System.out.println("user_defined =" + user_defined);
+        typeName.setText(sb.substring(0, sb.length() - 1));
     }
 
     @Override
@@ -101,7 +161,10 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.commit) {
             if (commitType != null) {
-                setTimmer(scene_id, status, timer, type);
+                if (commitType.equals("set"))
+                    setTimmer(id, status, timer, user_defined);
+                else
+                    addTimer(scene_id, status, timer, user_defined);
             }
             return true;
         }
@@ -112,14 +175,17 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
     private String scene_id;
     private String status = "1";
     private String timer;
-    private String type = "0";
+    private String id;
 
-    private void setTimmer(String scene_id, String status, String timer, String type) {
+    private void setTimmer(String id, String status, String timer, String user_defined) {
         Map<String, String> map = new HashMap<>();
-        map.put("scene_id", scene_id);
+        map.put("id", id);
         map.put("status", status);
         map.put("timer", timer);
-        map.put("type", type);
+        if (user_defined != null) {
+            map.put("user_defined", user_defined);
+        }
+//        map.put("type", type);
 //        for (Map.Entry<String,String> entry:map.entrySet()){
 //            System.out.println(entry.getKey()+":"+entry.getValue());
 //        }
@@ -143,25 +209,102 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
     }
 
 
-    private String[] items = {"周一至周五", "每天"};
-    private int currentIndex = 0;
+    private List<String> weeks = new ArrayList<>();
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.chooseType) {
             new AlertDialog.Builder(this)
-                    .setSingleChoiceItems(items, currentIndex, new DialogInterface.OnClickListener() {
+                    .setMultiChoiceItems(R.array.weekItem, itemStatus, new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                            if (isChecked) {
+                                weeks.add(which + 1 + "");
+                            } else {
+                                weeks.remove(which + 1 + "");
+                            }
+                        }
+                    })
+                    .setPositiveButton(R.string.queding, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            currentIndex = which;
-                            if (which == 0)
-                                type = "0";
-                            else
-                                type = "1";
-                            typeName.setText(type.equals("0") ? "周一至周五" : "每天");
-                            dialog.dismiss();
+
+                            updateRepetText(weeks);
                         }
-                    }).create().show();
+                    })
+                    .setNegativeButton(R.string.qvxiao, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create().show();
         }
+    }
+
+
+    private void addTimer(final String id, String status, String timer, String user_defined) {
+        Map<String, String> map = new HashMap<>();
+        map.put("scene_id", id);
+        map.put("status", "1");
+        if (user_defined != null) {
+            map.put("user_defined", user_defined);
+        }
+        if (timer == null) {
+            UiUtils.showToast("请选择时间");
+            return;
+        }
+        map.put("timer", timer);
+//        map.put("type", type);
+        addSubscription(RetrofitHelper.getApi().addTimmer(map)
+                , new BaseSubscriber<RespondBody>(this) {
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(RespondBody respondBody) {
+                        super.onNext(respondBody);
+                        UiUtils.showToast(respondBody.msg);
+                        if (respondBody.code == 200) {
+                            finish();
+                        }
+                    }
+                });
+    }
+
+    public void deleteTimer(View view) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.tips_delete_timmer)
+                .setPositiveButton(R.string.queding, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        delete();
+
+                    }
+                }).setNegativeButton(R.string.qvxiao,null).create().show();
+    }
+
+    private void delete() {
+        addSubscription(RetrofitHelper.getApi().deleteTimmer(id)
+                , new BaseSubscriber<RespondBody>(this) {
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(RespondBody respondBody) {
+                        super.onNext(respondBody);
+                        UiUtils.showToast(respondBody.msg);
+                        if (respondBody.code == 200) {
+                            finish();
+                        }
+                    }
+                });
     }
 }
