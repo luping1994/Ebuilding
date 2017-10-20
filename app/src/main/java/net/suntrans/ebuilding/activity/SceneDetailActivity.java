@@ -177,10 +177,12 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(SampleResult result) {
-                        UiUtils.showToast(result.getMsg());
                         if (result.getCode() == 200) {
+                            UiUtils.showToast("修改成功");
                             getData();
                         } else {
+                            UiUtils.showToast(result.getMsg());
+
                         }
                     }
                 });

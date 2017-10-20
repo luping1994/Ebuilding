@@ -99,7 +99,7 @@
                 android:layout_marginBottom="4dp"
                 android:autoLink="phone"
                 android:gravity="center"
-                android:text="服务热线:137-1052-2185"
+                android:text="服务热线:020-8636-1851"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 

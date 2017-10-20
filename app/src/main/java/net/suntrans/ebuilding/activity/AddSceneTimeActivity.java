@@ -100,15 +100,8 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
                             result.user_defined.contains("6"),
                             result.user_defined.contains("7")};
                 }
-
             }
-            picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                @Override
-                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                    timer = UiUtils.pad(hourOfDay) + ":" + UiUtils.pad(minute);
-//                System.out.println(timer);
-                }
-            });
+
             if (result.timer != null) {
                 picker.setCurrentHour(Integer.valueOf(result.timer.split(":")[0]));
                 picker.setCurrentMinute(Integer.valueOf(result.timer.split(":")[1]));
@@ -119,6 +112,14 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
             }
 
         }
+
+        picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                timer = UiUtils.pad(hourOfDay) + ":" + UiUtils.pad(minute);
+                System.out.println(timer);
+            }
+        });
 
         Button button = (Button) findViewById(R.id.delete);
         if (commitType.equals("add")) {

@@ -172,7 +172,7 @@ public class UpLoadImageFragment extends BottomSheetDialogFragment implements Vi
                 UiUtils.showToast("服务器错误");
             }
         }else {
-            UiUtils.showToast("发生了意料之外的错误");
+            UiUtils.showToast("取消操作");
         }
 
     }
