@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="PGYER_APPID"
-            android:value="a173a0ab75faa5162d9991df3ed25aee" />
+            android:value="e14599d03217c70768756c0e7693fdc6" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -109,8 +109,8 @@
             android:name="net.suntrans.guojj.activity.AlertActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme" />
-        <activity android:name="net.suntrans.guojj.activity.SceneTimingActivity" />
-        <activity android:name="net.suntrans.guojj.activity.AddSceneTimeActivity" />
+        <activity android:name="net.suntrans.guojj.activity.SceneTimingActivity" android:screenOrientation="portrait"/>
+        <activity android:name="net.suntrans.guojj.activity.AddSceneTimeActivity" android:screenOrientation="portrait"/>
 
         <service android:name="net.suntrans.guojj.MyService" />
     </application>

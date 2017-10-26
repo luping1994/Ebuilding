@@ -103,14 +103,24 @@ public class SceneFragment extends RxFragment {
 
         @Override
         protected void convert(BaseViewHolder helper, SceneEntity.Scene item) {
-            helper.setText(R.id.sceneName, item.name)
-                    .setText(R.id.sceneNameEn, item.name_en);
+            if (item.name.length() <4) {
+                helper.setText(R.id.sceneName, pad(item.name));
+            } else {
+                helper.setText(R.id.sceneName, item.name);
+
+            }
+            helper.setText(R.id.sceneNameEn, item.name_en);
             ImageView imageView = helper.getView(R.id.sceneBg);
             Glide.with(getActivity())
                     .load(item.img_url)
                     .centerCrop()
                     .placeholder(R.drawable.bg_scene)
                     .into(imageView);
+        }
+
+        private String pad(String s) {
+            String regex = "(.{1})";
+            return s.replaceAll(regex, "$1 ");
         }
     }
 

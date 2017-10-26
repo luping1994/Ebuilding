@@ -3,18 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="96dp"
-    android:layout_marginRight="13.8333333333dp"
     android:layout_marginLeft="13.8333333333dp"
+    android:layout_marginRight="13.8333333333dp"
     android:layout_marginTop="16dp"
     android:foreground="?attr/selectableItemBackground"
-    app:cardPreventCornerOverlap="true"
     app:cardCornerRadius="8dp"
-    app:contentPadding="0dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    app:cardPreventCornerOverlap="true"
+    app:contentPadding="0dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sceneName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="午餐模式"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/henxian"
+                    android:layout_width="80dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/sceneNameEn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Lunch Mode"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
 
         <ImageView
             android:id="@+id/sceneBg"
@@ -23,42 +70,6 @@
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@drawable/ic_wucang" />
-
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="75.5dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:id="@+id/sceneName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="午餐模式"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorPrimary" />
-
-            <TextView
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:id="@+id/sceneNameEn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Lunch Mode"
-                android:textColor="@color/colorPrimary"
-                android:textSize="10sp" />
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -442,41 +442,7 @@ public class SceneDetailActivity extends BasedActivity implements View.OnClickLi
 
             }
         });
-        conOb.subscribe(new Subscriber<ControlEntity>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                canExcute = true;
-                dialog.dismiss();
-                ExceptionUtils.handleException(e);
-            }
-
-            @Override
-            public void onNext(ControlEntity data) {
-                canExcute = true;
-                dialog.dismiss();
-                if (data.code == 200) {
-                    UiUtils.showToast(data.msg);
-                } else if (data.code == 500) {
-                    UiUtils.showToast(data.msg);
-                    finish();
-                } else if (data.code == 101) {
-                    UiUtils.showToast(data.msg);
-                } else if (data.code == 401) {
-                    ActivityUtils.showLoginOutDialogFragmentToActivity(getSupportFragmentManager(), "Alert");
-                } else {
-                    UiUtils.showToast(data.msg);
-                }
-
-            }
-        });
         canExcute = false;
-
-
     }
 
 

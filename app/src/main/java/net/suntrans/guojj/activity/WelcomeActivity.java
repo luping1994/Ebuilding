@@ -27,6 +27,10 @@ public class WelcomeActivity extends BasedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!isTaskRoot()) {
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_welcome);
         init();
     }
