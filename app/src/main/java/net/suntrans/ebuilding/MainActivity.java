@@ -43,8 +43,8 @@ import android.content.Context;
 
 public class MainActivity extends BasedActivity {
 
-    private final int[] TAB_TITLES = new int[]{R.string.nav_tit, R.string.nav_area, R.string.nav_env, R.string.nav_power, R.string.nav_user};
-    private final int[] TAB_IMGS = new int[]{R.drawable.select_home, R.drawable.select_area, R.drawable.select_env, R.drawable.select_power, R.drawable.select_user};
+    private final int[] TAB_TITLES = new int[]{R.string.nav_tit, R.string.nav_area, R.string.nav_user};
+    private final int[] TAB_IMGS = new int[]{R.drawable.select_home, R.drawable.select_area, R.drawable.select_user};
     private TabLayout tabLayout;
 
     private DiningRoomFragment fragment1;
@@ -95,17 +95,17 @@ public class MainActivity extends BasedActivity {
 
         if (fragment2 == null)
             fragment2 = new AreaFragment();
-
-        if (fragment3 == null)
-            fragment3 = new EnergyConFragment2();
+//
+//        if (fragment3 == null)
+//            fragment3 = new EnergyConFragment2();
 
         if (fragment4 == null)
             fragment4 = new PerCenFragment();
 
-        if (fragment5 == null)
-            fragment5 = new EnvHomeFragment();
+//        if (fragment5 == null)
+//            fragment5 = new EnvHomeFragment();
 
-        fragments = new Fragment[]{fragment1, fragment2, fragment5, fragment3, fragment4};
+        fragments = new Fragment[]{fragment1, fragment2,   fragment4};
         getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment1).commit();
 
         tabLayout = (TabLayout) findViewById(R.id.main_tabLayout);
