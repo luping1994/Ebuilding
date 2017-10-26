@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">智能配电</string>
+    <string name="app_name">过家家配电</string>
     <string name="nav_tit">餐厅</string>
     <string name="nav_area">区域</string>
     <string name="nav_power">能耗</string>

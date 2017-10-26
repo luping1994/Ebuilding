@@ -102,7 +102,7 @@
         android:background="@drawable/content"
         android:orientation="vertical">
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -119,7 +119,7 @@
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:inputType="text"
             android:id="@+id/nameEn"
             android:layout_width="match_parent"

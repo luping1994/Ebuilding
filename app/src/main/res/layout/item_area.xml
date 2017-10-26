@@ -29,7 +29,7 @@
         android:paddingRight="8dp"
         android:gravity="center|right">
 
-        <net.suntrans.ebuilding.views.SwitchButton
+        <net.suntrans.guojj.views.SwitchButton
             android:paddingTop="8dp"
             android:id="@+id/checkbox"
             style="@style/SwitchButtonStyleMD"

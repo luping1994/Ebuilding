@@ -34,7 +34,7 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout
+    <net.suntrans.guojj.views.ScrollChildSwipeRefreshLayout
         android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -129,5 +129,5 @@
                 <!--<include layout="@layout/item_sensor" />-->
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-    </net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout>
+    </net.suntrans.guojj.views.ScrollChildSwipeRefreshLayout>
 </LinearLayout>

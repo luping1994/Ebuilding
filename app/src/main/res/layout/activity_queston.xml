@@ -79,7 +79,7 @@
         android:background="@drawable/bg_changed_pass"
         android:orientation="vertical">
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:maxLength="70"
             android:padding="8dp"
             android:gravity="start"

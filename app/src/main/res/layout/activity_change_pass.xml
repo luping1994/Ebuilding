@@ -79,7 +79,7 @@
         android:background="@drawable/bg_changed_pass"
         android:orientation="vertical">
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:inputType="textPassword"
             android:maxLength="18"
             android:id="@+id/oldPass"
@@ -98,7 +98,7 @@
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:digits="@string/abcd123"
             android:maxLength="18"
             android:id="@+id/newPass"
@@ -118,7 +118,7 @@
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:maxLength="18"
             android:digits="@string/abcd123"
             android:id="@+id/repassword"

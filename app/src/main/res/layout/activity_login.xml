@@ -28,7 +28,7 @@
         android:background="@drawable/content"
         android:orientation="vertical">
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:id="@+id/account"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -45,7 +45,7 @@
             android:layout_height="2dp"
             android:background="@color/devisionColor" />
 
-        <net.suntrans.ebuilding.views.EditView
+        <net.suntrans.guojj.views.EditView
             android:digits="@string/abcd123"
             android:id="@+id/password"
             android:layout_width="match_parent"

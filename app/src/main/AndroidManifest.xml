@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.suntrans.ebuilding">
+    package="net.suntrans.guojj">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".App"
+        android:name="net.suntrans.guojj.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +22,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="net.suntrans.ebuilding.fileProvider"
+            android:authorities="net.suntrans.guojj.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -31,10 +31,10 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name="net.suntrans.guojj.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.WelcomeActivity"
+            android:name="net.suntrans.guojj.activity.WelcomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,76 +43,76 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="net.suntrans.guojj.activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SceneDetailActivity"
+            android:name="net.suntrans.guojj.activity.SceneDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.translate"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.AreaDetailActivity"
+            android:name="net.suntrans.guojj.activity.AreaDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Ammeter3Activity"
+            android:name="net.suntrans.guojj.activity.Ammeter3Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.DeviceManagerActivity"
+            android:name="net.suntrans.guojj.activity.DeviceManagerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.EnvDetailActivity"
+            android:name="net.suntrans.guojj.activity.EnvDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ChangePassActivity"
+            android:name="net.suntrans.guojj.activity.ChangePassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AboutActivity"
+            android:name="net.suntrans.guojj.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.QuestionActivity"
+            android:name="net.suntrans.guojj.activity.QuestionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Ammeter3Activity2"
+            android:name="net.suntrans.guojj.activity.Ammeter3Activity2"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AmmeterParameterActivity"
+            android:name="net.suntrans.guojj.activity.AmmeterParameterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.HistroyDataActivity"
+            android:name="net.suntrans.guojj.activity.HistroyDataActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AddSceneActivity"
+            android:name="net.suntrans.guojj.activity.AddSceneActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.translate" />
         <activity
-            android:name=".activity.AddSceneChannelActivity"
+            android:name="net.suntrans.guojj.activity.AddSceneChannelActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AddFloorActivity"
+            android:name="net.suntrans.guojj.activity.AddFloorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AddAreaActivity"
+            android:name="net.suntrans.guojj.activity.AddAreaActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.AddAreaChannelActivity"
+            android:name="net.suntrans.guojj.activity.AddAreaChannelActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".activity.YichangActivity"
+            android:name="net.suntrans.guojj.activity.YichangActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AlertActivity"
+            android:name="net.suntrans.guojj.activity.AlertActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme" />
-        <activity android:name=".activity.SceneTimingActivity" />
-        <activity android:name=".activity.AddSceneTimeActivity" />
+        <activity android:name="net.suntrans.guojj.activity.SceneTimingActivity" />
+        <activity android:name="net.suntrans.guojj.activity.AddSceneTimeActivity" />
 
-        <service android:name=".MyService" />
+        <service android:name="net.suntrans.guojj.MyService" />
     </application>
 
 </manifest>

@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout
+        <net.suntrans.guojj.views.ScrollChildSwipeRefreshLayout
             android:id="@+id/refreshlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -54,7 +54,7 @@
                 android:background="#f7f7f7">
 
             </ExpandableListView>
-        </net.suntrans.ebuilding.views.ScrollChildSwipeRefreshLayout>
+        </net.suntrans.guojj.views.ScrollChildSwipeRefreshLayout>
 
     </FrameLayout>
 </LinearLayout>

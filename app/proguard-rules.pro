@@ -114,8 +114,8 @@
   public *;
 }
 #我的
-    -keep class net.suntrans.ebuilding.bean.**{*;}
-    -keep class net.suntrans.ebuilding.converter.**{*;}
+    -keep class net.suntrans.guojj.bean.**{*;}
+    -keep class net.suntrans.guojj.converter.**{*;}
     -dontwarn android.support.**
     -keep class **.R$* {
      *;

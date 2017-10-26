@@ -49,7 +49,7 @@
             android:layout_centerVertical="true"
             android:orientation="vertical">
 
-            <net.suntrans.ebuilding.views.EditView
+            <net.suntrans.guojj.views.EditView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"

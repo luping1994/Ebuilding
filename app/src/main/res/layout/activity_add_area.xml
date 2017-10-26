@@ -9,7 +9,7 @@
     <include layout="@layout/toolbar" />
 
 
-    <net.suntrans.ebuilding.views.EditView
+    <net.suntrans.guojj.views.EditView
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="48dp"

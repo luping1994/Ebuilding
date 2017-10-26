@@ -15,5 +15,5 @@
         name="external_storage_root"
         path="." />
 
-    <external-path name="my_images" path="Android/data/net.suntrans.ebuilding/files/Pictures" />
+    <external-path name="my_images" path="Android/data/net.suntrans.guojj/files/Pictures" />
 </paths>

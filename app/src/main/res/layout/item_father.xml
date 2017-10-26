@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<net.suntrans.ebuilding.views.CustomExpandableListView
+<net.suntrans.guojj.views.CustomExpandableListView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/expandListView"
     android:orientation="vertical">
 
-</net.suntrans.ebuilding.views.CustomExpandableListView>
+</net.suntrans.guojj.views.CustomExpandableListView>
