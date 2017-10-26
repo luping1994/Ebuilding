@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "net.suntrans.ebuilding"
         minSdkVersion 16
@@ -43,20 +43,20 @@ android {
             abortOnError false
         }
     }
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            def fileName
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                if (variant.buildType.name.equals('release')) {
-                    fileName = "tx_${defaultConfig.versionName}_${defaultConfig.versionCode}.apk"
-                } else if (variant.buildType.name.equals('debug')) {
-                    fileName = "tx_${defaultConfig.versionName}_${defaultConfig.versionCode}_debug.apk"
-                }
-                output.outputFile = new File(outputFile.parent, fileName)
-            }
-        }
-    }
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            def outputFile = output.outputFile
+//            def fileName
+//            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                if (variant.buildType.name.equals('release')) {
+//                    fileName = "tx_${defaultConfig.versionName}_${defaultConfig.versionCode}.apk"
+//                } else if (variant.buildType.name.equals('debug')) {
+//                    fileName = "tx_${defaultConfig.versionName}_${defaultConfig.versionCode}_debug.apk"
+//                }
+//                output.outputFile = new File(outputFile.parent, fileName)
+//            }
+//        }
+//    }
 }
 
 dependencies {
