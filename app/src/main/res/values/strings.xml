@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">过家家配电</string>
-    <string name="nav_tit">餐厅</string>
+    <string name="nav_tit">场景</string>
     <string name="nav_area">区域</string>
     <string name="nav_power">能耗</string>
     <string name="nav_user">我的</string>
@@ -34,7 +34,7 @@
     <string name="activity_title_dingshi">定时</string>
     <string name="tx_version_code">版本号:</string>
     <string name="tx_share_app">分享智能配电</string>
-    <string name="tx_share_app_des">智能配电app下载地址:https://www.pgyer.com/5xcP</string>
+    <string name="tx_share_app_des">智能配电app下载地址:https://www.pgyer.com/GuoJJ</string>
     <string name="activity_title_add_area">添加区域</string>
     <string name="tx_choose_floor">-----请选择楼层-----</string>
     <string name="tips_please_enter_name">请输入名称</string>
