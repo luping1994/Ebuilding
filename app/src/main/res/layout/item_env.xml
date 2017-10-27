@@ -53,13 +53,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="7dp"
                     android:layout_height="16dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="19dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/icon_wendu" />
 
@@ -79,9 +78,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="9dp"
@@ -91,7 +89,6 @@
                     android:src="@drawable/icon_shidu" />
 
                 <TextView
-
                     android:id="@+id/shidu"
                     android:layout_width="60dp"
                     android:layout_height="match_parent"
@@ -107,9 +104,7 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
 
@@ -137,9 +132,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="15dp"
