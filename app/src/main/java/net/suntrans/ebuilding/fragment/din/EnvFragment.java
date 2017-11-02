@@ -58,6 +58,7 @@ public class EnvFragment extends BasedFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 getData(1);
 
             }
