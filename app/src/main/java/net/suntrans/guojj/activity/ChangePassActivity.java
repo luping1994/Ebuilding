@@ -60,7 +60,7 @@ public class ChangePassActivity extends BasedActivity {
         name.setText(name1);
         String imgurl = App.getSharedPreferences().getString("touxiang","-1");
         Glide.with(this)
-                .load("http://tit.suntrans-cloud.com"+imgurl)
+                .load("http://whgjjapp.suntrans-cloud.com"+imgurl)
                 .asBitmap()
                 .override(UiUtils.dip2px(33), UiUtils.dip2px(33))
 //                                        .transform(new GlideRoundTransform(getActivity(), UiUtils.dip2px(16)))

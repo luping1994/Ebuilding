@@ -211,9 +211,9 @@ public class PerCenFragment extends LazyLoadFragment implements View.OnClickList
                                         .putString("nikename", info.data.nickname)
                                         .putString("touxiang", info.data.avatar_url)
                                         .commit();
-                                LogUtil.i("http://tit.suntrans-cloud.com" + info.data.avatar_url);
+                                LogUtil.i("http://whgjjapp.suntrans-cloud.com" + info.data.avatar_url);
                                 glideRequest
-                                        .load("http://tit.suntrans-cloud.com" + info.data.avatar_url)
+                                        .load("http://whgjjapp.suntrans-cloud.com" + info.data.avatar_url)
                                         .asBitmap()
                                         .override(UiUtils.dip2px(33), UiUtils.dip2px(33))
 //                                        .transform(new GlideRoundTransform(getActivity(), UiUtils.dip2px(16)))
