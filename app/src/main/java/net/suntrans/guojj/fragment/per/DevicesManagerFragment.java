@@ -12,17 +12,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import net.suntrans.guojj.R;
+import net.suntrans.guojj.adapter.DefaultDecoration;
 import net.suntrans.guojj.api.RetrofitHelper;
 import net.suntrans.guojj.bean.DeviceInfoResult;
 import net.suntrans.guojj.rx.BaseSubscriber;
 import net.suntrans.guojj.utils.LogUtil;
 import net.suntrans.guojj.utils.UiUtils;
+import net.suntrans.guojj.views.OffsetDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,7 @@ public class DevicesManagerFragment extends RxFragment {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refreshlayout);
+        recyclerView.addItemDecoration(new DefaultDecoration());
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -119,14 +123,14 @@ public class DevicesManagerFragment extends RxFragment {
             ImageView imageView;
             TextView title;
             TextView name;
-            CardView root;
+            RelativeLayout root;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 imageView = (ImageView) itemView.findViewById(R.id.imageView);
                 title = (TextView) itemView.findViewById(R.id.title);
                 name = (TextView) itemView.findViewById(R.id.name);
-                root = (CardView) itemView.findViewById(R.id.root);
+                root = (RelativeLayout) itemView.findViewById(R.id.root);
                 root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
