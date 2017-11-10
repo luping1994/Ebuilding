@@ -18,7 +18,7 @@ public class DefaultDecoration extends RecyclerView.ItemDecoration {
 
     private int offsets = UiUtils.dip2px(1);
     private Paint mPaint;
-    private int mOffsetsColor = Color.parseColor("#aa1e81d2");
+    private int mOffsetsColor = Color.parseColor("#eeeeee");
     private final Rect mBounds = new Rect();
     private  final int padding = UiUtils.dip2px(0);
 

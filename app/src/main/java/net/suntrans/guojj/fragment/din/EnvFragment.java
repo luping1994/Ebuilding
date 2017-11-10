@@ -63,7 +63,7 @@ public class EnvFragment extends BasedFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), EnvDetailActivity.class);
-                intent.putExtra("din", datas.get(position).din);
+                intent.putExtra("id", datas.get(position).id);
                 intent.putExtra("info", datas.get(position).sub);
                 intent.putExtra("name", datas.get(position).name);
                 startActivity(intent);

@@ -33,17 +33,8 @@ public class SensusEntity extends RespondBody<SensusEntity.Data>{
 
 
     public static class SixDetailData implements Parcelable {
-        private String d_100004451;
-        private String d_100004277;
-        private String d_100004276;
-        private String d_100004275;
-        private String d_100004281;
-        private String d_100004280;
-        private String d_100004278;
-        private String d_100004279;
-        private String d_100004450;
-        private String d_100004274;
-        private String d_100004273;
+
+
 
 
         public String updated_at;
@@ -73,6 +64,19 @@ public class SensusEntity extends RespondBody<SensusEntity.Data>{
         public int pm1Pro;
         public int pm25Pro;
         public int pm10Pro;
+
+
+        private String wendu;
+        private String shidu;
+        private String guangzhao;
+        private String daqiya;
+        private String jiaquan;
+        private String yanwu;
+        private String renyuan;
+        private String pm1;
+        private String pm25;
+        private String pm10;
+        private String z_zhou;
 
         public void setEva() {
             if (getPm25() != null) {
@@ -341,52 +345,6 @@ public class SensusEntity extends RespondBody<SensusEntity.Data>{
         }
 
 
-        public void setD_100004451(String d_100004451) {
-            this.d_100004451 = d_100004451;
-        }
-
-
-        public void setD_100004277(String d_100004277) {
-            this.d_100004277 = d_100004277;
-        }
-
-
-        public void setD_100004276(String d_100004276) {
-            this.d_100004276 = d_100004276;
-        }
-
-
-
-        public void setD_100004275(String d_100004275) {
-            this.d_100004275 = d_100004275;
-        }
-        public void setD_100004281(String d_100004281) {
-            this.d_100004281 = d_100004281;
-        }
-        public void setD_100004280(String d_100004280) {
-            this.d_100004280 = d_100004280;
-        }
-
-        public void setD_100004278(String d_100004278) {
-            this.d_100004278 = d_100004278;
-        }
-
-        public void setD_100004279(String d_100004279) {
-            this.d_100004279 = d_100004279;
-        }
-
-        public void setD_100004450(String d_100004450) {
-            this.d_100004450 = d_100004450;
-        }
-
-        public void setD_100004274(String d_100004274) {
-            this.d_100004274 = d_100004274;
-        }
-
-
-        public void setD_100004273(String d_100004273) {
-            this.d_100004273 = d_100004273;
-        }
 
 
 
@@ -395,54 +353,54 @@ public class SensusEntity extends RespondBody<SensusEntity.Data>{
 
 
         public String getOffset() {
-            return d_100004451;
+            return z_zhou;
         }
 
         public String getPm10() {
-            return d_100004277;
+            return pm10;
         }
 
         public String getPm25() {
-            return d_100004276;
+            return pm25;
         }
 
 
 
         public String getPM1() {
-            return d_100004275;
+            return pm1;
         }
         public String getRenyuan() {
-            return d_100004281;
+            return renyuan;
         }
 
 
         public String getYanwu() {
-            return d_100004280;
+            return yanwu;
         }
 
 
         public String getJiaquan() {
-            return d_100004278;
+            return jiaquan;
         }
 
 
         public String getDaqiya() {
-            return d_100004279;
+            return daqiya;
         }
 
 
 
         public String getLight() {
-            return d_100004450;
+            return guangzhao;
         }
 
 
 
         public String getShidu() {
-            return d_100004274;
+            return shidu;
         }
         public String getWendu() {
-            return d_100004273;
+            return wendu;
         }
 
 
@@ -453,37 +411,81 @@ public class SensusEntity extends RespondBody<SensusEntity.Data>{
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.d_100004451);
-            dest.writeString(this.d_100004277);
-            dest.writeString(this.d_100004276);
-            dest.writeString(this.d_100004275);
-            dest.writeString(this.d_100004281);
-            dest.writeString(this.d_100004280);
-            dest.writeString(this.d_100004278);
-            dest.writeString(this.d_100004279);
-            dest.writeString(this.d_100004450);
-            dest.writeString(this.d_100004274);
-            dest.writeString(this.d_100004273);
+            dest.writeString(this.updated_at);
+            dest.writeString(this.pm25Eva);
+            dest.writeString(this.pm1Eva);
+            dest.writeString(this.pm10Eva);
+            dest.writeString(this.wenduEva);
+            dest.writeString(this.shiduEva);
+            dest.writeString(this.guanzhaoEva);
+            dest.writeString(this.zEva);
+            dest.writeString(this.yanwuEva);
+            dest.writeString(this.jiaquanEva);
+            dest.writeString(this.daqiYaEva);
+            dest.writeString(this.xEva);
+            dest.writeString(this.yEva);
+            dest.writeInt(this.wenduPro);
+            dest.writeInt(this.shiduPro);
+            dest.writeInt(this.daqiyaPro);
+            dest.writeInt(this.guanzhaoPro);
+            dest.writeInt(this.yanwuPro);
+            dest.writeInt(this.jiaquanPro);
+            dest.writeInt(this.pm1Pro);
+            dest.writeInt(this.pm25Pro);
+            dest.writeInt(this.pm10Pro);
+            dest.writeString(this.wendu);
+            dest.writeString(this.shidu);
+            dest.writeString(this.guangzhao);
+            dest.writeString(this.daqiya);
+            dest.writeString(this.jiaquan);
+            dest.writeString(this.yanwu);
+            dest.writeString(this.renyuan);
+            dest.writeString(this.pm1);
+            dest.writeString(this.pm25);
+            dest.writeString(this.pm10);
+            dest.writeString(this.z_zhou);
         }
 
         public SixDetailData() {
         }
 
         protected SixDetailData(Parcel in) {
-            this.d_100004451 = in.readString();
-            this.d_100004277 = in.readString();
-            this.d_100004276 = in.readString();
-            this.d_100004275 = in.readString();
-            this.d_100004281 = in.readString();
-            this.d_100004280 = in.readString();
-            this.d_100004278 = in.readString();
-            this.d_100004279 = in.readString();
-            this.d_100004450 = in.readString();
-            this.d_100004274 = in.readString();
-            this.d_100004273 = in.readString();
+            this.updated_at = in.readString();
+            this.pm25Eva = in.readString();
+            this.pm1Eva = in.readString();
+            this.pm10Eva = in.readString();
+            this.wenduEva = in.readString();
+            this.shiduEva = in.readString();
+            this.guanzhaoEva = in.readString();
+            this.zEva = in.readString();
+            this.yanwuEva = in.readString();
+            this.jiaquanEva = in.readString();
+            this.daqiYaEva = in.readString();
+            this.xEva = in.readString();
+            this.yEva = in.readString();
+            this.wenduPro = in.readInt();
+            this.shiduPro = in.readInt();
+            this.daqiyaPro = in.readInt();
+            this.guanzhaoPro = in.readInt();
+            this.yanwuPro = in.readInt();
+            this.jiaquanPro = in.readInt();
+            this.pm1Pro = in.readInt();
+            this.pm25Pro = in.readInt();
+            this.pm10Pro = in.readInt();
+            this.wendu = in.readString();
+            this.shidu = in.readString();
+            this.guangzhao = in.readString();
+            this.daqiya = in.readString();
+            this.jiaquan = in.readString();
+            this.yanwu = in.readString();
+            this.renyuan = in.readString();
+            this.pm1 = in.readString();
+            this.pm25 = in.readString();
+            this.pm10 = in.readString();
+            this.z_zhou = in.readString();
         }
 
-        public static final Creator<SixDetailData> CREATOR = new Creator<SixDetailData>() {
+        public static final Parcelable.Creator<SixDetailData> CREATOR = new Parcelable.Creator<SixDetailData>() {
             @Override
             public SixDetailData createFromParcel(Parcel source) {
                 return new SixDetailData(source);

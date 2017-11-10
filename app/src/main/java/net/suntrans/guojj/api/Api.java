@@ -3,6 +3,8 @@ package net.suntrans.guojj.api;
 import net.suntrans.guojj.bean.AddSceneChannelResult;
 import net.suntrans.guojj.bean.Ameter3Entity;
 import net.suntrans.guojj.bean.AmmeterInfos;
+import net.suntrans.guojj.bean.ChannelEditorInfo;
+import net.suntrans.guojj.bean.DeviceDetailResult;
 import net.suntrans.guojj.bean.FreshChannelEntity;
 import net.suntrans.guojj.bean.RespondBody;
 import net.suntrans.guojj.bean.SampleResult;
@@ -107,7 +109,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("sensus/show")
-    Observable<EnvDetailEntity> getEnvDetail(@Field("din") String din);
+    Observable<EnvDetailEntity> getEnvDetail(@Field("id") String id);
 
 
     @POST("user/info")
@@ -233,5 +235,13 @@ public interface Api {
     @FormUrlEncoded
     @POST("scene/addtimer")
     Observable<RespondBody> addTimmer(@FieldMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("device/channel_list")
+    Observable<DeviceDetailResult> getDeviceDetail(@Field("dev_id") String dev_id);
+
+    @FormUrlEncoded
+    @POST("device/channel_edit")
+    Observable<ChannelEditorInfo> getChannelEditor(@Field("channel_id") String channel_id);
 
 }

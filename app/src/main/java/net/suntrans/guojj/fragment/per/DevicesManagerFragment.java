@@ -1,6 +1,7 @@
 package net.suntrans.guojj.fragment.per;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +16,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import net.suntrans.guojj.R;
+import net.suntrans.guojj.activity.DeviceDetailActivity;
 import net.suntrans.guojj.adapter.DefaultDecoration;
 import net.suntrans.guojj.api.RetrofitHelper;
 import net.suntrans.guojj.bean.DeviceInfoResult;
@@ -96,7 +99,7 @@ public class DevicesManagerFragment extends RxFragment {
     public static class DevicesAdapter extends RecyclerView.Adapter {
         List<DeviceInfoResult.DeviceInfo> datas;
         private Context context;
-
+        public int size = UiUtils.dip2px(96);
         public DevicesAdapter(List<DeviceInfoResult.DeviceInfo> datas, Context context) {
             this.datas = datas;
             this.context = context;
@@ -120,20 +123,31 @@ public class DevicesManagerFragment extends RxFragment {
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
+
             ImageView imageView;
             TextView title;
             TextView name;
+            TextView des;
             RelativeLayout root;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                imageView = (ImageView) itemView.findViewById(R.id.imageView);
+                imageView = (ImageView) itemView.findViewById(R.id.image);
                 title = (TextView) itemView.findViewById(R.id.title);
                 name = (TextView) itemView.findViewById(R.id.name);
+                des = (TextView) itemView.findViewById(R.id.des);
                 root = (RelativeLayout) itemView.findViewById(R.id.root);
+
                 root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        if ("1700004652".equals(datas.get(getAdapterPosition()).product_id)||"1700004361".equals(datas.get(getAdapterPosition()).product_id)){
+                            Intent intent = new Intent(context,DeviceDetailActivity.class);
+                            intent.putExtra("title",datas.get(getAdapterPosition()).device_name);
+                            intent.putExtra("id",datas.get(getAdapterPosition()).id);
+                            context.startActivity(intent);//fc561f
+                        }
 
                     }
                 });
@@ -141,16 +155,23 @@ public class DevicesManagerFragment extends RxFragment {
             }
 
             public void setData(int position) {
-
+                des.setText(datas.get(position).product_name);
                 name.setText(datas.get(position).device_name);
                 if (datas.get(position).is_online.equals("1")) {
-                    title.setText("(在线)");
-                    title.setTextColor(Color.GREEN);
+                    title.setText("在线");
+                    title.setTextColor(Color.parseColor("#1e81d2"));
 
                 } else {
-                    title.setText("(不在线)");
-                    title.setTextColor(Color.RED);
+                    title.setText("不在线");
+                    title.setTextColor(Color.parseColor("#999999"));
                 }
+                Glide.with(context)
+                        .load(datas.get(position).product_img)
+                        .dontTransform()
+                        .placeholder(R.drawable.ic_liutongdao)
+                        .crossFade()
+                        .override(size,size)
+                        .into(imageView);
             }
         }
     }
@@ -164,6 +185,7 @@ public class DevicesManagerFragment extends RxFragment {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        e.printStackTrace();
                         if (refreshLayout != null)
                             refreshLayout.setRefreshing(false);
                     }

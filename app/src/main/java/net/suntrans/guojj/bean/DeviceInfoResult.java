@@ -19,6 +19,10 @@ public class DeviceInfoResult extends RespondBody<DeviceInfoResult.Data> {
         public String din;
         public String sn;
         public String is_online;
+        public String show_sort;
+        public String product_id;
+        public String product_name;
+        public String product_img;
     }
 
     public boolean isEmpty() {

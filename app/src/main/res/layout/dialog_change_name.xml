@@ -60,9 +60,8 @@
                 android:hint="请输入名称"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:maxLength="16"
+                android:maxLength="10"
                 android:textSize="14sp" />
-
         </LinearLayout>
     </RelativeLayout>
 

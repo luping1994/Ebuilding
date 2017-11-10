@@ -39,7 +39,7 @@ public class EnvDetailActivity extends BasedActivity {
         setContentView(R.layout.activity_env_detail);
         rootLL = (LinearLayout) findViewById(R.id.rootLL);
         time = (TextView) findViewById(R.id.time);
-        din = getIntent().getStringExtra("din");
+        din = getIntent().getStringExtra("id");
 
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);//获取屏幕大小的信息
         Pwidth = displayMetrics.widthPixels;   //屏幕宽度,先锋的宽度是800px，小米2a的宽度是720px

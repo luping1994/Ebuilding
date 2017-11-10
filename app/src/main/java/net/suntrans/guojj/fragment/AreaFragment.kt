@@ -69,7 +69,6 @@ class AreaFragment : BasedFragment() {
         add!!.setOnClickListener { v -> showPopupMenu() }
         expandableListView!!.setOnItemLongClickListener { parent, view, position, id ->
             if (view.getTag(R.id.name) is AreaAdapter.GroupHolder) {
-
                 println("我被长按了," + view.getTag(R.id.root))
                 deleteFloor(datas!!.get(view.getTag(R.id.root) as Int).id)
             }

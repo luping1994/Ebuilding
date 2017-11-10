@@ -9,4 +9,9 @@
         <item>星期六</item>
         <item>星期日</item>
     </string-array>
+    <string-array name="channelType">
+        <item>照明</item>
+        <item>插座</item>
+
+    </string-array>
 </resources>

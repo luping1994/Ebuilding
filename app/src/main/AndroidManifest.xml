@@ -93,8 +93,7 @@
         <activity
             android:name="net.suntrans.guojj.activity.AddAreaActivity"
             android:launchMode="standard"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="net.suntrans.guojj.activity.AddAreaChannelActivity"
             android:screenOrientation="portrait" />
@@ -109,8 +108,14 @@
             android:name="net.suntrans.guojj.activity.AlertActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme" />
-        <activity android:name="net.suntrans.guojj.activity.SceneTimingActivity" android:screenOrientation="portrait"/>
-        <activity android:name="net.suntrans.guojj.activity.AddSceneTimeActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name="net.suntrans.guojj.activity.SceneTimingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="net.suntrans.guojj.activity.AddSceneTimeActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.DeviceDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ChannelEditActivity" android:screenOrientation="portrait"/>
 
         <service android:name="net.suntrans.guojj.MyService" />
     </application>
