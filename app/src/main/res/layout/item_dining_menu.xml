@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="120dp"
-    android:layout_height="35dp"
+    android:layout_height="107dp"
     android:elevation="6dp"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
         android:layout_width="120dp"
-        android:layout_height="35dp"
+        android:layout_height="107dp"
         android:background="@drawable/overflowbg"
         android:orientation="vertical">
 
@@ -20,6 +20,42 @@
             android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:text="添加场景"
+            android:textColor="@color/black"
+            android:textSize="14sp">
+
+        </TextView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f1f1f1">
+
+        </View>
+        <TextView
+            android:id="@+id/floor1"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="1楼"
+            android:textColor="@color/black"
+            android:textSize="14sp">
+
+        </TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f1f1f1">
+
+        </View>
+
+        <TextView
+            android:id="@+id/floor2"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="2楼"
             android:textColor="@color/black"
             android:textSize="14sp">
 

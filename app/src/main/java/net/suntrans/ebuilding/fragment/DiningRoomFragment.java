@@ -27,6 +27,7 @@ import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.MainActivity;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.AddSceneActivity;
+import net.suntrans.ebuilding.activity.FloorPlanActivity;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.UserInfo;
@@ -134,6 +135,24 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                     mPopupWindow.dismiss();
                 }
             });
+            view.findViewById(R.id.floor1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), FloorPlanActivity.class);
+                    intent.putExtra("house_id","1");
+                    startActivity(intent);
+                    mPopupWindow.dismiss();
+                }
+            });
+            view.findViewById(R.id.floor2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), FloorPlanActivity.class);
+                    intent.putExtra("house_id","2");
+                    startActivity(intent);
+                    mPopupWindow.dismiss();
+                }
+            });
             mPopupWindow = new PopupWindow(view);
             mPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
             mPopupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
@@ -153,7 +172,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
             int width = UiUtils.getDisplaySize(getContext())[0];
             int offset = UiUtils.dip2px(38);
 
-            mPopupWindow.showAtLocation(root, Gravity.NO_GRAVITY, width-(int)getContext(). getResources().getDimension(R.dimen.pouopwindon_offset),offset);
+            mPopupWindow.showAtLocation(root, Gravity.NO_GRAVITY, width - (int) getContext().getResources().getDimension(R.dimen.pouopwindon_offset), offset);
 //            mPopupWindow.showAtLocation(root, Gravity.NO_GRAVITY, 100,offset);
 //            mPopupWindow.showAsDropDown(menu);
 //            setBackgroundAlpha(1f, 0.75f, 240);
@@ -279,7 +298,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
             @Override
             public void onError(Throwable e) {
                 dialog.dismiss();
-               super.onError(e);
+                super.onError(e);
             }
 
             @Override

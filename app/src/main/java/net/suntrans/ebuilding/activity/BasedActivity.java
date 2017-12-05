@@ -11,6 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
@@ -218,5 +220,29 @@ public class BasedActivity extends RxAppCompatActivity implements SlidingPaneLay
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
+    }
+
+    protected void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |=  bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
+    protected void setTranslucentNavigation(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
+        if (on) {
+            winParams.flags |=  bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 }
