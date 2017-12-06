@@ -132,8 +132,9 @@ function refreshContainerByToken(token, house_id) {
                 if (con) {
                     width = con.width;
                     height = con.height;
-                    $("div.wrapper-position").css("width", con.width);
-                    $("div.wrapper-position").css("height", con.height);
+					scale = $("body").width()/width;
+                     $("div.full-wrapper").css("height",height*scale);
+                   $("svg.designer").css("transform","scale("+scale+")");
                     $("svg.designer").css("width", con.width);
                     $("svg.designer").css("height", con.height);
                     $("svg.designer").css("background-color", con.bgColor);

@@ -44,20 +44,15 @@ public class FloorPlanActivity extends BasedActivity {
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         //不显示webview缩放按钮
-        settings.setDisplayZoomControls(false);
+        settings.setDisplayZoomControls(true);
 
-        settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-        settings.setSaveFormData(true);
-        settings.setSavePassword(true);
-        settings.setDatabaseEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setGeolocationEnabled(true);
+//        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//        settings.setGeolocationEnabled(true);
         settings.setLoadWithOverviewMode(true);
-        settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
         settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
+//        settings.setBuiltInZoomControls(true);
 
         webview.setWebViewClient(new WebViewClient() {
             @Override
@@ -83,9 +78,9 @@ public class FloorPlanActivity extends BasedActivity {
             }
         });
 
-        webview.setInitialScale(100);
-        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webview.setVerticalScrollBarEnabled(false);
+//        webview.setInitialScale(100);
+//        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+//        webview.setVerticalScrollBarEnabled(false);
 
         webview.loadUrl("file:///android_asset/plan/floor_plan.html");
         webview.addJavascriptInterface(new AndroidtoJs(), "control");
