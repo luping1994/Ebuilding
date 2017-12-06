@@ -7,6 +7,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import net.suntrans.ebuilding.R;
 
 
 public class StatusBarCompat {
@@ -76,4 +79,6 @@ public class StatusBarCompat {
         statusBarView.setBackgroundColor(color);
         contentView.addView(statusBarView, lp);
     }
+
+
 }

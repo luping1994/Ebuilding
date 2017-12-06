@@ -1,7 +1,11 @@
 package net.suntrans.ebuilding.activity;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -25,8 +29,14 @@ public class FloorPlanActivity extends BasedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTranslucentNavigation(true);
-        setTranslucentStatus(true);
+//        setTranslucentNavigation(true);
+//        setTranslucentStatus(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
         setContentView(R.layout.activity_plan);
         house_id = getIntent().getStringExtra("house_id");
         token ="Bearer "+ App.getSharedPreferences().getString("access_token", "-1");
@@ -35,13 +45,19 @@ public class FloorPlanActivity extends BasedActivity {
         settings.setJavaScriptEnabled(true);
         //不显示webview缩放按钮
         settings.setDisplayZoomControls(false);
-        //支持屏幕缩放
+
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        settings.setSaveFormData(true);
+        settings.setSavePassword(true);
+        settings.setDatabaseEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setGeolocationEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setAppCacheEnabled(true);
+        settings.setUseWideViewPort(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
-        settings.setJavaScriptEnabled(true);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-
 
         webview.setWebViewClient(new WebViewClient() {
             @Override
@@ -68,6 +84,8 @@ public class FloorPlanActivity extends BasedActivity {
         });
 
         webview.setInitialScale(100);
+        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webview.setVerticalScrollBarEnabled(false);
 
         webview.loadUrl("file:///android_asset/plan/floor_plan.html");
         webview.addJavascriptInterface(new AndroidtoJs(), "control");
