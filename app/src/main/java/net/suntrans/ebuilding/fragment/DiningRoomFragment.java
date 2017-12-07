@@ -140,6 +140,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), FloorPlanActivity.class);
                     intent.putExtra("house_id","1");
+                    intent.putExtra("title","1楼");
                     startActivity(intent);
                     mPopupWindow.dismiss();
                 }
@@ -149,6 +150,7 @@ public class DiningRoomFragment extends RxFragment implements View.OnClickListen
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), FloorPlanActivity.class);
                     intent.putExtra("house_id","2");
+                    intent.putExtra("title","2楼");
                     startActivity(intent);
                     mPopupWindow.dismiss();
                 }

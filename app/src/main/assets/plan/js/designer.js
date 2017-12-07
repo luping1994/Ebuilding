@@ -49,7 +49,7 @@ function createElement(ele) {
 }
 
 function openConfirmDialog(d) {
-    console.log(d.href);
+//    console.log(d.href);
     sendCommand(d)
 
     // var htmlStr = '';
@@ -84,8 +84,8 @@ function openConfirmDialog(d) {
 }
 
 function sendCommand(d) {
-    console.log('channel_id为：' + d.channel_id);
-    control.switchChannel(d.channel_id+","+d.title+","+d.status);
+//    console.log('channel_id为：' + d.channel_id);
+    control.switchChannel(d.channel_id+","+d.title+","+d.status+","+d.datapoint+","+d.din);
 }
 
 //加载容器属性和元件
@@ -101,13 +101,13 @@ function init(token, house_id) {
     house_ids = house_id;
     //加载容器属性和元件
     initContainerByToken(tokens,house_ids);
-    setInterval("refreshContainerByToken(tokens,house_ids)", 5000);
+    setInterval("refreshContainerByToken(tokens,house_ids)", 8000);
 }
 
 
 function refreshContainerByToken(token, house_id) {
 
-    console.log("开始请求")
+//    console.log("开始请求")
 
     $.ajax({
         url: 'http://tit.suntrans-cloud.com/api/v1/home/floor_plan',
@@ -177,16 +177,17 @@ function initContainerByToken(token, house_id) {
             // if (json.result) {
                 var con = json.container;
                 if (con) {
-                    width = con.width;
-                    height = con.height;
-                    $("div.wrapper-position").css("width", con.width);
-                    $("div.wrapper-position").css("height", con.height);
-                    $("svg.designer").css("width", con.width);
-                    $("svg.designer").css("height", con.height);
-                    $("svg.designer").css("background-color", con.bgColor);
-                    $("svg.designer").css("background-image", "url(" + con.bgImage + ")");
-                    $("svg.designer").empty();
-                    $("body").css("background-color", con.bgColor);
+                     width = con.width;
+                                        height = con.height;
+                    					scale = $("body").width()/width;
+                                         $("div.full-wrapper").css("height",height*scale);
+                                       $("svg.designer").css("transform","scale("+scale+")");
+                                        $("svg.designer").css("width", con.width);
+                                        $("svg.designer").css("height", con.height);
+                                        $("svg.designer").css("background-color", con.bgColor);
+                                        $("svg.designer").css("background-image", "url(" + con.bgImage + ")");
+                                        $("svg.designer").empty();
+                                        $("body").css("background-color", con.bgColor);
                 }
                 // json.signals.map(function(signal){
                 //  if(signal){

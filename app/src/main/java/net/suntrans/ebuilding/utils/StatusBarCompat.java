@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import net.suntrans.ebuilding.App;
 import net.suntrans.ebuilding.R;
 
 
@@ -80,5 +81,17 @@ public class StatusBarCompat {
         contentView.addView(statusBarView, lp);
     }
 
+    public static void compat(View view){
+        View statusBar = view.findViewById(R.id.statusbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int statusBarHeight = StatusBarCompat.getStatusBarHeight(App.getApplication());
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
+            params.height = statusBarHeight;
+            statusBar.setLayoutParams(params);
+            statusBar.setVisibility(View.VISIBLE);
+        }else {
+            statusBar.setVisibility(View.GONE);
 
+        }
+    }
 }

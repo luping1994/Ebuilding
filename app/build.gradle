@@ -57,6 +57,11 @@ android {
 //            }
 //        }
 //    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.applicationId}_${variant.versionName}.apk"
+        }
+    }
 }
 
 dependencies {
