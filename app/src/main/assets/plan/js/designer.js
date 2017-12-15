@@ -130,8 +130,8 @@ function refreshContainerByToken(token, house_id) {
             // if (json.code == 200) {
                 var con = json.container;
                 if (con) {
-                    width = con.width;
-                    height = con.height;
+                   var width = con.width;
+                  var  height = con.height;
 					scale = $("body").width()/width;
                      $("div.full-wrapper").css("height",height*scale);
                    $("svg.designer").css("transform","scale("+scale+")");
@@ -177,8 +177,8 @@ function initContainerByToken(token, house_id) {
             // if (json.result) {
                 var con = json.container;
                 if (con) {
-                     width = con.width;
-                                        height = con.height;
+                  var   width = con.width;
+                                    var  height = con.height;
                     					scale = $("body").width()/width;
                                          $("div.full-wrapper").css("height",height*scale);
                                        $("svg.designer").css("transform","scale("+scale+")");

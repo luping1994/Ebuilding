@@ -168,7 +168,7 @@ public class FloorPlanActivity extends BasedActivity {
             final String status = split[2].equals("true") ? "关闭" : "打开";
             final String datapoint = split[3];
             final String din = split[4];
-            System.out.println(datapoint + "," + din);
+//            System.out.println(datapoint + "," + din);
             new AlertDialog.Builder(FloorPlanActivity.this)
                     .setMessage("是否" + status + title)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
