@@ -156,7 +156,6 @@ public class MainActivity extends BasedActivity {
     protected void onDestroy() {
         if (!DEBUG)
             PgyUpdateManager.unregister();
-
         if (connection != null)
             unbindService(connection);
         super.onDestroy();

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -65,6 +66,7 @@ public class StatusBarCompat {
     public static void fixKITKATbar(Activity activity, int statusColor)
 
     {
+
         int color = COLOR_DEFAULT;
         ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
         if (statusColor != INVALID_VAL) {
@@ -91,7 +93,6 @@ public class StatusBarCompat {
             statusBar.setVisibility(View.VISIBLE);
         }else {
             statusBar.setVisibility(View.GONE);
-
         }
     }
 }

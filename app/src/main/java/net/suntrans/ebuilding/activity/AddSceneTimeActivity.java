@@ -38,7 +38,7 @@ public class AddSceneTimeActivity extends BasedActivity implements View.OnClickL
     private TimePicker picker;
     private TextView typeName;
     private boolean[] itemStatus = new boolean[]{false, false, false, false, false, false, false};
-    ;
+
     private SceneTimeResult result;
 
 
