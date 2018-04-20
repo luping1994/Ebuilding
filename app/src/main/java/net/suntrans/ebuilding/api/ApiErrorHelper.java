@@ -26,7 +26,7 @@ public class ApiErrorHelper {
         if (e instanceof HttpException) {
             UiUtils.showToast("服务暂不可用");
         } else if (e instanceof IOException) {
-//            UiUtils.showToast("连接服务器失败");
+            UiUtils.showToast("连接服务器失败");
         } else if (e instanceof ApiException) {
             int code = ((ApiException) e).code;
             if (code == ApiErrorCode.UNAUTHORIZED) {
@@ -55,7 +55,7 @@ public class ApiErrorHelper {
                 UiUtils.showToast("服务器错误");
             }
         } else {
-            UiUtils.showToast("服务器错误");
+            UiUtils.showToast("连接服务器失败!");
         }
     }
 

@@ -71,7 +71,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("switch/channel")
-    Observable<ControlEntity> switchChannel(@Field("id") String id,
+    Observable<ControlEntity> switchChannel(@Field("channel_id") String id,
                                             @Field("datapoint") String datapoint,
                                             @Field("din") String din,
                                             @Field("cmd") String cmd);

@@ -140,7 +140,8 @@ public class AreaAdapter extends BaseExpandableListAdapter {
         public void setData(final int groupPosition, final int childPosition) {
             mText.setText(datas.get(groupPosition).sub.get(childPosition).name);
             Glide.with(mContext)
-                    .load(datas.get(groupPosition).sub.get(childPosition).img_url)
+//                    .load(datas.get(groupPosition).sub.get(childPosition).img_url)
+                    .load(R.drawable.house)
                     .centerCrop()
                     .crossFade()
                     .into(mImage);
@@ -149,6 +150,7 @@ public class AreaAdapter extends BaseExpandableListAdapter {
     }
 
     public void setOnGroupLongClickListener(AreaAdapter.onParentLongClickListener listener) {
+
         this.listener = listener;
     }
 

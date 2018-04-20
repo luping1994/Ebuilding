@@ -15,6 +15,7 @@ import net.suntrans.ebuilding.MainActivity;
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.LoginResult;
+import net.suntrans.ebuilding.rx.BaseSubscriber;
 import net.suntrans.ebuilding.utils.LogUtil;
 import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.ebuilding.views.EditView;
@@ -84,7 +85,7 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
                 .compose(this.<LoginResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<LoginResult>() {
+                .subscribe(new BaseSubscriber<LoginResult>(this) {
                     @Override
                     public void onCompleted() {
 
@@ -92,24 +93,9 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         e.printStackTrace();
                         dialog.dismiss();
-                        if (e instanceof HttpException) {
-                            if (e.getMessage() != null) {
-                                if (e.getMessage().equals("HTTP 401 Unauthorized")) {
-                                    UiUtils.showToast("账号或密码错误");
-                                }
-                            } else {
-                                UiUtils.showToast("登录失败,请检查网络连接");
-                            }
-                        }else if (e instanceof SocketTimeoutException){
-                            UiUtils.showToast("连接超时");
-                        }else if (e instanceof UnknownHostException){
-                            UiUtils.showToast("当前网络不可用");
-                        }else {
-                            UiUtils.showToast("连接服务器失败,请稍后再试");
-                        }
-
                     }
 
                     @Override
@@ -124,7 +110,6 @@ public class LoginActivity extends RxAppCompatActivity implements View.OnClickLi
                                         .putString("expires_in", loginResult.expires_in)
                                         .putLong("firsttime", System.currentTimeMillis())
                                         .commit();
-
                                 UiUtils.showToast("登录成功");
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
