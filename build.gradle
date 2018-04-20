@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version = '1.1.51'
     repositories {
         jcenter()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
@@ -22,6 +23,7 @@ allprojects {
         maven { url "http://clojars.org/repo" }
         maven { url "https://jitpack.io" }
         maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
+        google()
     }
 }
 
