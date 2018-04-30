@@ -117,6 +117,8 @@
         <activity
             android:name=".activity.FloorPlanActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".activity.EnvHisActivity" />
+        <activity android:name=".activity.EnvDetailActivity2" />
         <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
         <service android:name=".MyService" />
     </application>

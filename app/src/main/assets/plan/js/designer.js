@@ -110,7 +110,7 @@ function refreshContainerByToken(token, house_id) {
 //    console.log("开始请求")
 
     $.ajax({
-        url: 'http://tit.suntrans-cloud.com/api/v1/home/floor_plan',
+        url: 'http://qqtitapp.suntrans-cloud.com/api/v1/floor_plan_web',
         // url: 'http://192.168.2.234:8080/JsonServlet',
         // data: {'ruleId':$("#ruleId").val(),'dtuSn':$("#dtuSn").val()},
         method: 'POST',
@@ -119,10 +119,10 @@ function refreshContainerByToken(token, house_id) {
         //     'Authorization': token
         // },
 
-        beforeSend: function (xhr) {
-            // token = window.localStorage.getItem('token');
-            xhr.setRequestHeader("Authorization", token);
-        },
+//        beforeSend: function (xhr) {
+//            // token = window.localStorage.getItem('token');
+//            xhr.setRequestHeader("Authorization", token);
+//        },
 
         data: {'house_id': house_id},
         success: function (json) {
@@ -159,13 +159,13 @@ function refreshContainerByToken(token, house_id) {
 function initContainerByToken(token, house_id) {
     $.ajax({
         // url: 'http://192.168.2.234:8080/JsonServlet',
-        url: 'http://tit.suntrans-cloud.com/api/v1/home/floor_plan',
+        url: 'http://qqtitapp.suntrans-cloud.com/api/v1/floor_plan_web',
         // data: {'ruleId': $("#ruleId").val(), 'dtuSn': $("#dtuSn").val()},
         method: 'POST',
         dataType: "json",
-        headers: {
-            'Authorization': token
-        },
+//        headers: {
+//            'Authorization': token
+//        },
         // beforeSend: function (xhr) {
         //     // token = window.localStorage.getItem('token');
         //     xhr.setRequestHeader("Authorization", token);

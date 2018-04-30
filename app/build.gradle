@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
@@ -8,12 +9,14 @@ android {
         applicationId "net.suntrans.ebuilding"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 53
+        versionCode 54
         versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled true
@@ -76,6 +79,8 @@ dependencies {
     //    compile 'com.alibaba:fastjson:1.1.56.android'
     //    compile files('libs/Msc.jar')
     //    compile files('libs/Sunflower.jar')
+    kapt "com.android.databinding:compiler:2.3.2"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     //    compile 'com.sdsmdg.harjot:materialshadows:1.2.5'
     compile project(':stateview')

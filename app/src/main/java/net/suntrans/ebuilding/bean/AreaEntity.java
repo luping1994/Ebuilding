@@ -1,20 +1,21 @@
 package net.suntrans.ebuilding.bean;
 
+
 import java.util.List;
 
 /**
  * Created by Looney on 2017/7/8.
  */
 
-public class AreaEntity extends RespondBody<AreaEntity.AreaData>{
+public class AreaEntity extends RespondBody<AreaEntity.AreaData> {
 
-    public static class AreaData{
+    public static class AreaData {
         public int total;
         public List<AreaFloor> lists;
 
     }
 
-    public static class AreaFloor{
+    public static class AreaFloor {
         public int id;
         public String user_id;
         public String name;
@@ -24,7 +25,7 @@ public class AreaEntity extends RespondBody<AreaEntity.AreaData>{
         public boolean isCheck = false;
     }
 
-    public static class FloorRoom{
+    public static class FloorRoom {
         public int id;
         public String house_id;
         public String name;
@@ -42,7 +43,7 @@ public class AreaEntity extends RespondBody<AreaEntity.AreaData>{
         }
     }
 
-    public static class Channel{
+    public static class Channel {
         public String area_id;
         public String channel_id;
         public String id;

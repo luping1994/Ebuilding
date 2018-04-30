@@ -18,5 +18,11 @@
     <color name="scan_sencond_text_color">#5a5a5a</color>
     <color name="footerbg">#e7e7e7</color>
     <color name="transparent">#00000000</color>
+    <color name="divider_color">#f3f4f5</color>
+    <color name="item_press_false">#ffffff</color>
+    <color name="item_press_true">#f2f3f5</color>
+    <color name="item_press_true_selector">#c9c9c9</color>
+    <color name="ripper_color">#c9c9c9</color>
+    <color name="textcolor">#333333</color>
 
 </resources>

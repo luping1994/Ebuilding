@@ -2,6 +2,7 @@ package net.suntrans.ebuilding.fragment.area;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -272,7 +273,7 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                 .subscribeOn(Schedulers.io());
 
         String order = datas.get(position).status.equals("1") ? "关" : "开";
-        LogUtil.i("发出命令:" + order);
+//        LogUtil.i("发出命令:" + order);
         conOb
                 .subscribe(new BaseSubscriber<ControlEntity>(getActivity()) {
                     @Override
@@ -284,20 +285,15 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
 
                     @Override
                     public void onNext(ControlEntity data) {
-                        dialog.dismiss();
-                        if (data.code == 200) {
-                            LogUtil.i(data.data.toString());
-                            for (int i = 0; i < datas.size(); i++) {
-                                if (datas.get(i).channel_id.equals(data.data.id)) {
-                                    datas.get(i).status = String.valueOf(data.data.status);
-                                }
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getData();
+                                dialog.dismiss();
                             }
-                        } else if (data.code == 102) {
-                            UiUtils.showToast("您没有控制权限");
-                        } else {
-                            UiUtils.showToast(data.msg);
-                        }
-                        adapter.notifyDataSetChanged();
+                        },1000);
+                        UiUtils.showToast(data.msg);
+
                     }
                 });
 //                .subscribe(new Subscriber<ControlEntity>() {
@@ -443,5 +439,13 @@ public class AreaDeailFragment extends RxFragment implements ChangeNameDialogFra
                 }
             }
         });
+    }
+
+    Handler handler = new Handler();
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 }

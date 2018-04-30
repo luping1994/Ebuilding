@@ -258,26 +258,26 @@ public class EnvDetailActivity extends BasedActivity {
     }
 
     private void getData(String din) {
-        RetrofitHelper.getApi().getEnvDetail(din)
-                .compose(this.<EnvDetailEntity>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSubscriber<EnvDetailEntity>(this) {
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        if (refreshLayout != null)
-                            refreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onNext(EnvDetailEntity info) {
-                        info.data.setEva();
-                        initView(info.data);
-                        if (refreshLayout != null)
-                            refreshLayout.setRefreshing(false);
-                    }
-                });
+//        RetrofitHelper.getApi().getEnvDetail(din)
+//                .compose(this.<EnvDetailEntity>bindUntilEvent(ActivityEvent.DESTROY))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new BaseSubscriber<EnvDetailEntity>(this) {
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        super.onError(e);
+//                        if (refreshLayout != null)
+//                            refreshLayout.setRefreshing(false);
+//                    }
+//
+//                    @Override
+//                    public void onNext(EnvDetailEntity info) {
+//                        info.data.setEva();
+//                        initView(info.data);
+//                        if (refreshLayout != null)
+//                            refreshLayout.setRefreshing(false);
+//                    }
+//                });
 //                .subscribe(new Subscriber<EnvDetailEntity>() {
 //                    @Override
 //                    public void onCompleted() {

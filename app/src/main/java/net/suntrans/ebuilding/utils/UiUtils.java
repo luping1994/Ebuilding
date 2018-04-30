@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
@@ -35,16 +37,37 @@ import java.util.Map;
 public class UiUtils {
 
     private static Toast mToast;
+    private static Handler handler = new Handler(Looper.getMainLooper());
 
-    public static void showToast(String str) {
-        if (mToast == null) {
-            mToast = Toast.makeText(App.getApplication(), str, Toast.LENGTH_SHORT);
+    public static void showToast(final String str) {
+
+        if (Thread.currentThread()!= Looper.getMainLooper().getThread()){
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    String str1 =str;
+                    if (TextUtils.isEmpty(str1)) {
+                        str1 = "";
+                    }
+                    if (mToast == null) {
+                        mToast = Toast.makeText(App.getApplication(), str1, Toast.LENGTH_SHORT);
+                    }
+
+                    mToast.setText(str1);
+                    mToast.show();
+                }
+            });
+        }else {
+            String str1 =str;
+            if (TextUtils.isEmpty(str1)) {
+                str1 = "";
+            }
+            if (mToast == null) {
+                mToast = Toast.makeText(App.getApplication(), str1, Toast.LENGTH_SHORT);
+            }
+            mToast.setText(str1);
+            mToast.show();
         }
-        if (TextUtils.isEmpty(str)){
-            str = "";
-        }
-        mToast.setText(str);
-        mToast.show();
     }
 
     /**

@@ -64,6 +64,9 @@
         <item name="android:actionOverflowButtonStyle">@style/overFlowButtonStyle</item>
         <!--<item name="android:textSize">16sp</item> &lt;!&ndash;  搞掂字体大小&ndash;&gt;-->
     </style>
+    <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="overFlowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:src">@drawable/menu</item>

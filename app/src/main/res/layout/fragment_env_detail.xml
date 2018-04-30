@@ -1,0 +1,102 @@
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f2f2f2">
+
+                <LinearLayout
+                    android:id="@+id/rootLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/white"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center|left"
+                            android:text="时间"
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center|right"
+                            android:text="1970年1月1日"
+                            android:textSize="17sp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="室内环境"
+                        android:textSize="15sp" />
+
+                    <include android:id="@+id/r1" layout="@layout/item_sensor" />
+
+                    <include android:id="@+id/r2" layout="@layout/item_sensor" />
+
+                    <include android:visibility="gone" android:id="@+id/r3" layout="@layout/item_sensor" />
+
+                    <!--<include layout="@layout/item_sensor" />-->
+
+                    <include android:id="@+id/r4" android:visibility="gone" layout="@layout/item_sensor" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="空气质量"
+                        android:textSize="15sp" />
+
+                    <include android:id="@+id/r5" layout="@layout/item_sensor" />
+
+                    <include android:id="@+id/r6" layout="@layout/item_sensor" />
+
+                    <include android:id="@+id/r7" layout="@layout/item_sensor" />
+
+                    <include android:id="@+id/r8" layout="@layout/item_sensor" />
+
+                    <include android:id="@+id/r9" layout="@layout/item_sensor" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="姿态信息"
+                        android:textSize="15sp" />
+
+                    <include android:id="@+id/r10" layout="@layout/item_sensor" />
+
+                    <!--<include layout="@layout/item_sensor" />-->
+                    <!---->
+                    <!--<include layout="@layout/item_sensor" />-->
+                    <!---->
+                    <!--<include layout="@layout/item_sensor" />-->
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

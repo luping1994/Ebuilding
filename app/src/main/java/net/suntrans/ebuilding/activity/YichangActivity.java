@@ -28,6 +28,7 @@ import net.suntrans.ebuilding.utils.UiUtils;
 import net.suntrans.stateview.StateView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import rx.Subscriber;
@@ -45,6 +46,10 @@ public class YichangActivity extends BasedActivity {
     private StateView stateView;
     private RecyclerView recyclerView;
 
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,12 @@ public class YichangActivity extends BasedActivity {
     }
 
     private void init() {
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH) + 1;
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
         datas = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         adapter = new MyAdapter(R.layout.item_yicahng, datas);

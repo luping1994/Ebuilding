@@ -3,7 +3,9 @@ package net.suntrans.ebuilding.api;
 import net.suntrans.ebuilding.bean.AddSceneChannelResult;
 import net.suntrans.ebuilding.bean.Ameter3Entity;
 import net.suntrans.ebuilding.bean.AmmeterInfos;
+import net.suntrans.ebuilding.bean.AreaEntity_new;
 import net.suntrans.ebuilding.bean.FreshChannelEntity;
+import net.suntrans.ebuilding.bean.HisEntity;
 import net.suntrans.ebuilding.bean.RespondBody;
 import net.suntrans.ebuilding.bean.SampleResult;
 import net.suntrans.ebuilding.bean.Ammeter3Eneity;
@@ -99,7 +101,7 @@ public interface Api {
     @POST("energy/index")
     Observable<EnergyEntity> getEnergyIndex();
 
-    @POST("home/sensus")
+    @POST("sensus/sensusList")
     Observable<SensusEntity> getHomeSceneNew();
 
 
@@ -108,7 +110,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("sensus/show")
-    Observable<EnvDetailEntity> getEnvDetail(@Field("din") String din);
+    Observable<EnvDetailEntity> getEnvDetail(@Field("id") String din);
 
 
     @POST("user/info")
@@ -234,5 +236,15 @@ public interface Api {
     @FormUrlEncoded
     @POST("scene/addtimer")
     Observable<RespondBody> addTimmer(@FieldMap Map<String, String> map);
+
+
+    //获取场景列表
+    @POST("sensus/sensusList")
+    Observable<AreaEntity_new> getSensusList();
+
+    //http://stsz119.suntrans-cloud.com/api/v1/sensus/sensusCuv
+    @FormUrlEncoded
+    @POST("sensus/sensusCuv")
+    Observable<HisEntity> getEnvHis(@FieldMap Map<String, String> map);
 
 }

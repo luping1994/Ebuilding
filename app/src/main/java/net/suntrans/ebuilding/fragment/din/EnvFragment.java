@@ -19,6 +19,7 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 
 import net.suntrans.ebuilding.R;
 import net.suntrans.ebuilding.activity.EnvDetailActivity;
+import net.suntrans.ebuilding.activity.EnvDetailActivity2;
 import net.suntrans.ebuilding.api.RetrofitHelper;
 import net.suntrans.ebuilding.bean.SensusEntity;
 import net.suntrans.ebuilding.fragment.base.BasedFragment;
@@ -43,7 +44,7 @@ import static net.suntrans.ebuilding.utils.UiUtils.getContext;
 public class EnvFragment extends BasedFragment {
 
     private RecyclerView recyclerView;
-    private List<SensusEntity.SixInfo> datas;
+    private List<SensusEntity.SixDetailData> datas;
     private EnvAdapter adapter;
     private Observable<SensusEntity> getDataOb;
     private SwipeRefreshLayout refreshLayout;
@@ -58,9 +59,7 @@ public class EnvFragment extends BasedFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 getData(1);
-
             }
         });
         adapter = new EnvAdapter(R.layout.item_env, datas);
@@ -70,10 +69,11 @@ public class EnvFragment extends BasedFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(getActivity(), EnvDetailActivity.class);
-                intent.putExtra("din", datas.get(position).din);
-                intent.putExtra("info", datas.get(position).sub);
-                intent.putExtra("name", datas.get(position).name);
+
+                Intent intent = new Intent(getActivity(), EnvDetailActivity2.class);
+                intent.putExtra("id", datas.get(position).id);
+                intent.putExtra("info", datas.get(position));
+                intent.putExtra("name", datas.get(position).title);
                 startActivity(intent);
             }
         });
@@ -94,20 +94,20 @@ public class EnvFragment extends BasedFragment {
     }
 
 
-    private class EnvAdapter extends BaseQuickAdapter<SensusEntity.SixInfo, BaseViewHolder> {
+    private class EnvAdapter extends BaseQuickAdapter<SensusEntity.SixDetailData, BaseViewHolder> {
 
-        public EnvAdapter(@LayoutRes int layoutResId, @Nullable List<SensusEntity.SixInfo> data) {
+        public EnvAdapter(@LayoutRes int layoutResId, @Nullable List<SensusEntity.SixDetailData> data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, SensusEntity.SixInfo item) {
-            helper.setText(R.id.name, item.name)
+        protected void convert(BaseViewHolder helper, SensusEntity.SixDetailData item) {
+            helper.setText(R.id.name, item.title)
                     .setText(R.id.isOnline, item.is_online.equals("1") ? "" : "不在线")
-                    .setText(R.id.wendu, item.sub.getWendu() + "℃")
-                    .setText(R.id.shidu, item.sub.getShidu() + "%")
-                    .setText(R.id.pm25, item.sub.getPm25())
-                    .setText(R.id.guanzhao, item.sub.guanzhaoEva);
+                    .setText(R.id.wendu, item.getWendu() + "℃")
+                    .setText(R.id.shidu, item.getShidu() + "%")
+                    .setText(R.id.pm25, item.getPm25())
+                    .setText(R.id.guanzhao, item.guanzhaoEva);
         }
     }
 
@@ -144,6 +144,7 @@ public class EnvFragment extends BasedFragment {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                e.printStackTrace();
                 if (refreshLayout != null)
                     refreshLayout.setRefreshing(false);
                 if (refreshType == 0){
@@ -165,8 +166,8 @@ public class EnvFragment extends BasedFragment {
                 recyclerView.setVisibility(View.VISIBLE);
 
                 if (data.code == 200) {
-                    for (SensusEntity.SixInfo ds : data.data.lists) {
-                        ds.sub.setEva();
+                    for (SensusEntity.SixDetailData ds : data.data.lists) {
+                        ds.setEva();
 //                        System.out.println(ds.name);
                     }
                     datas.clear();

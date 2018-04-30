@@ -46,5 +46,6 @@
     <string name="tips_is_add_count">是否添加%1$d个设备</string>
     <string name="week">星期</string>
     <string name="tips_delete_timmer">是否删除该定时设置?</string>
+    <string name="query">查询</string>
 
 </resources>
